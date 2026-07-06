@@ -13,6 +13,8 @@ pub mod database;
 pub mod error;
 mod future;
 pub mod gossip;
+#[cfg(not(target_arch = "wasm32"))]
+mod local_relay;
 #[cfg(feature = "logger")]
 pub mod logger;
 mod monitor;
@@ -27,9 +29,6 @@ pub mod protocol;
 #[cfg(not(target_arch = "wasm32"))]
 mod proxy;
 pub mod relay;
-#[cfg(not(target_arch = "wasm32"))]
-#[cfg(feature = "relay-builder")]
-pub mod relay_builder;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod transport;
 #[cfg(target_arch = "wasm32")]

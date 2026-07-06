@@ -176,12 +176,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "atomic-destructor"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef49f5882e4b6afaac09ad239a4f8c70a24b8f2b0897edb1f706008efd109cf4"
-
-[[package]]
 name = "autocfg"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1446,9 +1440,9 @@ checksum = "30bde2b3dc3671ae49d8e2e9f044c7c005836e7a023ee57cffa25ab82764bb9e"
 
 [[package]]
 name = "lru"
-version = "0.16.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86ea4e65087ff52f3862caff188d489f1fab49a0cb09e01b2e3f1a617b10aaed"
+checksum = "8a860605968fce16869fd239cf4237a82f3ac470723415db603b0e8b6c8d4fb9"
 
 [[package]]
 name = "memchr"
@@ -1516,8 +1510,9 @@ dependencies = [
 
 [[package]]
 name = "nostr"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e729c14441b72fca67727523e06242a5e173410d62118288de6fa308c199cceb"
 dependencies = [
  "aes",
  "base64",
@@ -1541,8 +1536,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-connect"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8e48da0a216c0614f219c92411efb743f8e187d0fa75648f7ebd7c5a3cac6bc4"
 dependencies = [
  "async-utility",
  "futures-core",
@@ -1555,8 +1551,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-database"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "944c4b23b12e1e138e48557dd7628dfea5a7e48f306b31438dc2a5161fb0635c"
 dependencies = [
  "btreecap",
  "flatbuffers 25.12.19",
@@ -1566,8 +1563,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "90bc19bd1f8cbd5b3a2e2b48cf8758dd34ead48535beb514e26c919afbd35e9d"
 dependencies = [
  "nostr",
  "opaquerr",
@@ -1575,8 +1573,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-memory"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73e05e90266a4849c8ed2459f3288fcd802a9d3a508d12a7c70c838bc59a4826"
 dependencies = [
  "indexmap",
  "lru",
@@ -1587,8 +1586,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-sqlite"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16c6d0e2022576cd6feade5f84e68e78e93daf12328eac08f2d0431be2aae491"
 dependencies = [
  "async-utility",
  "nostr",
@@ -1599,8 +1599,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-lmdb"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c851cfcc117fca3e983b31af7cf5b4db43085ea0e694069aca83f61c5dea8280"
 dependencies = [
  "async-utility",
  "flume",
@@ -1613,8 +1614,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-memory"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7ecee6d57cde89ca66c3abab5d3b43b3dc24a3433c409f2b8d276200c6ce7b6"
 dependencies = [
  "btreecap",
  "nostr",
@@ -1624,8 +1626,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-ndb"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1090c261dbbae023306debade3e1558a1b2d31f9aa80165f646ab6d3bcbc150a"
 dependencies = [
  "nostr",
  "nostr-database",
@@ -1633,28 +1636,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "nostr-relay-builder"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
-dependencies = [
- "async-utility",
- "async-wsocket",
- "atomic-destructor",
- "faster-hex",
- "negentropy",
- "nostr",
- "nostr-database",
- "nostr-memory",
- "nostr-sdk",
- "opaquerr",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "nostr-sdk"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f60df0948bd33d1853cb977782045ea083c0aaf140353cc7f52a8ce0a2c9f42d"
 dependencies = [
  "async-utility",
  "async-wsocket",
@@ -1665,6 +1650,7 @@ dependencies = [
  "nostr",
  "nostr-database",
  "nostr-gossip",
+ "nostr-memory",
  "opaquerr",
  "tokio",
  "tokio-stream",
@@ -1690,7 +1676,6 @@ dependencies = [
  "nostr-gossip-sqlite",
  "nostr-lmdb",
  "nostr-ndb",
- "nostr-relay-builder",
  "nostr-sdk",
  "nwc",
  "paranoid-android",
@@ -1730,8 +1715,9 @@ dependencies = [
 
 [[package]]
 name = "nwc"
-version = "0.45.0-alpha.3"
-source = "git+https://github.com/rust-nostr/nostr?rev=9df86d400ff1a8af8aff28543434a14605bd034d#9df86d400ff1a8af8aff28543434a14605bd034d"
+version = "0.45.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "65f04578f1ae9200e95303f044e3f046095d0339c6f47f492568b4570f4297e0"
 dependencies = [
  "futures-core",
  "nostr",

@@ -7,7 +7,7 @@ use std::sync::Arc;
 
 use nostr::message::MachineReadablePrefix;
 use nostr::prelude::BoxedFuture;
-use nostr_relay_builder::{builder, local};
+use nostr_sdk::local_relay;
 use uniffi::{Enum, Object, Record};
 
 use crate::database::NostrDatabase;
@@ -25,7 +25,7 @@ pub struct RateLimit {
     pub notes_per_minute: u32,
 }
 
-impl From<RateLimit> for builder::RateLimit {
+impl From<RateLimit> for local_relay::RateLimit {
     fn from(rate_limit: RateLimit) -> Self {
         Self {
             max_reqs: rate_limit.max_reqs as usize,
@@ -46,7 +46,7 @@ pub enum WritePolicyResult {
     },
 }
 
-impl From<WritePolicyResult> for builder::WritePolicyResult {
+impl From<WritePolicyResult> for local_relay::WritePolicyResult {
     fn from(policy_result: WritePolicyResult) -> Self {
         match policy_result {
             WritePolicyResult::Accept => Self::Accept,
@@ -75,12 +75,12 @@ impl fmt::Debug for WritePolicyAdapter {
     }
 }
 
-impl builder::WritePolicy for WritePolicyAdapter {
+impl local_relay::WritePolicy for WritePolicyAdapter {
     fn admit_event<'a>(
         &'a self,
         event: &'a nostr::Event,
         addr: &'a SocketAddr,
-    ) -> BoxedFuture<'a, builder::WritePolicyResult> {
+    ) -> BoxedFuture<'a, local_relay::WritePolicyResult> {
         Box::pin(async move {
             self.0
                 .admit_event(Arc::new(event.clone().into()), addr.to_string())
@@ -102,7 +102,7 @@ pub enum QueryPolicyResult {
     },
 }
 
-impl From<QueryPolicyResult> for builder::QueryPolicyResult {
+impl From<QueryPolicyResult> for local_relay::QueryPolicyResult {
     fn from(policy_result: QueryPolicyResult) -> Self {
         match policy_result {
             QueryPolicyResult::Accept => Self::Accept,
@@ -130,12 +130,12 @@ impl fmt::Debug for QueryPolicyAdapter {
     }
 }
 
-impl builder::QueryPolicy for QueryPolicyAdapter {
+impl local_relay::QueryPolicy for QueryPolicyAdapter {
     fn admit_query<'a>(
         &'a self,
         query: &'a mut nostr::Filter,
         addr: &'a SocketAddr,
-    ) -> BoxedFuture<'a, builder::QueryPolicyResult> {
+    ) -> BoxedFuture<'a, local_relay::QueryPolicyResult> {
         Box::pin(async move {
             self.0
                 .admit_query(Arc::new(query.clone().into()), addr.to_string())
@@ -156,7 +156,7 @@ pub enum LocalRelayBuilderNip42Mode {
     Both,
 }
 
-impl From<LocalRelayBuilderNip42Mode> for builder::LocalRelayBuilderNip42Mode {
+impl From<LocalRelayBuilderNip42Mode> for local_relay::LocalRelayBuilderNip42Mode {
     fn from(mode: LocalRelayBuilderNip42Mode) -> Self {
         match mode {
             LocalRelayBuilderNip42Mode::Write => Self::Write,
@@ -173,7 +173,7 @@ pub struct LocalRelayBuilderNip42 {
     pub mode: LocalRelayBuilderNip42Mode,
 }
 
-impl From<LocalRelayBuilderNip42> for builder::LocalRelayBuilderNip42 {
+impl From<LocalRelayBuilderNip42> for local_relay::LocalRelayBuilderNip42 {
     fn from(value: LocalRelayBuilderNip42) -> Self {
         Self {
             mode: value.mode.into(),
@@ -184,11 +184,11 @@ impl From<LocalRelayBuilderNip42> for builder::LocalRelayBuilderNip42 {
 /// Relay builder
 #[derive(Clone, Default, Object)]
 pub struct LocalRelayBuilder {
-    inner: builder::LocalRelayBuilder,
+    inner: local_relay::LocalRelayBuilder,
 }
 
 impl Deref for LocalRelayBuilder {
-    type Target = builder::LocalRelayBuilder;
+    type Target = local_relay::LocalRelayBuilder;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -312,11 +312,11 @@ impl LocalRelayBuilder {
 /// This is automatically shutdown when all instances/clones are dropped!
 #[derive(Object)]
 pub struct LocalRelay {
-    inner: local::LocalRelay,
+    inner: local_relay::LocalRelay,
 }
 
-impl From<local::LocalRelay> for LocalRelay {
-    fn from(inner: local::LocalRelay) -> Self {
+impl From<local_relay::LocalRelay> for LocalRelay {
+    fn from(inner: local_relay::LocalRelay) -> Self {
         Self { inner }
     }
 }
@@ -329,7 +329,7 @@ impl LocalRelay {
     #[uniffi::constructor]
     pub fn new() -> Self {
         Self {
-            inner: local::LocalRelay::new(),
+            inner: local_relay::LocalRelay::new(),
         }
     }
 
