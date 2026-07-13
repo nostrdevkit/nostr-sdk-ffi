@@ -89,7 +89,7 @@ async def main():
     await client.connect()
 
     # Send an event using the Nostr Signer
-    builder = EventBuilder.text_note("Test from rust-nostr Python bindings!")
+    builder = EventBuilder.text_note("Test from nostrdevkit Python bindings!")
     output = await client.send_event_builder(builder)
 
     print("Event sent:")

@@ -34,7 +34,7 @@ pub mod transport;
 #[cfg(target_arch = "wasm32")]
 mod wasm32_time;
 
-/// Get git hash version of `rust-nostr` libraries
+/// Get git hash version of library
 #[uniffi::export]
 pub fn git_hash_version() -> Option<String> {
     option_env!("GIT_HASH").map(|v| v.to_string())

@@ -61,11 +61,11 @@ mavenPublishing {
     pom {
       name.set("nostr-sdk")
       description.set("Nostr protocol implementation, Relay, RelayPool, high-level client library, NWC client and more.")
-      url.set("https://rust-nostr.org")
+      url.set("https://nostrdevkit.org")
       licenses {
           license {
               name.set("MIT")
-              url.set("https://rust-nostr.org/license")
+              url.set("https://nostrdevkit.org/license")
           }
       }
       developers {
@@ -76,9 +76,9 @@ mavenPublishing {
           }
       }
       scm {
-          connection.set("scm:git:github.com/rust-nostr/nostr-sdk-ffi.git")
-          developerConnection.set("scm:git:ssh://github.com/rust-nostr/nostr-sdk-ffi.git")
-          url.set("https://github.com/rust-nostr/nostr-sdk-ffi")
+          connection.set("scm:git:github.com/nostrdevkit/nostr-sdk-ffi.git")
+          developerConnection.set("scm:git:ssh://github.com/nostrdevkit/nostr-sdk-ffi.git")
+          url.set("https://github.com/nostrdevkit/nostr-sdk-ffi")
       }
     }
 }

@@ -6,7 +6,7 @@ Nostr protocol implementation, Relay, RelayPool, high-level client library, NWC 
 
 ## Documentation
 
-Learn more about `rust-nostr` at <https://rust-nostr.org>.
+Learn more at <https://nostrdevkit.org>.
 
 ### Supported platforms
 
@@ -22,7 +22,7 @@ The following OS and architectures are supported:
 | macOS         | ✅      | ✅       | ❌     | ❌    | ❌       |
 | Windows       | ✅      | ✅       | ❌     | ✅    | ❌       |
 
-Are you interested in other platforms? Open an issue [here](https://github.com/rust-nostr/nostr-sdk-ffi).
+Are you interested in other platforms? Open an issue [here](https://github.com/nostrdevkit/nostr-sdk-ffi).
 
 ## State
 
@@ -30,8 +30,8 @@ Are you interested in other platforms? Open an issue [here](https://github.com/r
 
 ## Donations
 
-`rust-nostr` is free and open-source. This means we do not earn any revenue by selling it. Instead, we rely on your financial support. If you actively use any of the `rust-nostr` libs/software/services, then please [donate](https://rust-nostr.org/donate).
+Nostr Dev Kit is free and open-source. This means we do not earn any revenue by selling it. Instead, we rely on your financial support. If you actively use any of the libs/software/services, then please [donate](https://nostrdevkit.org/donate).
 
 ## License
 
-This project is distributed under the MIT software license - see the [LICENSE](https://rust-nostr.org/license) file for details
+This project is distributed under the MIT software license - see the [LICENSE](https://nostrdevkit.org/license) file for details

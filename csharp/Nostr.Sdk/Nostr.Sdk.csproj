@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageId>Nostr.Sdk</PackageId>
     <Version>0.44.2</Version>
-    <Company>rust-nostr</Company>
+    <Company>Nostr Dev Kit</Company>
     <Description>Nostr protocol implementation, Relay, RelayPool, high-level client library, NWC client and more.</Description>
     <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -12,8 +12,8 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageProjectUrl>https://rust-nostr.org</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/rust-nostr/nostr-sdk-ffi</RepositoryUrl>
+    <PackageProjectUrl>https://nostrdevkit.org</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nostrdevkit/nostr-sdk-ffi</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>nostr protocol</PackageTags>
     <Copyright>2025 Yuki Kishimoto</Copyright>

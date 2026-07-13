@@ -7,7 +7,7 @@ strip = true        # Full strip the binary. A debug binary will be used for gen
 
 [target.'cfg(target_os = "android")']
 # Don't use "-Clink-arg=-Wl,-z,pack-relative-relocs" as it casues issues on old Android APIs
-# Issue: https://github.com/rust-nostr/nostr-sdk-ffi/issues/58
+# Issue: https://github.com/nostrdevkit/nostr-sdk-ffi/issues/58
 rustflags = [
     "-Clink-arg=-Wl,-z,max-page-size=16384",  # 16KB page size alignment
 ]

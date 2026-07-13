@@ -6,16 +6,16 @@ Nostr protocol implementation, high-level client library, Nostr Wallet Connect a
 
 ## Documentation
 
-Learn more about `rust-nostr` at <https://rust-nostr.org>.
+Learn more at <https://nostrdevkit.org>.
 
 ## Available packages
 
 * Python: https://pypi.org/project/nostr-sdk
 * Kotlin:
-    * Android: https://central.sonatype.com/artifact/org.rust-nostr/nostr-sdk
-    * JVM: https://central.sonatype.com/artifact/org.rust-nostr/nostr-sdk-jvm
-    * KMP: https://central.sonatype.com/artifact/org.rust-nostr/nostr-sdk-kmp
-* Swift: https://github.com/rust-nostr/nostr-sdk-swift
+    * Android: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk
+    * JVM: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-jvm
+    * KMP: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-kmp
+* Swift: https://github.com/nostrdevkit/nostr-sdk-swift
 * C#: https://www.nuget.org/packages/Nostr.Sdk
 
 ## State
@@ -24,7 +24,7 @@ Learn more about `rust-nostr` at <https://rust-nostr.org>.
 
 ## Donations
 
-`rust-nostr` is free and open-source. This means we do not earn any revenue by selling it. Instead, we rely on your financial support. If you actively use any of the `rust-nostr` libs/software/services, then please [donate](https://rust-nostr.org/donate).
+Nostr Dev Kit is free and open-source. This means we do not earn any revenue by selling it. Instead, we rely on your financial support. If you actively use any of the libs/software/services, then please [donate](https://nostrdevkit.org/donate).
 
 ## License
 
