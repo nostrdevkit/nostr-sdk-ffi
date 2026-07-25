@@ -2338,9 +2338,9 @@ dependencies = [
 
 [[package]]
 name = "nostr"
-version = "0.44.2"
+version = "0.44.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3aa5e3b6a278ed061835fe1ee293b71641e6bf8b401cfe4e1834bbf4ef0a34e1"
+checksum = "0112d3433a5550ba13481970d5b6844714510ddcdaca4d9d0aa6e7b83f270271"
 dependencies = [
  "aes",
  "base64",
@@ -2363,9 +2363,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-connect"
-version = "0.44.0"
+version = "0.44.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "38d7366ee1dfa57b479cf56256e18301cb3088f7068ceba01d446db0332b4cb2"
+checksum = "0055317f298380628e79c4663ea00bfab67d3cf4f00aefde5fc2b4f35f47d629"
 dependencies = [
  "async-utility",
  "nostr",
@@ -2437,9 +2437,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-relay-builder"
-version = "0.44.0"
+version = "0.44.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51ba8e48eaadd5644e7317ca2f892b89a394a8cc57e99fea9f624dc081df1a24"
+checksum = "08ed09e8363503c6f464087b530a1f43cf68be6292bd4928b5ea1141b03dc11c"
 dependencies = [
  "async-utility",
  "async-wsocket",
