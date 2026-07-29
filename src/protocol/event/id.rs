@@ -12,8 +12,8 @@ use super::{Kind, Tags};
 use crate::error::Result;
 use crate::protocol::event::{PublicKey, Timestamp};
 
-#[derive(Debug, PartialEq, Eq, Hash, Object)]
-#[uniffi::export(Debug, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Object)]
+#[uniffi::export(Debug, Eq, Ord, Hash)]
 pub struct EventId {
     inner: nostr::EventId,
 }
