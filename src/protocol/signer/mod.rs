@@ -139,7 +139,7 @@ mod inner {
     impl AsyncGetPublicKey for IntermediateAsyncNostrSigner {
         type Error = Error;
 
-        fn get_public_key_async(&self) -> BoxedFuture<Result<PublicKey, Self::Error>> {
+        fn get_public_key_async(&self) -> BoxedFuture<'_, Result<PublicKey, Self::Error>> {
             Box::pin(async move {
                 let public_key = self
                     .inner
@@ -176,7 +176,7 @@ mod inner {
         fn sign_event_async(
             &self,
             unsigned: UnsignedEvent,
-        ) -> BoxedFuture<Result<Event, Self::Error>> {
+        ) -> BoxedFuture<'_, Result<Event, Self::Error>> {
             Box::pin(async move {
                 let unsigned = Arc::new(unsigned.into());
                 let event = self

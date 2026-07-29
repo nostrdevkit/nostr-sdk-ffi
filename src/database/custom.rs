@@ -140,7 +140,7 @@ mod inner {
             })
         }
 
-        fn count(&self, filter: Filter) -> BoxedFuture<Result<usize, Error>> {
+        fn count(&self, filter: Filter) -> BoxedFuture<'_, Result<usize, Error>> {
             Box::pin(async move {
                 let res = self
                     .inner
@@ -151,7 +151,7 @@ mod inner {
             })
         }
 
-        fn query(&self, filter: Filter) -> BoxedFuture<Result<Events, Error>> {
+        fn query(&self, filter: Filter) -> BoxedFuture<'_, Result<Events, Error>> {
             Box::pin(async move {
                 let mut events = Events::new(&filter);
 
@@ -168,7 +168,7 @@ mod inner {
             })
         }
 
-        fn delete(&self, filter: Filter) -> BoxedFuture<Result<(), Error>> {
+        fn delete(&self, filter: Filter) -> BoxedFuture<'_, Result<(), Error>> {
             Box::pin(async move {
                 self.inner
                     .delete_events(Arc::new(filter.into()))
@@ -177,7 +177,7 @@ mod inner {
             })
         }
 
-        fn wipe(&self) -> BoxedFuture<Result<(), Error>> {
+        fn wipe(&self) -> BoxedFuture<'_, Result<(), Error>> {
             Box::pin(async move {
                 self.inner
                     .wipe()
