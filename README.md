@@ -10,13 +10,17 @@ Learn more at <https://nostrdevkit.org>.
 
 ## Available packages
 
-* Python: https://pypi.org/project/nostr-sdk
-* Kotlin:
-    * Android: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk
-    * JVM: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-jvm
-    * KMP: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-kmp
-* Swift: https://github.com/nostrdevkit/nostr-sdk-swift
-* C#: https://www.nuget.org/packages/Nostr.Sdk
+- Python: https://pypi.org/project/nostr-sdk
+- Kotlin:
+    - Android: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk
+    - JVM: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-jvm
+    - KMP: https://central.sonatype.com/artifact/org.nostrdevkit/nostr-sdk-kmp
+- Swift: https://github.com/nostrdevkit/nostr-sdk-swift
+- C#: https://www.nuget.org/packages/Nostr.Sdk
+- JavaScript/TypeScript:
+    - Web: https://www.npmjs.com/package/@nostrdevkit/nostr-sdk-web
+    - Node.js: https://www.npmjs.com/package/@nostrdevkit/nostr-sdk-node
+    - React Native: https://www.npmjs.com/package/@nostrdevkit/nostr-sdk-react-native
 
 ## State
 
