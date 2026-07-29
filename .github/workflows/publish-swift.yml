@@ -139,7 +139,7 @@ jobs:
 
       - name: Release and attach XCFramework binary artifact
         if: ${{ inputs.publish }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           repository: ${{ github.repository_owner }}/nostr-sdk-swift
           files: |
