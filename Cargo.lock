@@ -157,9 +157,9 @@ dependencies = [
 
 [[package]]
 name = "async-wsocket"
-version = "0.15.0"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c69f24cf7a798027c6b0801de5bfd05d01fe343e87a8329f7c8b46a6d3bc4a79"
+checksum = "efa9ef232c1731ddbe4a306b5b5dcf9e50a924d6bd086d4784939d14f8e78daa"
 dependencies = [
  "futures",
  "futures-util",
@@ -1510,9 +1510,9 @@ dependencies = [
 
 [[package]]
 name = "nostr"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e90ba68fc04b87254ef574e10aef1fe92d44839043f42e37a7c4c4a1e7e4c82"
+checksum = "33749a9fec481115e477981e9e1b5e1be1d8bcfaf8c36f82626e4053cb9a8337"
 dependencies = [
  "aes",
  "base64",
@@ -1536,9 +1536,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-connect"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8488f518a6dab69c2a7196710b847dad33188e455fd83f2254cd1e95645b5a3"
+checksum = "b1548a8a5f987cc75478032364610c2900f47f9dc0991ec937ca3660111d235d"
 dependencies = [
  "async-utility",
  "futures-core",
@@ -1551,9 +1551,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-database"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77c37167c3f289fea43e82f8bb24bb2006a2fb803abaaa908b25f1d3ca0b2bcc"
+checksum = "0764956a8167f8ed35201ef5074ea2e42caf4e0430c2d42dbe8777e254daf720"
 dependencies = [
  "btreecap",
  "flatbuffers 25.12.19",
@@ -1563,9 +1563,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb24a1f82e3fe9e3e9b4549e916ec168d4c21c2e55c61fa6be9f98218872cd37"
+checksum = "1507d84997e7b62c35f5714e907796cea9510d1640bf7b8e2dece65ae4e5d035"
 dependencies = [
  "nostr",
  "opaquerr",
@@ -1573,9 +1573,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-memory"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fbaa08192dccad5c4aa96904565021ec05487748d788cb760abe69f08224318"
+checksum = "ad34f2ebf134ca675ea0d78961896b3bfd5c568f6fe2811bc707009026285715"
 dependencies = [
  "indexmap",
  "lru",
@@ -1586,9 +1586,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-sqlite"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "427be740e560261c8694d4839b9a04b601930b40bd3e213e5a9330d19e802478"
+checksum = "e2be236a231cfccd61c415621251d1616beec20f924b7a4d340c2630624e3f72"
 dependencies = [
  "async-utility",
  "nostr",
@@ -1599,9 +1599,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-lmdb"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6f7ced759f186e2cf13bea79b22424d1e014978d44ef045ae91014687050323"
+checksum = "7c8cc9540fbc52e5ffea980d323da183e9fb1d072ca4c09de565866a2b5e9acd"
 dependencies = [
  "async-utility",
  "flume",
@@ -1614,9 +1614,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-memory"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b854c66cba2341170f201e9c86a668fd83739b3feb399cb162a1492c49f27ed8"
+checksum = "30b4c41602dc1ebad8bbf55dec625c46706dcd7a486c4611ee1e8dbd6e405802"
 dependencies = [
  "btreecap",
  "nostr",
@@ -1626,9 +1626,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-ndb"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b667202536406f096ff0375df5be05598e4a6ddc6e0030740a1f08a85b8118d0"
+checksum = "481234ad394dde6db91fbf570bec9d7df408f3876dd3bfea5d38885f9ea9c88e"
 dependencies = [
  "nostr",
  "nostr-database",
@@ -1637,9 +1637,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-sdk"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b197627792d5f02ab257c1bff30d4475e0ebc85229a82515b05d6717c6a4fbc"
+checksum = "68d78f007cd9044bfb5944f29f4a90117cb5b882d444b423d2782777da5fde45"
 dependencies = [
  "async-utility",
  "async-wsocket",
@@ -1715,9 +1715,9 @@ dependencies = [
 
 [[package]]
 name = "nwc"
-version = "0.45.0-alpha.6"
+version = "0.45.0-alpha.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22f6946be1f3799c941de8187f0ba7fd254d531bee237b2df28bdc8fc316ac1b"
+checksum = "97f44dca5c8a3836dc343ecc6ba9dc0ab7cf54a2e626906dccce8bdc267e25c5"
 dependencies = [
  "futures-core",
  "nostr",
@@ -1916,6 +1916,8 @@ version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34af8d1a0e25924bc5b7c43c079c942339d8f0a8b57c39049bef581b46327404"
 dependencies = [
+ "libc",
+ "rand_chacha 0.3.1",
  "rand_core 0.6.4",
 ]
 
@@ -1925,7 +1927,7 @@ version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3779b94aeb87e8bd4e834cee3650289ee9e0d5677f976ecdb6d219e5f4f6cd94"
 dependencies = [
- "rand_chacha",
+ "rand_chacha 0.9.0",
  "rand_core 0.9.3",
  "zerocopy",
 ]
@@ -1938,6 +1940,16 @@ checksum = "d2e8e8bcc7961af1fdac401278c6a831614941f6164ee3bf4ce61b7edb162207"
 dependencies = [
  "getrandom 0.4.2",
  "rand_core 0.10.1",
+]
+
+[[package]]
+name = "rand_chacha"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88"
+dependencies = [
+ "ppv-lite86",
+ "rand_core 0.6.4",
 ]
 
 [[package]]
@@ -1955,6 +1967,9 @@ name = "rand_core"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
+dependencies = [
+ "getrandom 0.2.17",
+]
 
 [[package]]
 name = "rand_core"
@@ -2193,12 +2208,13 @@ dependencies = [
 
 [[package]]
 name = "secp256k1"
-version = "0.29.1"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9465315bc9d4566e1724f0fffcbcc446268cb522e60f9a27bcded6b19c108113"
+checksum = "b50c5943d326858130af85e049f2661ba3c78b26589b8ab98e65e80ae44a1252"
 dependencies = [
+ "bitcoin_hashes",
+ "rand 0.8.5",
  "secp256k1-sys",
- "serde",
 ]
 
 [[package]]

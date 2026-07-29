@@ -3,23 +3,11 @@
 // Distributed under the MIT software license
 
 use std::collections::HashMap;
-use std::ops::Deref;
 
 use nostr::serde_json::{Number, Value};
-use nostr::util;
 use uniffi::Enum;
 
-use super::key::{PublicKey, SecretKey};
 use crate::error::{NostrSdkError, Result};
-
-/// Generate shared key
-///
-/// **Important: use of a strong cryptographic hash function may be critical to security! Do NOT use
-/// unless you understand cryptographical implications.**
-#[uniffi::export]
-pub fn generate_shared_key(secret_key: &SecretKey, public_key: &PublicKey) -> Result<Vec<u8>> {
-    Ok(util::generate_shared_key(secret_key.deref(), public_key.deref())?.to_vec())
-}
 
 #[derive(Enum)]
 pub enum JsonValue {

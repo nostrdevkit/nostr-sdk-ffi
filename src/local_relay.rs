@@ -1,12 +1,13 @@
 use std::borrow::Cow;
 use std::fmt;
+use std::future::Future;
 use std::net::{IpAddr, SocketAddr};
 use std::ops::Deref;
+use std::pin::Pin;
 use std::str::FromStr;
 use std::sync::Arc;
 
 use nostr::message::MachineReadablePrefix;
-use nostr::prelude::BoxedFuture;
 use nostr_sdk::local_relay;
 use uniffi::{Enum, Object, Record};
 
@@ -80,7 +81,7 @@ impl local_relay::WritePolicy for WritePolicyAdapter {
         &'a self,
         event: &'a nostr::Event,
         addr: &'a SocketAddr,
-    ) -> BoxedFuture<'a, local_relay::WritePolicyResult> {
+    ) -> Pin<Box<dyn Future<Output = local_relay::WritePolicyResult> + Send + 'a>> {
         Box::pin(async move {
             self.0
                 .admit_event(Arc::new(event.clone().into()), addr.to_string())
@@ -135,7 +136,7 @@ impl local_relay::QueryPolicy for QueryPolicyAdapter {
         &'a self,
         query: &'a mut nostr::Filter,
         addr: &'a SocketAddr,
-    ) -> BoxedFuture<'a, local_relay::QueryPolicyResult> {
+    ) -> Pin<Box<dyn Future<Output = local_relay::QueryPolicyResult> + Send + 'a>> {
         Box::pin(async move {
             self.0
                 .admit_query(Arc::new(query.clone().into()), addr.to_string())

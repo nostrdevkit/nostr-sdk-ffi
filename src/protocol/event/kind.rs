@@ -93,20 +93,6 @@ impl Kind {
     pub fn is_addressable(&self) -> bool {
         self.inner.is_addressable()
     }
-
-    /// Check if it's a NIP90 job request
-    ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/90.md>
-    pub fn is_job_request(&self) -> bool {
-        self.inner.is_job_request()
-    }
-
-    /// Check if it's a NIP90 job result
-    ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/90.md>
-    pub fn is_job_result(&self) -> bool {
-        self.inner.is_job_result()
-    }
 }
 
 /// Standardized kind
@@ -188,6 +174,8 @@ pub enum KindStandard {
     WalletConnectInfo,
     /// Wallet Connect notification (NIP47)
     WalletConnectNotification,
+    /// Wallet Connect notification encrypted with NIP44 v2 (NIP47)
+    WalletConnectNotificationNip44V2,
     /// Reporting (NIP56)
     Reporting,
     /// Zap Private Message (NIP57)
@@ -405,6 +393,9 @@ fn convert(k: nostr::Kind) -> Option<KindStandard> {
         nostr::Kind::Label => Some(KindStandard::Label),
         nostr::Kind::WalletConnectInfo => Some(KindStandard::WalletConnectInfo),
         nostr::Kind::WalletConnectNotification => Some(KindStandard::WalletConnectNotification),
+        nostr::Kind::WalletConnectNotificationNip44V2 => {
+            Some(KindStandard::WalletConnectNotificationNip44V2)
+        }
         nostr::Kind::Reporting => Some(KindStandard::Reporting),
         nostr::Kind::ZapPrivateMessage => Some(KindStandard::ZapPrivateMessage),
         nostr::Kind::ZapRequest => Some(KindStandard::ZapRequest),
@@ -506,6 +497,9 @@ impl From<KindStandard> for nostr::Kind {
             KindStandard::Label => Self::Label,
             KindStandard::WalletConnectInfo => Self::WalletConnectInfo,
             KindStandard::WalletConnectNotification => Self::WalletConnectNotification,
+            KindStandard::WalletConnectNotificationNip44V2 => {
+                Self::WalletConnectNotificationNip44V2
+            }
             KindStandard::Reporting => Self::Reporting,
             KindStandard::ZapPrivateMessage => Self::ZapPrivateMessage,
             KindStandard::ZapRequest => Self::ZapRequest,

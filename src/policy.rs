@@ -77,29 +77,32 @@ impl fmt::Debug for FFI2RustAdmitPolicy {
 }
 
 mod inner {
+    use std::future::Future;
     use std::ops::Deref;
+    use std::pin::Pin;
     use std::sync::Arc;
 
-    use nostr::prelude::BoxedFuture;
     use nostr::{Event, RelayUrl, SubscriptionId};
     use nostr_sdk::error::Error;
     use nostr_sdk::policy::{AdmitPolicy, AdmitStatus};
 
     use super::FFI2RustAdmitPolicy;
     use crate::error::MiddleError;
+    use crate::future::assume_send;
 
     impl AdmitPolicy for FFI2RustAdmitPolicy {
         fn admit_connection<'a>(
             &'a self,
             relay_url: &'a RelayUrl,
-        ) -> BoxedFuture<'a, Result<AdmitStatus, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<AdmitStatus, Error>> + Send + 'a>> {
             Box::pin(async move {
-                let status = self
-                    .inner
-                    .admit_connection(Arc::new(relay_url.clone().into()))
-                    .await
-                    .map_err(MiddleError::from)
-                    .map_err(Error::other)?;
+                let status = assume_send(
+                    self.inner
+                        .admit_connection(Arc::new(relay_url.clone().into())),
+                )
+                .await
+                .map_err(MiddleError::from)
+                .map_err(Error::other)?;
 
                 match status {
                     Some(s) => Ok(s.as_ref().deref().clone()),
@@ -113,19 +116,17 @@ mod inner {
             relay_url: &'a RelayUrl,
             subscription_id: &'a SubscriptionId,
             event: &'a Event,
-        ) -> BoxedFuture<'a, Result<AdmitStatus, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<AdmitStatus, Error>> + Send + 'a>> {
             Box::pin(async move {
                 let event = Arc::new(event.clone().into());
-                let status = self
-                    .inner
-                    .admit_event(
-                        Arc::new(relay_url.clone().into()),
-                        subscription_id.to_string(),
-                        event,
-                    )
-                    .await
-                    .map_err(MiddleError::from)
-                    .map_err(Error::other)?;
+                let status = assume_send(self.inner.admit_event(
+                    Arc::new(relay_url.clone().into()),
+                    subscription_id.to_string(),
+                    event,
+                ))
+                .await
+                .map_err(MiddleError::from)
+                .map_err(Error::other)?;
 
                 match status {
                     Some(s) => Ok(s.as_ref().deref().clone()),

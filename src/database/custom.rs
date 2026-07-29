@@ -79,7 +79,9 @@ impl fmt::Debug for IntermediateCustomNostrDatabase {
 }
 
 mod inner {
+    use std::future::Future;
     use std::ops::Deref;
+    use std::pin::Pin;
     use std::sync::Arc;
 
     use nostr_database::error::Error;
@@ -87,6 +89,7 @@ mod inner {
 
     use super::IntermediateCustomNostrDatabase;
     use crate::error::MiddleError;
+    use crate::future::assume_send;
 
     impl NostrDatabase for IntermediateCustomNostrDatabase {
         fn backend(&self) -> Backend {
@@ -100,11 +103,9 @@ mod inner {
         fn save_event<'a>(
             &'a self,
             event: &'a Event,
-        ) -> BoxedFuture<'a, Result<SaveEventStatus, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<SaveEventStatus, Error>> + Send + 'a>> {
             Box::pin(async move {
-                let status = self
-                    .inner
-                    .save_event(Arc::new(event.to_owned().into()))
+                let status = assume_send(self.inner.save_event(Arc::new(event.to_owned().into())))
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))?
                     .ok_or_else(|| {
@@ -117,10 +118,9 @@ mod inner {
         fn check_id<'a>(
             &'a self,
             event_id: &'a EventId,
-        ) -> BoxedFuture<'a, Result<DatabaseEventStatus, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<DatabaseEventStatus, Error>> + Send + 'a>> {
             Box::pin(async move {
-                self.inner
-                    .check_id(Arc::new((*event_id).into()))
+                assume_send(self.inner.check_id(Arc::new((*event_id).into())))
                     .await
                     .map(|s| s.into())
                     .map_err(|e| Error::other(MiddleError::from(e)))
@@ -130,35 +130,37 @@ mod inner {
         fn event_by_id<'a>(
             &'a self,
             event_id: &'a EventId,
-        ) -> BoxedFuture<'a, Result<Option<Event>, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<Option<Event>, Error>> + Send + 'a>> {
             Box::pin(async move {
-                Ok(self
-                    .inner
-                    .event_by_id(Arc::new((*event_id).into()))
-                    .await
-                    .map_err(|e| Error::other(MiddleError::from(e)))?
-                    .map(|e| e.as_ref().deref().clone()))
+                Ok(
+                    assume_send(self.inner.event_by_id(Arc::new((*event_id).into())))
+                        .await
+                        .map_err(|e| Error::other(MiddleError::from(e)))?
+                        .map(|e| e.as_ref().deref().clone()),
+                )
             })
         }
 
-        fn count(&self, filter: Filter) -> BoxedFuture<'_, Result<usize, Error>> {
+        fn count(
+            &self,
+            filter: Filter,
+        ) -> Pin<Box<dyn Future<Output = Result<usize, Error>> + Send + '_>> {
             Box::pin(async move {
-                let res = self
-                    .inner
-                    .count(Arc::new(filter.into()))
+                let res = assume_send(self.inner.count(Arc::new(filter.into())))
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))?;
                 Ok(res as usize)
             })
         }
 
-        fn query(&self, filter: Filter) -> BoxedFuture<'_, Result<Events, Error>> {
+        fn query(
+            &self,
+            filter: Filter,
+        ) -> Pin<Box<dyn Future<Output = Result<Events, Error>> + Send + '_>> {
             Box::pin(async move {
                 let mut events = Events::new(&filter);
 
-                let output = self
-                    .inner
-                    .query(Arc::new(filter.into()))
+                let output = assume_send(self.inner.query(Arc::new(filter.into())))
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))?;
 
@@ -169,19 +171,20 @@ mod inner {
             })
         }
 
-        fn delete(&self, filter: Filter) -> BoxedFuture<'_, Result<(), Error>> {
+        fn delete(
+            &self,
+            filter: Filter,
+        ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + Send + '_>> {
             Box::pin(async move {
-                self.inner
-                    .delete_events(Arc::new(filter.into()))
+                assume_send(self.inner.delete_events(Arc::new(filter.into())))
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))
             })
         }
 
-        fn wipe(&self) -> BoxedFuture<'_, Result<(), Error>> {
+        fn wipe(&self) -> Pin<Box<dyn Future<Output = Result<(), Error>> + Send + '_>> {
             Box::pin(async move {
-                self.inner
-                    .wipe()
+                assume_send(self.inner.wipe())
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))
             })

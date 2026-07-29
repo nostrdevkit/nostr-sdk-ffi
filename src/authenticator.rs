@@ -76,10 +76,11 @@ impl Authenticator for SignerAuthenticator {
 }
 
 mod inner {
+    use std::future::Future;
     use std::ops::Deref;
+    use std::pin::Pin;
     use std::sync::Arc;
 
-    use nostr::prelude::BoxedFuture;
     use nostr::{Event, RelayUrl};
     use nostr_sdk::authenticator::Authenticator;
     use nostr_sdk::error::Error;
@@ -92,14 +93,15 @@ mod inner {
             &'a self,
             relay_url: &'a RelayUrl,
             challenge: &'a str,
-        ) -> BoxedFuture<'a, Result<Event, Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<Event, Error>> + Send + 'a>> {
             Box::pin(async move {
-                let event = self
-                    .inner
-                    .make_auth_event(Arc::new(relay_url.clone().into()), challenge.to_string())
-                    .await
-                    .map_err(MiddleError::from)
-                    .map_err(Error::other)?;
+                let event = crate::future::assume_send(
+                    self.inner
+                        .make_auth_event(Arc::new(relay_url.clone().into()), challenge.to_string()),
+                )
+                .await
+                .map_err(MiddleError::from)
+                .map_err(Error::other)?;
 
                 match event {
                     Some(event) => Ok(event.as_ref().deref().clone()),

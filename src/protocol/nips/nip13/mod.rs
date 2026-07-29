@@ -126,8 +126,10 @@ impl IntermediateAsyncPowAdapter {
 }
 
 mod inner {
+    use std::future::Future;
     use std::num::NonZeroU8;
     use std::ops::Deref;
+    use std::pin::Pin;
     use std::sync::Arc;
 
     use async_trait::async_trait;
@@ -135,6 +137,7 @@ mod inner {
 
     use super::{IntermediateAsyncPowAdapter, IntermediatePowAdapter};
     use crate::error::{MiddleError, NostrSdkError};
+    use crate::future::assume_send;
 
     impl PowAdapter for IntermediatePowAdapter {
         type Error = NostrSdkError;
@@ -162,12 +165,10 @@ mod inner {
             &self,
             unsigned: UnsignedEvent,
             difficulty: NonZeroU8,
-        ) -> BoxedFuture<'_, Result<UnsignedEvent, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<UnsignedEvent, Self::Error>> + Send + '_>> {
             Box::pin(async move {
                 let unsigned = Arc::new(unsigned.into());
-                let output = self
-                    .inner
-                    .compute_async(unsigned, difficulty.get())
+                let output = assume_send(self.inner.compute_async(unsigned, difficulty.get()))
                     .await
                     .map_err(MiddleError::from)?
                     .ok_or_else(|| MiddleError::new("Received None instead of unsigned event"))?;

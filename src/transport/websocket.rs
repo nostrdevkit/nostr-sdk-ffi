@@ -137,7 +137,6 @@ mod inner {
 
     use futures_util::{Sink as SinkTrait, Stream as StreamTrait, StreamExt};
     use nostr::Url;
-    use nostr::util::BoxedFuture;
     use nostr_sdk::error::Error;
     use nostr_sdk::transport::websocket::WebSocketTransport;
 
@@ -358,7 +357,9 @@ mod inner {
             &'a self,
             url: &'a Url,
             proxy: Option<SocketAddr>,
-        ) -> BoxedFuture<'a, Result<(WebSocketSink, WebSocketStream), Error>> {
+        ) -> Pin<
+            Box<dyn Future<Output = Result<(WebSocketSink, WebSocketStream), Error>> + Send + 'a>,
+        > {
             Box::pin(async move {
                 let intermediate = self
                     .inner

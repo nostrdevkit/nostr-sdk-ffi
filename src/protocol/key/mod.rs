@@ -5,7 +5,6 @@
 use std::ops::Deref;
 
 use nostr::key;
-use nostr::secp256k1::Message;
 use uniffi::Object;
 
 mod public_key;
@@ -88,7 +87,6 @@ impl Keys {
     ///
     /// This method use a random number generator that retrieves randomness from the operating system.
     pub fn sign_schnorr(&self, message: &[u8]) -> Result<String> {
-        let message: Message = Message::from_digest_slice(message)?;
-        Ok(self.inner.sign_schnorr(&message).to_string())
+        Ok(self.inner.sign_schnorr(message).to_string())
     }
 }

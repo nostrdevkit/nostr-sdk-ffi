@@ -15,10 +15,12 @@ fmt:
 # Check the codebase for errors
 check:
     cargo check --all
+    cargo check --target wasm32-unknown-unknown
 
 # Check the codebase using clippy
 clippy:
     cargo clippy --all
+    cargo clippy --target wasm32-unknown-unknown
 
 # Run the tests for the codebase
 test:

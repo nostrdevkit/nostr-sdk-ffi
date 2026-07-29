@@ -114,7 +114,9 @@ impl IntermediateAsyncNostrSigner {
 }
 
 mod inner {
+    use std::future::Future;
     use std::ops::Deref;
+    use std::pin::Pin;
     use std::sync::Arc;
 
     use async_trait::async_trait;
@@ -122,6 +124,7 @@ mod inner {
 
     use super::{IntermediateAsyncNostrSigner, IntermediateNostrSigner};
     use crate::error::MiddleError;
+    use crate::future::assume_send;
 
     impl GetPublicKey for IntermediateNostrSigner {
         type Error = Error;
@@ -140,11 +143,11 @@ mod inner {
     impl AsyncGetPublicKey for IntermediateAsyncNostrSigner {
         type Error = Error;
 
-        fn get_public_key_async(&self) -> BoxedFuture<'_, Result<PublicKey, Self::Error>> {
+        fn get_public_key_async(
+            &self,
+        ) -> Pin<Box<dyn Future<Output = Result<PublicKey, Self::Error>> + Send + '_>> {
             Box::pin(async move {
-                let public_key = self
-                    .inner
-                    .get_public_key_async()
+                let public_key = assume_send(self.inner.get_public_key_async())
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))?
                     .ok_or_else(|| {
@@ -177,12 +180,10 @@ mod inner {
         fn sign_event_async(
             &self,
             unsigned: UnsignedEvent,
-        ) -> BoxedFuture<'_, Result<Event, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<Event, Self::Error>> + Send + '_>> {
             Box::pin(async move {
                 let unsigned = Arc::new(unsigned.into());
-                let event = self
-                    .inner
-                    .sign_event_async(unsigned)
+                let event = assume_send(self.inner.sign_event_async(unsigned))
                     .await
                     .map_err(|e| Error::other(MiddleError::from(e)))?
                     .ok_or_else(|| {
@@ -229,13 +230,15 @@ mod inner {
             &'a self,
             public_key: &'a PublicKey,
             content: &'a str,
-        ) -> BoxedFuture<'a, Result<String, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<String, Self::Error>> + Send + 'a>> {
             Box::pin(async move {
                 let public_key = Arc::new((*public_key).into());
-                self.inner
-                    .nip04_encrypt_async(public_key, content.to_string())
-                    .await
-                    .map_err(|e| Error::other(MiddleError::from(e)))
+                assume_send(
+                    self.inner
+                        .nip04_encrypt_async(public_key, content.to_string()),
+                )
+                .await
+                .map_err(|e| Error::other(MiddleError::from(e)))
             })
         }
 
@@ -243,13 +246,15 @@ mod inner {
             &'a self,
             public_key: &'a PublicKey,
             content: &'a str,
-        ) -> BoxedFuture<'a, Result<String, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<String, Self::Error>> + Send + 'a>> {
             Box::pin(async move {
                 let public_key = Arc::new((*public_key).into());
-                self.inner
-                    .nip04_decrypt_async(public_key, content.to_string())
-                    .await
-                    .map_err(|e| Error::other(MiddleError::from(e)))
+                assume_send(
+                    self.inner
+                        .nip04_decrypt_async(public_key, content.to_string()),
+                )
+                .await
+                .map_err(|e| Error::other(MiddleError::from(e)))
             })
         }
     }
@@ -290,13 +295,15 @@ mod inner {
             &'a self,
             public_key: &'a PublicKey,
             content: &'a str,
-        ) -> BoxedFuture<'a, Result<String, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<String, Self::Error>> + Send + 'a>> {
             Box::pin(async move {
                 let public_key = Arc::new((*public_key).into());
-                self.inner
-                    .nip44_encrypt_async(public_key, content.to_string())
-                    .await
-                    .map_err(|e| Error::other(MiddleError::from(e)))
+                assume_send(
+                    self.inner
+                        .nip44_encrypt_async(public_key, content.to_string()),
+                )
+                .await
+                .map_err(|e| Error::other(MiddleError::from(e)))
             })
         }
 
@@ -304,13 +311,15 @@ mod inner {
             &'a self,
             public_key: &'a PublicKey,
             content: &'a str,
-        ) -> BoxedFuture<'a, Result<String, Self::Error>> {
+        ) -> Pin<Box<dyn Future<Output = Result<String, Self::Error>> + Send + 'a>> {
             Box::pin(async move {
                 let public_key = Arc::new((*public_key).into());
-                self.inner
-                    .nip44_decrypt_async(public_key, content.to_string())
-                    .await
-                    .map_err(|e| Error::other(MiddleError::from(e)))
+                assume_send(
+                    self.inner
+                        .nip44_decrypt_async(public_key, content.to_string()),
+                )
+                .await
+                .map_err(|e| Error::other(MiddleError::from(e)))
             })
         }
     }
