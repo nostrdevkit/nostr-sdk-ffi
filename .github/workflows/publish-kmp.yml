@@ -40,7 +40,7 @@ jobs:
 
       - name: Install gobley-uniffi-bindgen
         run: |
-          cargo install gobley-uniffi-bindgen --git https://github.com/gobley/gobley --tag v0.3.4
+          cargo install gobley-uniffi-bindgen --git https://github.com/nostrdevkit/gobley --branch uniffi-0.31
 
       - name: Build debug target
         run: |

@@ -31,7 +31,7 @@ jobs:
 
       - name: Install uniffi-bindgen-cs
         run: |
-          cargo install uniffi-bindgen-cs --git https://github.com/nostrdevkit/uniffi-bindgen-cs --rev 3784d431df57a7c9307e00ae03ace9e6c2f6022f
+          cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0
 
       - name: Build debug target
         run: |
