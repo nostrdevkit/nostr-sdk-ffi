@@ -7,6 +7,7 @@
 - KMP in `kmp/nostr-sdk-kmp/build.gradle.kts`
 - C# in `csharp/Nostr.Sdk/Nostr.Sdk.csproj`
 - Python in `python/pyproject.toml`
+- JavaScript in `js/node/package.json`, `js/react-native/package.json` and `js/web/package.json`
 - Swift Package **DOESN'T** require version update
 
 ## Update the changelog
