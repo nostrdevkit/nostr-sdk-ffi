@@ -66,27 +66,27 @@ jobs:
       with:
         ref: ${{ inputs.ref }}
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-i686-linux-android
         path: target/i686-linux-android/release/
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-armv7-linux-androideabi
         path: target/armv7-linux-androideabi/release/
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-x86_64-linux-android
         path: target/x86_64-linux-android/release/
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-aarch64-linux-android
         path: target/aarch64-linux-android/release/
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-android-kotlin
         path: target/uniffi/android-kotlin
