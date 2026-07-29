@@ -38,7 +38,7 @@ jobs:
           cache-dependency-path: js/package-lock.json
 
       - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.9.1
         with:
           key: publish-javascript
 
@@ -184,7 +184,7 @@ jobs:
           cache-dependency-path: js/package-lock.json
 
       - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.9.1
         with:
           key: publish-react-native
 
