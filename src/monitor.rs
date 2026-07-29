@@ -54,7 +54,8 @@ use crate::relay::RelayStatus;
 // }
 
 #[uniffi::export(with_foreign)]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait HandleMonitorNotification: Send + Sync {
     async fn relay_status_changed(&self, relay_url: Arc<RelayUrl>, status: RelayStatus);
 }

@@ -45,7 +45,8 @@ impl Deref for EventBuilder {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl EventBuilder {
     #[uniffi::constructor]
     pub fn new(kind: &Kind, content: &str) -> Self {

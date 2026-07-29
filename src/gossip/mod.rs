@@ -2,7 +2,11 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 use nostr_gossip_memory::store::NostrGossipMemory;
-#[cfg(all(feature = "gossip-sqlite", not(target_arch = "wasm32")))]
+#[cfg(all(
+    feature = "gossip-sqlite",
+    feature = "native",
+    not(target_arch = "wasm32")
+))]
 use nostr_gossip_sqlite::store::NostrGossipSqlite;
 use uniffi::Object;
 
@@ -23,7 +27,8 @@ impl Deref for NostrGossip {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl NostrGossip {
     /// Construct a new in-memory gossip store
     #[uniffi::constructor]
@@ -49,7 +54,11 @@ impl NostrGossip {
     }
 }
 
-#[cfg(all(feature = "gossip-sqlite", not(target_arch = "wasm32")))]
+#[cfg(all(
+    feature = "gossip-sqlite",
+    feature = "native",
+    not(target_arch = "wasm32")
+))]
 #[uniffi::export]
 impl NostrGossip {
     /// Construct a new persistent SQLite gossip store

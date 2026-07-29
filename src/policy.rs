@@ -47,7 +47,8 @@ impl AdmitStatus {
 // NOTE: for some reason the `#[uniffi::export(with_foreign)]` not allow to simply wrap `Result<Arc<T>>`, but wants a `Result<Option<Arc<T>>>`.
 // TODO: when will be possible, remove the `Option` and keep just the `Result`.
 #[uniffi::export(with_foreign)]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AdmitPolicy: Send + Sync {
     /// Admit connecting to a relay
     ///

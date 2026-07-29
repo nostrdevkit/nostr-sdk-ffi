@@ -67,7 +67,17 @@ pub fn nip17_make_private_msg(
 /// or the event may be created in an expired state.
 ///
 /// <https://github.com/nostr-protocol/nips/blob/master/17.md>
-#[uniffi::export(async_runtime = "tokio", default(expiration = None, rumor_extra_tags = []))]
+#[cfg_attr(
+    not(target_arch = "wasm32"),
+    uniffi::export(
+        async_runtime = "tokio",
+        default(expiration = None, rumor_extra_tags = [])
+    )
+)]
+#[cfg_attr(
+    target_arch = "wasm32",
+    uniffi::export(default(expiration = None, rumor_extra_tags = []))
+)]
 pub async fn nip17_make_private_msg_async(
     signer: Arc<dyn AsyncNostrSigner>,
     receiver: &PublicKey,

@@ -13,3 +13,19 @@ swift/*.xcframework
 # IDEs
 .idea/
 .vscode/
+js/node_modules/
+js/web/dist/
+js/web/rust_modules/
+js/web/src/generated/
+js/web/*.tgz
+js/node/dist/
+js/node/platforms/
+js/node/src/generated/
+js/node/*.tgz
+js/react-native/android/
+js/react-native/cpp/
+js/react-native/ios/
+js/react-native/platforms/
+js/react-native/src/
+js/react-native/*.podspec
+js/react-native/*.tgz

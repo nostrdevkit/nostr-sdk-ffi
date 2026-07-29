@@ -31,6 +31,11 @@ on:
         required: true
         type: boolean
         default: true
+      javascript:
+        description: 'Build JavaScript'
+        required: true
+        type: boolean
+        default: true
       swift:
         description: 'Build Swift'
         required: true
@@ -51,12 +56,12 @@ jobs:
     name: Setup
     runs-on: ubuntu-latest
     outputs:
-      android: ${{ inputs.aar || inputs.kmp || inputs.csharp }}
+      android: ${{ inputs.aar || inputs.kmp || inputs.csharp || inputs.javascript }}
       freebsd: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python }}
-      ios: ${{ inputs.kmp || inputs.csharp || inputs.swift }}
-      linux: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python }}
-      macos: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python }}
-      windows: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python }}
+      ios: ${{ inputs.kmp || inputs.csharp || inputs.swift || inputs.javascript }}
+      linux: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python || inputs.javascript }}
+      macos: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python || inputs.javascript }}
+      windows: ${{ inputs.jar || inputs.kmp || inputs.csharp || inputs.python || inputs.javascript }}
     steps:
       - run: echo "set setup output variables"
 
@@ -189,6 +194,25 @@ jobs:
       publish: ${{ inputs.publish }}
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
+  publish-javascript:
+    name: Publish JavaScript
+    permissions:
+      contents: read
+      id-token: write
+    needs:
+      - build-android
+      - build-ios
+      - build-linux
+      - build-macos
+      - build-windows
+    if: ${{ inputs.javascript }}
+    uses: ./.github/workflows/publish-javascript.yml
+    with:
+      ref: ${{ inputs.ref }}
+      publish: ${{ inputs.publish }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-swift:
     name: Publish Swift

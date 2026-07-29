@@ -79,7 +79,8 @@ pub trait PowAdapter: Send + Sync {
 
 /// A trait for custom Proof of Work computation.
 #[uniffi::export(with_foreign)]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AsyncPowAdapter: Send + Sync {
     /// Computes Proof of Work for an unsigned event to meet the target
     /// difficulty.

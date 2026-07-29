@@ -38,7 +38,8 @@ pub trait NostrSigner: Send + Sync {
 }
 
 #[uniffi::export(with_foreign)]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AsyncNostrSigner: Send + Sync {
     /// Get signer public key
     async fn get_public_key_async(&self) -> Result<Option<Arc<PublicKey>>>;

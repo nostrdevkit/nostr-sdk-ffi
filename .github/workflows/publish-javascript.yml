@@ -1,0 +1,354 @@
+name: Publish JavaScript
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'commit/tag/branch reference'
+        required: true
+        type: string
+      publish:
+        description: 'value indicating whether to publish to npm.'
+        required: true
+        type: boolean
+        default: false
+    secrets:
+      NPM_TOKEN:
+        description: 'granular access token used to publish packages to npm'
+        required: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-packages:
+    name: Build Web and Node.js packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2.7.8
+        with:
+          key: publish-javascript
+
+      - name: Install wasm-bindgen CLI
+        run: cargo install wasm-bindgen-cli --version 0.2.121 --locked
+
+      - name: Install JavaScript dependencies
+        working-directory: js
+        run: npm ci
+
+      - name: Check package versions
+        run: node js/scripts/check-package-versions.mjs
+
+      - name: Build Web package
+        working-directory: js/web
+        run: npm run build
+
+      - name: Build Node.js package
+        working-directory: js/node
+        run: npm run build
+
+      - name: Pack Web package
+        working-directory: js/web
+        run: |
+          mkdir -p ../../target/npm/web
+          npm pack --ignore-scripts --pack-destination ../../target/npm/web
+
+      - name: Pack Node.js package
+        working-directory: js/node
+        run: |
+          mkdir -p ../../target/npm/node
+          npm pack --ignore-scripts --pack-destination ../../target/npm/node
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostr-sdk-javascript-packages
+          path: |
+            target/npm/web/*.tgz
+            target/npm/node/*.tgz
+
+  package-node-libraries:
+    name: Package Node.js native libraries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download macOS libraries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: nostr-sdk-ffi-*-apple-darwin
+          path: target
+
+      - name: Download Linux arm64 glibc library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-aarch64-unknown-linux-gnu
+          path: target/nostr-sdk-ffi-aarch64-unknown-linux-gnu
+
+      - name: Download Linux arm64 musl library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-aarch64-unknown-linux-musl
+          path: target/nostr-sdk-ffi-aarch64-unknown-linux-musl
+
+      - name: Download Linux x64 glibc library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-x86_64-unknown-linux-gnu
+          path: target/nostr-sdk-ffi-x86_64-unknown-linux-gnu
+
+      - name: Download Linux x64 musl library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-x86_64-unknown-linux-musl
+          path: target/nostr-sdk-ffi-x86_64-unknown-linux-musl
+
+      - name: Download Windows arm64 library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-aarch64-pc-windows-msvc
+          path: target/nostr-sdk-ffi-aarch64-pc-windows-msvc
+
+      - name: Download Windows x64 library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-x86_64-pc-windows-msvc
+          path: target/nostr-sdk-ffi-x86_64-pc-windows-msvc
+
+      - name: Create native packages
+        working-directory: js/node
+        run: |
+          node scripts/package-native.mjs darwin-arm64 ../../target/nostr-sdk-ffi-aarch64-apple-darwin/libnostr_sdk_ffi.dylib
+          node scripts/package-native.mjs darwin-x64 ../../target/nostr-sdk-ffi-x86_64-apple-darwin/libnostr_sdk_ffi.dylib
+          node scripts/package-native.mjs linux-arm64-gnu ../../target/nostr-sdk-ffi-aarch64-unknown-linux-gnu/libnostr_sdk_ffi.so
+          node scripts/package-native.mjs linux-arm64-musl ../../target/nostr-sdk-ffi-aarch64-unknown-linux-musl/libnostr_sdk_ffi.so
+          node scripts/package-native.mjs linux-x64-gnu ../../target/nostr-sdk-ffi-x86_64-unknown-linux-gnu/libnostr_sdk_ffi.so
+          node scripts/package-native.mjs linux-x64-musl ../../target/nostr-sdk-ffi-x86_64-unknown-linux-musl/libnostr_sdk_ffi.so
+          node scripts/package-native.mjs win32-arm64-msvc ../../target/nostr-sdk-ffi-aarch64-pc-windows-msvc/nostr_sdk_ffi.dll
+          node scripts/package-native.mjs win32-x64-msvc ../../target/nostr-sdk-ffi-x86_64-pc-windows-msvc/nostr_sdk_ffi.dll
+
+      - name: Pack native packages
+        working-directory: js/node
+        run: |
+          mkdir -p ../../target/npm/node-platforms
+          for package in ./platforms/*; do
+            npm pack "$package" --ignore-scripts --pack-destination ../../target/npm/node-platforms
+          done
+          PACKAGE_COUNT="$(find ../../target/npm/node-platforms -name '*.tgz' -type f | wc -l)"
+          if [[ "$PACKAGE_COUNT" -ne 8 ]]; then
+            echo "Expected 8 Node.js native packages, found $PACKAGE_COUNT"
+            exit 1
+          fi
+
+      - name: Upload native packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostr-sdk-node-platform-packages
+          path: target/npm/node-platforms/*.tgz
+
+  package-react-native:
+    name: Build React Native package
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2.7.8
+        with:
+          key: publish-react-native
+
+      - name: Install JavaScript dependencies
+        working-directory: js
+        run: npm ci
+
+      - name: Generate React Native bindings
+        working-directory: js/react-native
+        run: npm run build
+
+      - name: Download Android libraries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: nostr-sdk-ffi-*-linux-android
+          path: target
+
+      - name: Download armv7 Android library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-armv7-linux-androideabi
+          path: target/nostr-sdk-ffi-armv7-linux-androideabi
+
+      - name: Download iOS arm64 library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-aarch64-apple-ios
+          path: target/nostr-sdk-ffi-aarch64-apple-ios
+
+      - name: Download iOS arm64 simulator library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-aarch64-apple-ios-sim
+          path: target/nostr-sdk-ffi-aarch64-apple-ios-sim
+
+      - name: Download iOS x64 simulator library
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-ffi-x86_64-apple-ios
+          path: target/nostr-sdk-ffi-x86_64-apple-ios
+
+      - name: Create Android native packages
+        working-directory: js/react-native
+        run: |
+          node scripts/package-android.mjs arm64-v8a ../../target/nostr-sdk-ffi-aarch64-linux-android/libnostr_sdk_ffi.a
+          node scripts/package-android.mjs armeabi-v7a ../../target/nostr-sdk-ffi-armv7-linux-androideabi/libnostr_sdk_ffi.a
+          node scripts/package-android.mjs x86 ../../target/nostr-sdk-ffi-i686-linux-android/libnostr_sdk_ffi.a
+          node scripts/package-android.mjs x86_64 ../../target/nostr-sdk-ffi-x86_64-linux-android/libnostr_sdk_ffi.a
+
+      - name: Assemble iOS XCFramework
+        working-directory: js/react-native
+        run: |
+          mkdir -p ../../target/react-native/ios-simulator
+          lipo -create \
+            ../../target/nostr-sdk-ffi-aarch64-apple-ios-sim/libnostr_sdk_ffi.a \
+            ../../target/nostr-sdk-ffi-x86_64-apple-ios/libnostr_sdk_ffi.a \
+            -output ../../target/react-native/ios-simulator/libnostr_sdk_ffi.a
+          rm -rf NostrSdkReactNative.xcframework
+          xcodebuild -create-xcframework \
+            -library ../../target/nostr-sdk-ffi-aarch64-apple-ios/libnostr_sdk_ffi.a \
+            -library ../../target/react-native/ios-simulator/libnostr_sdk_ffi.a \
+            -output NostrSdkReactNative.xcframework
+
+      - name: Check React Native artifacts
+        working-directory: js/react-native
+        run: |
+          test -s platforms/arm64-v8a/libnostr_sdk_ffi.a
+          test -s platforms/armeabi-v7a/libnostr_sdk_ffi.a
+          test -s platforms/x86/libnostr_sdk_ffi.a
+          test -s platforms/x86_64/libnostr_sdk_ffi.a
+          test -s NostrSdkReactNative.xcframework/Info.plist
+          test -s NostrSdkReactNative.xcframework/ios-arm64/libnostr_sdk_ffi.a
+          test -s NostrSdkReactNative.xcframework/ios-arm64_x86_64-simulator/libnostr_sdk_ffi.a
+
+      - name: Pack React Native package
+        working-directory: js/react-native
+        run: |
+          mkdir -p ../../target/npm/react-native/android
+          mkdir -p ../../target/npm/react-native/root
+          for package in ./platforms/*; do
+            npm pack "$package" --ignore-scripts --pack-destination ../../target/npm/react-native/android
+          done
+          npm pack --ignore-scripts --pack-destination ../../target/npm/react-native/root
+          test "$(find ../../target/npm/react-native/android -type f -name '*.tgz' | wc -l)" -eq 4
+          test "$(find ../../target/npm/react-native/root -type f -name '*.tgz' | wc -l)" -eq 1
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostr-sdk-react-native-package
+          path: |
+            target/npm/react-native/android/*.tgz
+            target/npm/react-native/root/*.tgz
+
+  publish:
+    name: Publish to npm
+    if: ${{ inputs.publish }}
+    needs:
+      - build-packages
+      - package-node-libraries
+      - package-react-native
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Check npm authentication
+        run: npm whoami
+
+      - name: Select npm tag
+        run: |
+          VERSION="$(node -p "require('./js/web/package.json').version")"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "NPM_TAG=next" >> "$GITHUB_ENV"
+          else
+            echo "NPM_TAG=latest" >> "$GITHUB_ENV"
+          fi
+
+      - name: Download Web and Node.js packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-javascript-packages
+          path: packages/javascript
+
+      - name: Download Node.js native packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-node-platform-packages
+          path: packages/node-platforms
+
+      - name: Download React Native package
+        uses: actions/download-artifact@v4
+        with:
+          name: nostr-sdk-react-native-package
+          path: packages/react-native
+
+      - name: Validate packages
+        run: node js/scripts/validate-packages.mjs packages
+
+      - name: Dry-run npm publish
+        run: |
+          mapfile -d '' packages < <(find packages -type f -name '*.tgz' -print0 | sort -z)
+          for package in "${packages[@]}"; do
+            npm publish "$package" --dry-run --access public --tag "$NPM_TAG"
+          done
+
+      - name: Publish Node.js native packages
+        run: node js/scripts/publish-packages.mjs packages/node-platforms
+
+      - name: Publish React Native Android packages
+        run: node js/scripts/publish-packages.mjs packages/react-native/android
+
+      - name: Publish JavaScript packages
+        run: |
+          node js/scripts/publish-packages.mjs \
+            packages/javascript \
+            packages/react-native/root

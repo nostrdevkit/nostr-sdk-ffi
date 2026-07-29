@@ -13,23 +13,23 @@ pub mod database;
 pub mod error;
 mod future;
 pub mod gossip;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod local_relay;
 #[cfg(feature = "logger")]
 pub mod logger;
 mod monitor;
 pub mod negentropy;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod net;
 #[cfg(feature = "nwc")]
 pub mod nwc;
 pub mod parser;
 pub mod policy;
 pub mod protocol;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod proxy;
 pub mod relay;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 pub mod transport;
 #[cfg(target_arch = "wasm32")]
 mod wasm32_time;

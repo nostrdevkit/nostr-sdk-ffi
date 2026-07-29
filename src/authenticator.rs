@@ -15,7 +15,8 @@ use crate::protocol::signer::{AsyncNostrSigner, IntermediateAsyncNostrSigner};
 use crate::protocol::types::RelayUrl;
 
 #[uniffi::export(with_foreign)]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait Authenticator: Send + Sync {
     /// Make a NIP-42 authentication event.
     async fn make_auth_event(
@@ -56,7 +57,8 @@ impl SignerAuthenticator {
 }
 
 #[uniffi::export]
-#[async_trait::async_trait]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 impl Authenticator for SignerAuthenticator {
     async fn make_auth_event(
         &self,

@@ -1,0 +1,74 @@
+{
+  "name": "@nostrdevkit/nostr-sdk-node",
+  "version": "0.45.0-alpha.6",
+  "description": "Node.js bindings for the Nostr SDK.",
+  "keywords": [
+    "nostr",
+    "sdk",
+    "node",
+    "napi"
+  ],
+  "license": "MIT",
+  "homepage": "https://nostrdevkit.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nostrdevkit/nostr-sdk-ffi.git",
+    "directory": "js/node"
+  },
+  "author": {
+    "name": "Yuki Kishimoto",
+    "email": "yukikishimoto@protonmail.com",
+    "url": "https://github.com/yukibtc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "prebuild": "node ../scripts/patch-ubrn.mjs",
+    "clean": "node scripts/clean.mjs",
+    "generate": "node scripts/generate.mjs",
+    "build:native": "cargo build --release --lib --manifest-path ../../Cargo.toml",
+    "compile": "tsc -p tsconfig.json --emitDeclarationOnly && esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/index.js",
+    "build": "npm run clean && npm run generate && npm run build:native && npm run compile",
+    "test": "node --test tests/*.test.mjs",
+    "pack:local": "npm run build && npm pack"
+  },
+  "dependencies": {
+    "@ubjs/core": "0.31.0-3",
+    "@ubjs/node": "0.31.0-3"
+  },
+  "optionalDependencies": {
+    "@nostrdevkit/nostr-sdk-node-darwin-arm64": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-darwin-x64": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-linux-arm64-gnu": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-linux-arm64-musl": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-linux-x64-gnu": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-linux-x64-musl": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-win32-arm64-msvc": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-node-win32-x64-msvc": "0.45.0-alpha.6"
+  },
+  "devDependencies": {
+    "@types/node": "22.17.0",
+    "esbuild": "0.25.8",
+    "typescript": "5.9.3",
+    "uniffi-bindgen-react-native": "0.31.0-3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

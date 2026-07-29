@@ -118,7 +118,8 @@ macro_rules! impl_async_nostr_signer {
 
     (@impl [$($attr:tt)*] $trait:path, $type:ty, |$signer:ident| $inner:expr) => {
         $($attr)*
-        #[async_trait::async_trait]
+        #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+        #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
         impl $trait for $type {
             async fn get_public_key_async(
                 &self,
@@ -229,7 +230,13 @@ macro_rules! export_async_nostr_signer {
     ($type:ty, |$signer:ident| $inner:expr) => {
         $crate::protocol::signer::impl_async_nostr_signer!(
             @impl
-            [#[uniffi::export(async_runtime = "tokio")]]
+            [
+                #[cfg_attr(
+                    not(target_arch = "wasm32"),
+                    uniffi::export(async_runtime = "tokio")
+                )]
+                #[cfg_attr(target_arch = "wasm32", uniffi::export)]
+            ]
             AsyncNostrSigner,
             $type,
             |$signer| $inner

@@ -36,7 +36,8 @@ impl From<nwc::NostrWalletConnect> for NostrWalletConnect {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl NostrWalletConnect {
     /// Construct a new client
     ///

@@ -6,10 +6,10 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 #[cfg(feature = "lmdb")]
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use nostr_lmdb::NostrLmdb;
 #[cfg(feature = "ndb")]
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use nostr_ndb::NdbDatabase;
 use nostr_sdk::prelude::{self, IntoNostrDatabase, NostrDatabaseExt};
 use uniffi::{Enum, Object, Record};
@@ -181,7 +181,7 @@ impl From<Arc<dyn prelude::NostrDatabase>> for NostrDatabase {
 }
 
 #[cfg(feature = "lmdb")]
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
 impl NostrDatabase {
     /// LMDB backend
@@ -195,7 +195,7 @@ impl NostrDatabase {
 }
 
 #[cfg(feature = "ndb")]
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
 impl NostrDatabase {
     /// [`nostrdb`](https://github.com/damus-io/nostrdb) backend
@@ -208,7 +208,8 @@ impl NostrDatabase {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl NostrDatabase {
     /// Open a custom nostr database
     #[uniffi::constructor]

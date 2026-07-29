@@ -17,10 +17,10 @@ use crate::error::{NostrSdkError, Result};
 use crate::gossip::NostrGossip;
 use crate::monitor::Monitor;
 use crate::policy::{AdmitPolicy, FFI2RustAdmitPolicy};
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use crate::proxy::Proxy;
 use crate::relay::RelayLimits;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use crate::transport::websocket::{CustomWebSocketTransport, FFI2RustWebSocketTransport};
 
 /// Max number of relays to use for gossip
@@ -260,7 +260,7 @@ impl ClientBuilder {
     ///
     /// If you already have an async signer, you can wrap it with `SignerAuthenticator`.
     ///
-    /// ```
+    /// ```text
     /// signer = Keys.generate()
     /// authenticator = SignerAuthenticator(signer)
     /// builder = ClientBuilder().authenticator(authenticator)
@@ -384,7 +384,7 @@ impl ClientBuilder {
     }
 }
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
 impl ClientBuilder {
     /// Set proxy

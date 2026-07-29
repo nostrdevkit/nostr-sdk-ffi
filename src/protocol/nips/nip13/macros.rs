@@ -57,7 +57,8 @@ macro_rules! impl_async_pow_adapter {
 
     (@impl [$($attr:tt)*] $trait:path, $type:ty, |$adapter:ident| $inner:expr) => {
         $($attr)*
-        #[async_trait::async_trait]
+        #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+        #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
         impl $trait for $type {
             async fn compute_async(
                 &self,
@@ -83,7 +84,13 @@ macro_rules! export_async_pow_adapter {
     ($type:ty, |$adapter:ident| $inner:expr) => {
         $crate::protocol::nips::nip13::impl_async_pow_adapter!(
             @impl
-            [#[uniffi::export(async_runtime = "tokio")]]
+            [
+                #[cfg_attr(
+                    not(target_arch = "wasm32"),
+                    uniffi::export(async_runtime = "tokio")
+                )]
+                #[cfg_attr(target_arch = "wasm32", uniffi::export)]
+            ]
             AsyncPowAdapter,
             $type,
             |$adapter| $inner

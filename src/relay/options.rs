@@ -9,7 +9,7 @@ use nostr_sdk::{prelude, relay};
 use uniffi::{Enum, Object};
 
 use super::RelayLimits;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use crate::proxy::Proxy;
 
 /// `Relay` options
@@ -103,7 +103,7 @@ impl RelayOptions {
     }
 }
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
 impl RelayOptions {
     /// Set proxy

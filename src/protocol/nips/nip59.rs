@@ -122,7 +122,17 @@ pub fn nip59_make_gift_wrap(
 /// or it may created in an expired state.
 ///
 /// <https://github.com/nostr-protocol/nips/blob/master/59.md>
-#[uniffi::export(async_runtime = "tokio", default(expiration = None, extra_tags = []))]
+#[cfg_attr(
+    not(target_arch = "wasm32"),
+    uniffi::export(
+        async_runtime = "tokio",
+        default(expiration = None, extra_tags = [])
+    )
+)]
+#[cfg_attr(
+    target_arch = "wasm32",
+    uniffi::export(default(expiration = None, extra_tags = []))
+)]
 pub async fn nip59_make_gift_wrap_async(
     signer: Arc<dyn AsyncNostrSigner>,
     receiver_pubkey: &PublicKey,
@@ -151,9 +161,10 @@ impl From<nip59::UnwrappedGift> for UnwrappedGift {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl UnwrappedGift {
-    // `#[uniffi::export(async_runtime = "tokio")]` require an async method
+    // UniFFI requires an async method when `async_runtime` is configured.
     async fn _none(&self) {}
 
     /// Unwrap Gift Wrap event

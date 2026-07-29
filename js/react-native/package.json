@@ -1,0 +1,76 @@
+{
+  "name": "@nostrdevkit/nostr-sdk-react-native",
+  "version": "0.45.0-alpha.6",
+  "description": "React Native bindings for the Nostr SDK.",
+  "keywords": [
+    "nostr",
+    "sdk",
+    "react-native",
+    "jsi"
+  ],
+  "license": "MIT",
+  "homepage": "https://nostrdevkit.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nostrdevkit/nostr-sdk-ffi.git",
+    "directory": "js/react-native"
+  },
+  "author": {
+    "name": "Yuki Kishimoto",
+    "email": "yukikishimoto@protonmail.com",
+    "url": "https://github.com/yukibtc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.tsx",
+  "react-native": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "files": [
+    "android",
+    "cpp",
+    "ios",
+    "src",
+    "NostrSdkReactNative.xcframework",
+    "react-native.config.js",
+    "NostrSdkReactNative.podspec",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "prebuild": "node ../scripts/patch-ubrn.mjs",
+    "clean": "node scripts/clean.mjs",
+    "generate": "node scripts/generate.mjs",
+    "build:android": "ubrn build android --config ubrn.config.yaml --release --and-generate",
+    "build:ios": "ubrn build ios --config ubrn.config.yaml --release --and-generate",
+    "build": "npm run clean && npm run generate",
+    "pack:local": "npm run build && npm pack --ignore-scripts"
+  },
+  "dependencies": {
+    "@nostrdevkit/nostr-sdk-react-native-android-arm64-v8a": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-react-native-android-armeabi-v7a": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-react-native-android-x86": "0.45.0-alpha.6",
+    "@nostrdevkit/nostr-sdk-react-native-android-x86_64": "0.45.0-alpha.6",
+    "@ubjs/core": "0.31.0-3",
+    "uniffi-bindgen-react-native": "0.31.0-3"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.76"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "codegenConfig": {
+    "name": "NostrSdkSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "org.rustnostr.sdk"
+    },
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    }
+  }
+}

@@ -29,7 +29,8 @@ impl From<Pin<Box<dyn Stream<Item = client::ClientNotification> + Send>>>
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl ClientNotificationStream {
     /// Consumes the next item from the stream.
     ///
@@ -85,7 +86,8 @@ impl From<Pin<Box<dyn Stream<Item = (nostr::RelayUrl, Result<nostr::Event, error
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl ClientEventStream {
     /// Consumes the next item from the stream.
     ///

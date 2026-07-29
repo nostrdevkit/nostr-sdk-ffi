@@ -1,0 +1,38 @@
+rust:
+  directory: ../..
+  manifestPath: Cargo.toml
+
+bindings:
+  cpp: cpp/generated
+  ts: src/generated
+  uniffiToml: ../../uniffi.toml
+
+android:
+  directory: android
+  cargoExtras:
+    - --features
+    - native
+  useSharedLibrary: false
+
+ios:
+  directory: ios
+  frameworkName: NostrSdkReactNative
+  targets:
+    - aarch64-apple-ios
+    - aarch64-apple-ios-sim
+    - x86_64-apple-ios
+  cargoExtras:
+    - --features
+    - native
+
+turboModule:
+  cpp: cpp
+  ts: src
+  spec: NativeNostrSdk
+  name: NostrSdk
+  entrypoint: src/index.tsx
+
+noOverwrite:
+  - package.json
+  - README.md
+  - react-native.config.js

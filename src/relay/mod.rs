@@ -85,7 +85,8 @@ impl From<relay::Relay> for Relay {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl Relay {
     /// Get relay url
     pub fn url(&self) -> RelayUrl {

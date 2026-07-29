@@ -2,7 +2,7 @@
 // Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use std::time::Duration;
 
 use nostr_sdk::relay;
@@ -59,7 +59,7 @@ impl RelayConnectionStats {
     }
 }
 
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
 impl RelayConnectionStats {
     pub fn latency(&self) -> Option<Duration> {

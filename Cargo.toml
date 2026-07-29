@@ -6,11 +6,12 @@ publish = false
 
 [lib]
 name = "nostr_sdk_ffi"
-crate-type = ["cdylib", "staticlib"]
+crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
 name = "uniffi-bindgen"
 path = "uniffi-bindgen.rs"
+required-features = ["bindgen-cli"]
 
 [features]
 default = [
@@ -27,6 +28,8 @@ default = [
     "gossip-sqlite",
     "lmdb",
     "logger",
+    "bindgen-cli",
+    "native",
 ]
 nip04 = ["nostr/nip04"]
 nip06 = ["nostr/nip06"]
@@ -42,6 +45,8 @@ gossip-sqlite = ["dep:nostr-gossip-sqlite"]
 lmdb = ["dep:nostr-lmdb"]
 ndb = ["dep:nostr-ndb"]
 logger = ["dep:tracing", "dep:tracing-subscriber"]
+bindgen-cli = ["uniffi/cli"]
+native = []
 
 [dependencies]
 async-trait = "0.1.89"
@@ -52,23 +57,25 @@ nostr-connect = { version = "0.45.0-alpha.6", optional = true }
 nostr-database = { version = "0.45.0-alpha.6" }
 nostr-gossip = { version = "0.45.0-alpha.6" }
 nostr-gossip-memory = { version = "0.45.0-alpha.6" }
-nostr-sdk  = { version = "0.45.0-alpha.6" }
+nostr-sdk = { version = "0.45.0-alpha.6", default-features = false }
 nwc = { version = "0.45.0-alpha.6", optional = true }
 tokio = { version = "=1.49.0", default-features = false, features = ["sync"] }
 tracing = { version = "0.1.41", features = ["std"], optional = true }
 tracing-subscriber = { version = "0.3.20", optional = true }
-uniffi = { version = "=0.31.2", features = ["tokio", "cli"] } # cli feature required for the `uniffi-bindgen` binary
+uniffi = "=0.31.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 nostr-gossip-sqlite = { version = "0.45.0-alpha.6", optional = true }
 nostr-lmdb = { version = "0.45.0-alpha.6", optional = true }
 nostr-ndb = { version = "0.45.0-alpha.6", optional = true }
-nostr-sdk  = { version = "0.45.0-alpha.6", features = ["local-relay"] }
+nostr-sdk = { version = "0.45.0-alpha.6", features = ["local-relay", "ring", "rustls-tls-webpki-roots"] }
+uniffi = { version = "=0.31.2", features = ["tokio"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 getrandom2 = { package = "getrandom", version = "=0.2.17", features = ["js"] }
 getrandom3 = { package = "getrandom", version = "=0.3.2", features = ["wasm_js"] }
 getrandom4 = { package = "getrandom", version = "=0.4.2", features = ["wasm_js"] }
+uniffi = { version = "=0.31.2", features = ["wasm-unstable-single-threaded"] }
 universal-time = "0.3.0"
 web-time = "1.1.0"
 

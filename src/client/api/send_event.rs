@@ -91,7 +91,8 @@ impl AckPolicy {
     }
 }
 
-#[uniffi::export(async_runtime = "tokio")]
+#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
+#[cfg_attr(target_arch = "wasm32", uniffi::export)]
 impl Client {
     /// Send event
     #[uniffi::method(default(target = None, ack_policy = None, ok_timeout = None, authentication_timeout = None))]

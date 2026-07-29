@@ -1,0 +1,33 @@
+rust:
+  directory: ../..
+  manifestPath: Cargo.toml
+
+bindings:
+  ts: src/generated/web
+  uniffiToml: ../../uniffi.toml
+
+web:
+  manifestPath: rust_modules/wasm/Cargo.toml
+  manifestPatchFile: ubrn.web-manifest-patch.toml
+  wasmCrateName: nostr-sdk-wasm
+  defaultFeatures: false
+  features:
+    - nip04
+    - nip06
+    - nip44
+    - nip46
+    - nip47
+    - nip49
+    - nip59
+    - connect
+    - nwc
+    - logger
+  workspace: false
+  target: web
+  entrypoint: src/index.ts
+  tsBindings: src/generated/web
+
+noOverwrite:
+  - package.json
+  - README.md
+  - tsconfig.json
