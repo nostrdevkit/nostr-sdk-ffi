@@ -51,19 +51,19 @@ jobs:
     needs: build
     steps:
     - name: Get aarch64-apple-ios library
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-aarch64-apple-ios
         path: aarch64-apple-ios
 
     - name: Get x86_64-apple-ios library
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-x86_64-apple-ios
         path: x86_64-apple-ios
 
     - name: Get aarch64-apple-ios-sim library
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nostr-sdk-ffi-aarch64-apple-ios-sim
         path: aarch64-apple-ios-sim

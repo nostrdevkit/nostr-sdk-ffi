@@ -77,27 +77,27 @@ jobs:
           ref: ${{ inputs.ref }}
           path: nostr-sdk-ffi
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-aarch64-apple-ios
           path: nostr-sdk-ffi/target/aarch64-apple-ios/release/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-ios-universal-sim
           path: nostr-sdk-ffi/target/ios-universal-sim/release/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-darwin-universal
           path: nostr-sdk-ffi/target/darwin-universal/release/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-catalyst-universal
           path: nostr-sdk-ffi/target/catalyst-universal/release/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-swift
           path: nostr-sdk-ffi/target/uniffi/swift

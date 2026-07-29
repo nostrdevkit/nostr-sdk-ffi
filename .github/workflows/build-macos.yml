@@ -53,22 +53,22 @@ jobs:
     runs-on: macos-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-x86_64-apple-darwin
           path: x86_64-apple-darwin
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-aarch64-apple-darwin
           path: aarch64-apple-darwin
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-x86_64-apple-ios-macabi
           path: x86_64-apple-ios-macabi
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: nostr-sdk-ffi-aarch64-apple-ios-macabi
           path: aarch64-apple-ios-macabi
