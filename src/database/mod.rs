@@ -221,6 +221,12 @@ impl NostrDatabase {
         }
     }
 
+    /// Get features
+    #[inline]
+    pub fn features(&self) -> NostrDatabaseFeatures {
+        self.inner.features().into()
+    }
+
     /// Save [`Event`] into store
     pub async fn save_event(&self, event: &Event) -> Result<SaveEventStatus> {
         Ok(self.inner.save_event(event.deref()).await?.into())
