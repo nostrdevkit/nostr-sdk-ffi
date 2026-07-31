@@ -29,11 +29,11 @@ pub struct GitRepositoryAnnouncement {
     /// Brief human-readable project description
     pub description: Option<String>,
     /// Webpage urls, if the git server being used provides such a thing
-    pub web: Vec<String>,
+    pub web_urls: Vec<String>,
     /// Urls for git-cloning
-    pub clone: Vec<String>,
+    pub clone_urls: Vec<String>,
     /// Relays that this repository will monitor for patches and issues
-    pub relays: Vec<Arc<RelayUrl>>,
+    pub relay_urls: Vec<Arc<RelayUrl>>,
     /// Earliest unique commit ID
     ///
     /// `euc` marker should be the commit ID of the earliest unique commit of this repo,
@@ -52,17 +52,17 @@ impl From<GitRepositoryAnnouncement> for nip34::GitRepositoryAnnouncement {
             name: value.name,
             description: value.description,
             web: value
-                .web
+                .web_urls
                 .into_iter()
                 .filter_map(|u| Url::parse(&u).ok())
                 .collect(),
             clone: value
-                .clone
+                .clone_urls
                 .into_iter()
                 .filter_map(|u| Url::parse(&u).ok())
                 .collect(),
             relays: value
-                .relays
+                .relay_urls
                 .into_iter()
                 .map(|u| u.as_ref().deref().clone())
                 .collect(),
