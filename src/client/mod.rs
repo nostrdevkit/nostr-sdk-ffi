@@ -116,17 +116,22 @@ impl Client {
     /// To add a relay with specific capabilities, use the `capabilities` argument.
     ///
     /// Connection is **NOT** automatically started with relay!
-    #[uniffi::method(default(capabilities = None, opts = None))]
+    #[uniffi::method(default(capabilities = None, and_connect = false, opts = None))]
     pub async fn add_relay(
         &self,
         url: &RelayUrl,
         capabilities: Option<Arc<RelayCapabilities>>,
+        and_connect: bool,
         opts: Option<Arc<RelayOptions>>,
     ) -> Result<bool> {
         let mut builder = self.inner.add_relay(url.deref());
 
         if let Some(capabilities) = capabilities {
             builder = builder.capabilities(**capabilities);
+        }
+
+        if and_connect {
+            builder = builder.and_connect();
         }
 
         if let Some(opts) = opts {
