@@ -83,7 +83,7 @@ impl From<monitor::Monitor> for Monitor {
 impl Monitor {
     /// Create a new monitor with the given channel size
     #[uniffi::constructor(default(channel_size = 4096))]
-    pub fn new(channel_size: u64) -> Self {
+    pub fn new(channel_size: u32) -> Self {
         Self {
             inner: monitor::Monitor::new(channel_size as usize),
         }
