@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
 
@@ -65,14 +65,14 @@ jobs:
     needs: generate
     steps:
       - name: Checkout nostr-sdk-swift
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/nostr-sdk-swift
           ssh-key: ${{ secrets.NOSTR_SDK_SWIFT_REPO_SSH_KEY }}
           path: nostr-sdk-swift
 
       - name: Checkout nostr-sdk-ffi
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
           path: nostr-sdk-ffi
