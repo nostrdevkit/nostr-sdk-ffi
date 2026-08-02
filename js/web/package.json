@@ -51,7 +51,6 @@
     "README.md"
   ],
   "scripts": {
-    "prebuild": "node ../scripts/patch-ubrn.mjs",
     "clean": "node scripts/clean.mjs",
     "generate": "ubrn build web --config ubrn.config.yaml --release",
     "compile": "tsc -p tsconfig.json && node scripts/copy-generated-assets.mjs",
@@ -61,14 +60,14 @@
     "pack:local": "npm run build && npm pack"
   },
   "dependencies": {
-    "@ubjs/core": "0.31.0-3"
+    "@ubjs/core": "0.29.3-1"
   },
   "devDependencies": {
     "@types/node": "22.17.0",
-    "@ubjs/node": "0.31.0-3",
+    "@ubjs/node": "0.29.3-1",
     "esbuild": "0.25.8",
     "typescript": "5.9.3",
-    "uniffi-bindgen-react-native": "0.31.0-3"
+    "uniffi-bindgen-react-native": "0.29.3-1"
   },
   "engines": {
     "node": ">=20"

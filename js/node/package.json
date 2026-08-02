@@ -39,7 +39,6 @@
     "README.md"
   ],
   "scripts": {
-    "prebuild": "node ../scripts/patch-ubrn.mjs",
     "clean": "node scripts/clean.mjs",
     "generate": "node scripts/generate.mjs",
     "build:native": "cargo build --release --lib --manifest-path ../../Cargo.toml",
@@ -49,8 +48,8 @@
     "pack:local": "npm run build && npm pack"
   },
   "dependencies": {
-    "@ubjs/core": "0.31.0-3",
-    "@ubjs/node": "0.31.0-3"
+    "@ubjs/core": "0.29.3-1",
+    "@ubjs/node": "0.29.3-1"
   },
   "optionalDependencies": {
     "@nostrdevkit/nostr-sdk-node-darwin-arm64": "0.45.0-alpha.7",
@@ -66,7 +65,7 @@
     "@types/node": "22.17.0",
     "esbuild": "0.25.8",
     "typescript": "5.9.3",
-    "uniffi-bindgen-react-native": "0.31.0-3"
+    "uniffi-bindgen-react-native": "0.29.3-1"
   },
   "engines": {
     "node": ">=20"
