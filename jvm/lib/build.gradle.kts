@@ -52,7 +52,7 @@ dependencies {
     testImplementation("ch.qos.logback:logback-core:1.2.3")
 }
 
-val version: String = "0.44.7"
+val version: String = "0.44.8"
 val isSnapshot: Boolean = version.contains("SNAPSHOT")
 
 mavenPublishing {
