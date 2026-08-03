@@ -8,8 +8,8 @@ use std::time::Duration;
 use nostr::types;
 use uniffi::Object;
 
-#[derive(Debug, PartialEq, Eq, Hash, Object)]
-#[uniffi::export(Debug, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Object)]
+#[uniffi::export(Debug, Eq, Ord, Hash)]
 pub struct Timestamp {
     inner: types::Timestamp,
 }
