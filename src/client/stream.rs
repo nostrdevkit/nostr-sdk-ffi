@@ -6,6 +6,7 @@ use std::pin::Pin;
 use std::sync::Arc;
 
 use futures_util::{Stream, StreamExt};
+use nostr::{event, types};
 use nostr_sdk::{client, error};
 use tokio::sync::Mutex;
 use uniffi::{Object, Record};
@@ -49,8 +50,8 @@ pub struct ClientEventStreamItem {
     pub error: Option<String>,
 }
 
-impl From<(nostr::RelayUrl, Result<nostr::Event, error::Error>)> for ClientEventStreamItem {
-    fn from((url, result): (nostr::RelayUrl, Result<nostr::Event, error::Error>)) -> Self {
+impl From<(types::RelayUrl, Result<event::Event, error::Error>)> for ClientEventStreamItem {
+    fn from((url, result): (types::RelayUrl, Result<event::Event, error::Error>)) -> Self {
         let (event, error) = match result {
             Ok(event) => (Some(Arc::new(event.into())), None),
             Err(err) => (None, Some(err.to_string())),
@@ -68,16 +69,16 @@ impl From<(nostr::RelayUrl, Result<nostr::Event, error::Error>)> for ClientEvent
 #[allow(clippy::type_complexity)]
 pub struct ClientEventStream {
     stream: Mutex<
-        Pin<Box<dyn Stream<Item = (nostr::RelayUrl, Result<nostr::Event, error::Error>)> + Send>>,
+        Pin<Box<dyn Stream<Item = (types::RelayUrl, Result<event::Event, error::Error>)> + Send>>,
     >,
 }
 
-impl From<Pin<Box<dyn Stream<Item = (nostr::RelayUrl, Result<nostr::Event, error::Error>)> + Send>>>
+impl From<Pin<Box<dyn Stream<Item = (types::RelayUrl, Result<event::Event, error::Error>)> + Send>>>
     for ClientEventStream
 {
     fn from(
         stream: Pin<
-            Box<dyn Stream<Item = (nostr::RelayUrl, Result<nostr::Event, error::Error>)> + Send>,
+            Box<dyn Stream<Item = (types::RelayUrl, Result<event::Event, error::Error>)> + Send>,
         >,
     ) -> Self {
         Self {
@@ -94,7 +95,7 @@ impl ClientEventStream {
     /// Returns null if the stream is terminated.
     pub async fn next(&self) -> Option<ClientEventStreamItem> {
         let mut stream = self.stream.lock().await;
-        let item: (nostr::RelayUrl, Result<nostr::Event, error::Error>) = stream.next().await?;
+        let item: (types::RelayUrl, Result<event::Event, error::Error>) = stream.next().await?;
         Some(item.into())
     }
 }

@@ -5,7 +5,7 @@
 use std::ops::Deref;
 use std::sync::Arc;
 
-use nostr::event::{FinalizeEvent, FinalizeEventAsync, FinalizeUnsignedEvent};
+use nostr::event::{self, FinalizeEvent, FinalizeEventAsync, FinalizeUnsignedEvent};
 use uniffi::Object;
 
 use super::{Event, Kind};
@@ -18,17 +18,17 @@ use crate::protocol::signer::{
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct EventBuilder {
-    inner: nostr::EventBuilder,
+    inner: event::EventBuilder,
 }
 
-impl From<nostr::EventBuilder> for EventBuilder {
-    fn from(inner: nostr::EventBuilder) -> Self {
+impl From<event::EventBuilder> for EventBuilder {
+    fn from(inner: event::EventBuilder) -> Self {
         Self { inner }
     }
 }
 
 impl Deref for EventBuilder {
-    type Target = nostr::EventBuilder;
+    type Target = event::EventBuilder;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -42,7 +42,7 @@ impl EventBuilder {
     #[uniffi::constructor]
     pub fn new(kind: &Kind, content: &str) -> Self {
         Self {
-            inner: nostr::EventBuilder::new(**kind, content),
+            inner: event::EventBuilder::new(**kind, content),
         }
     }
 

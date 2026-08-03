@@ -4,7 +4,7 @@
 
 use std::collections::HashMap;
 
-use nostr::serde_json::{Number, Value};
+use serde_json::{Number, Value};
 use uniffi::Enum;
 
 use crate::error::{NostrSdkError, Result};

@@ -2,6 +2,7 @@ use std::net;
 use std::ops::Deref;
 use std::sync::Arc;
 
+use nostr::types;
 use nostr_sdk::proxy;
 use uniffi::Object;
 
@@ -62,7 +63,7 @@ impl Proxy {
     pub fn custom(custom: Arc<dyn CustomProxy>) -> Self {
         Self {
             inner: proxy::Proxy::custom(move |relay_url| {
-                let url: nostr::RelayUrl = relay_url.clone();
+                let url: types::RelayUrl = relay_url.clone();
                 let url: Arc<RelayUrl> = Arc::new(url.into());
                 let addr: Arc<SocketAddr> = custom.custom(url)?;
                 Some(**addr)

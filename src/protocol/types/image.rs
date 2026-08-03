@@ -2,6 +2,7 @@
 // Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
+use nostr::types;
 use uniffi::Record;
 
 #[derive(Record)]
@@ -12,8 +13,8 @@ pub struct ImageDimensions {
     pub height: u64,
 }
 
-impl From<nostr::ImageDimensions> for ImageDimensions {
-    fn from(inner: nostr::ImageDimensions) -> Self {
+impl From<types::ImageDimensions> for ImageDimensions {
+    fn from(inner: types::ImageDimensions) -> Self {
         Self {
             width: inner.width,
             height: inner.height,
@@ -21,7 +22,7 @@ impl From<nostr::ImageDimensions> for ImageDimensions {
     }
 }
 
-impl From<ImageDimensions> for nostr::ImageDimensions {
+impl From<ImageDimensions> for types::ImageDimensions {
     fn from(inner: ImageDimensions) -> Self {
         Self {
             width: inner.width,

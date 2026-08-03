@@ -5,7 +5,8 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use nostr::SubscriptionId;
+use nostr::message::SubscriptionId;
+use nostr::types;
 use nostr_sdk::client;
 use uniffi::Record;
 
@@ -175,8 +176,8 @@ impl From<client::Output<client::SyncSummary>> for ClientSyncSummaryOutput {
 }
 
 fn convert_output<S>(
-    success: HashMap<nostr::RelayUrl, S>,
-    failed: HashMap<nostr::RelayUrl, String>,
+    success: HashMap<types::RelayUrl, S>,
+    failed: HashMap<types::RelayUrl, String>,
 ) -> Output {
     Output {
         success: success.into_keys().map(|u| Arc::new(u.into())).collect(),

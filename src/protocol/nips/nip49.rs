@@ -4,8 +4,8 @@
 
 use std::ops::Deref;
 
+use nostr::nips::nip19::{FromBech32, ToBech32};
 use nostr::nips::nip49::{self, Version};
-use nostr::{FromBech32, ToBech32};
 use uniffi::{Enum, Object};
 
 use crate::error::Result;

@@ -7,8 +7,7 @@ use std::ops::Deref;
 use std::str::FromStr;
 use std::sync::Arc;
 
-use nostr::Signature;
-use nostr::event::{self, AsyncSignEvent, SignEvent};
+use nostr::event::{self, AsyncSignEvent, SignEvent, Signature};
 use uniffi::Object;
 
 use super::EventId;
@@ -29,14 +28,14 @@ pub struct UnsignedEvent {
 }
 
 impl Deref for UnsignedEvent {
-    type Target = nostr::UnsignedEvent;
+    type Target = event::UnsignedEvent;
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::UnsignedEvent> for UnsignedEvent {
-    fn from(inner: nostr::UnsignedEvent) -> Self {
+impl From<event::UnsignedEvent> for UnsignedEvent {
+    fn from(inner: event::UnsignedEvent) -> Self {
         Self { inner }
     }
 }
@@ -78,10 +77,10 @@ impl UnsignedEvent {
 
     /// Mine an unsigned event synchronously
     pub fn mine(&self, adapter: Arc<dyn PowAdapter>, difficulty: u8) -> Result<Self> {
-        let inner: nostr::UnsignedEvent = self.inner.clone();
+        let inner: event::UnsignedEvent = self.inner.clone();
         let adapter = IntermediatePowAdapter::new(adapter);
         let difficulty = NonZeroU8::new(difficulty).ok_or(NostrSdkError::NonZeroDifficulty)?;
-        let unsigned: nostr::UnsignedEvent = inner.mine(&adapter, difficulty)?;
+        let unsigned: event::UnsignedEvent = inner.mine(&adapter, difficulty)?;
         Ok(unsigned.into())
     }
 
@@ -91,10 +90,10 @@ impl UnsignedEvent {
         adapter: Arc<dyn AsyncPowAdapter>,
         difficulty: u8,
     ) -> Result<Self> {
-        let inner: nostr::UnsignedEvent = self.inner.clone();
+        let inner: event::UnsignedEvent = self.inner.clone();
         let adapter = IntermediateAsyncPowAdapter::new(adapter);
         let difficulty = NonZeroU8::new(difficulty).ok_or(NostrSdkError::NonZeroDifficulty)?;
-        let unsigned: nostr::UnsignedEvent = inner.mine_async(&adapter, difficulty).await?;
+        let unsigned: event::UnsignedEvent = inner.mine_async(&adapter, difficulty).await?;
         Ok(unsigned.into())
     }
 
@@ -123,7 +122,7 @@ impl UnsignedEvent {
     #[uniffi::constructor]
     pub fn from_json(json: String) -> Result<Self> {
         Ok(Self {
-            inner: nostr::UnsignedEvent::from_json(json)?,
+            inner: event::UnsignedEvent::from_json(json)?,
         })
     }
 

@@ -6,8 +6,8 @@ use std::borrow::Cow;
 use std::ops::Deref;
 use std::sync::Arc;
 
-use nostr::Url;
 use nostr::nips::nip22;
+use nostr::types::Url;
 use uniffi::Enum;
 
 use super::nip01::Coordinate;

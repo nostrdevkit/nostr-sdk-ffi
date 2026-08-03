@@ -3,12 +3,10 @@
 // Distributed under the MIT software license
 
 use std::ops::Deref;
-use std::str::FromStr;
 use std::sync::Arc;
 
-use nostr::Url;
-use nostr::hashes::sha1::Hash as Sha1Hash;
 use nostr::nips::nip34;
+use nostr::types::Url;
 use uniffi::{Enum, Record};
 
 use crate::error::NostrSdkError;
@@ -66,7 +64,7 @@ impl From<GitRepositoryAnnouncement> for nip34::GitRepositoryAnnouncement {
                 .into_iter()
                 .map(|u| u.as_ref().deref().clone())
                 .collect(),
-            euc: value.euc.and_then(|euc| Sha1Hash::from_str(&euc).ok()),
+            euc: value.euc.and_then(|euc| euc.parse().ok()),
             maintainers: value.maintainers.into_iter().map(|p| **p).collect(),
         }
     }
@@ -162,7 +160,7 @@ impl TryFrom<GitPatchContent> for nip34::GitPatchContent {
             } => Ok(Self::CoverLetter {
                 title,
                 description,
-                last_commit: Sha1Hash::from_str(&last_commit)?,
+                last_commit: last_commit.parse()?,
                 commits_len: commits_len as usize,
             }),
             GitPatchContent::Patch {
@@ -173,8 +171,8 @@ impl TryFrom<GitPatchContent> for nip34::GitPatchContent {
                 committer,
             } => Ok(Self::Patch {
                 content,
-                commit: Sha1Hash::from_str(&commit)?,
-                parent_commit: Sha1Hash::from_str(&parent_commit)?,
+                commit: commit.parse()?,
+                parent_commit: parent_commit.parse()?,
                 commit_pgp_sig,
                 committer: committer.into(),
             }),
@@ -202,7 +200,7 @@ impl TryFrom<GitPatch> for nip34::GitPatch {
         Ok(Self {
             repository: value.repository.as_ref().deref().clone(),
             content: value.content.try_into()?,
-            euc: Sha1Hash::from_str(&value.euc)?,
+            euc: value.euc.parse()?,
             labels: value.labels,
         })
     }

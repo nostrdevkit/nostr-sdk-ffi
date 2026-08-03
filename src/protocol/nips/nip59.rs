@@ -7,7 +7,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use nostr::event::{FinalizeEvent, FinalizeEventAsync};
-use nostr::nips::{nip44, nip59};
+use nostr::nips::nip59;
 use uniffi::Object;
 
 use crate::error::Result;
@@ -45,34 +45,6 @@ pub async fn nip59_make_seal_async(
     let event = nip59::GiftWrapSealBuilder::new(rumor.deref().clone(), **receiver_public_key)
         .finalize_async(&signer)
         .await?;
-    Ok(event.into())
-}
-
-/// Build Gift Wrap from Seal
-///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
-#[uniffi::export(default(extra_tags = []))]
-pub fn nip59_make_gift_wrap_from_seal(
-    receiver: &PublicKey,
-    seal: &Event,
-    extra_tags: Vec<Arc<Tag>>,
-) -> Result<Event> {
-    let keys = nostr::Keys::generate();
-    let content = nip44::encrypt(
-        keys.secret_key(),
-        receiver.deref(),
-        seal.deref().as_json(),
-        nip44::Version::default(),
-    )?;
-    let mut tags: Vec<nostr::Tag> = extra_tags
-        .into_iter()
-        .map(|t| t.as_ref().deref().clone())
-        .collect();
-    tags.push(nostr::Tag::public_key(**receiver));
-    let event = nostr::EventBuilder::new(nostr::Kind::GiftWrap, content)
-        .tags(tags)
-        .custom_created_at(nostr::Timestamp::tweaked(0..172800))
-        .finalize(&keys)?;
     Ok(event.into())
 }
 

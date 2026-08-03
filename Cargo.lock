@@ -198,9 +198,9 @@ dependencies = [
 
 [[package]]
 name = "bech32"
-version = "0.11.0"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d965446196e3b7decd44aa7ee49e31d630118f90ef12f97900f262eb915c951d"
+checksum = "efbd3e1070bbdf4cd88a75264e18e8a26f7cb5c6949eadf0ceb85fb159cf08f8"
 
 [[package]]
 name = "bindgen"
@@ -1510,9 +1510,9 @@ dependencies = [
 
 [[package]]
 name = "nostr"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33749a9fec481115e477981e9e1b5e1be1d8bcfaf8c36f82626e4053cb9a8337"
+checksum = "0334ad7a19f229983c808840f65d813d09c7fc030775db5d325abffa1295fe6c"
 dependencies = [
  "aes",
  "base64",
@@ -1536,9 +1536,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-connect"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1548a8a5f987cc75478032364610c2900f47f9dc0991ec937ca3660111d235d"
+checksum = "adb1ea29502ac7768a25f117e352abb719cef913e06a133b53999d2fa86e296f"
 dependencies = [
  "async-utility",
  "futures-core",
@@ -1551,9 +1551,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-database"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0764956a8167f8ed35201ef5074ea2e42caf4e0430c2d42dbe8777e254daf720"
+checksum = "82e3827aa36205889d9950bb07e9ab9380f7881ab3b059956f2d87651fa64281"
 dependencies = [
  "btreecap",
  "flatbuffers 25.12.19",
@@ -1563,9 +1563,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1507d84997e7b62c35f5714e907796cea9510d1640bf7b8e2dece65ae4e5d035"
+checksum = "a4696e01b02eb84daa6d8419f529c6e6f3063b742a54925dc0300a3230871477"
 dependencies = [
  "nostr",
  "opaquerr",
@@ -1573,9 +1573,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-memory"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad34f2ebf134ca675ea0d78961896b3bfd5c568f6fe2811bc707009026285715"
+checksum = "6691516f8a00bbf9a2b513ca5a6b181263a0578dd3f15c6a76093a92241218e9"
 dependencies = [
  "indexmap",
  "lru",
@@ -1586,9 +1586,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-gossip-sqlite"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2be236a231cfccd61c415621251d1616beec20f924b7a4d340c2630624e3f72"
+checksum = "6c91c74dbb86b97a7332e7c20923018fde1857105e91f099df1ea8160546bfb6"
 dependencies = [
  "async-utility",
  "nostr",
@@ -1599,9 +1599,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-lmdb"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c8cc9540fbc52e5ffea980d323da183e9fb1d072ca4c09de565866a2b5e9acd"
+checksum = "2832ab8243313733630c90208f36b9859dd939b13c745c977f2a0c465b5ec117"
 dependencies = [
  "async-utility",
  "flume",
@@ -1614,9 +1614,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-memory"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30b4c41602dc1ebad8bbf55dec625c46706dcd7a486c4611ee1e8dbd6e405802"
+checksum = "1688a4bfea60f72ca212c55f23cc9f068bfb5e787829d85fc7f689c3df9de842"
 dependencies = [
  "btreecap",
  "nostr",
@@ -1626,9 +1626,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-ndb"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "481234ad394dde6db91fbf570bec9d7df408f3876dd3bfea5d38885f9ea9c88e"
+checksum = "7e3516003f5f618f04e63405c5fc2655c3d3ea4b7c9683cf599540f498d690c7"
 dependencies = [
  "nostr",
  "nostr-database",
@@ -1637,9 +1637,9 @@ dependencies = [
 
 [[package]]
 name = "nostr-sdk"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68d78f007cd9044bfb5944f29f4a90117cb5b882d444b423d2782777da5fde45"
+checksum = "c2ffff8a1d69b9828574ead3b34d615bffe4c75ff3e3335a28f111867c7f7cdd"
 dependencies = [
  "async-utility",
  "async-wsocket",
@@ -1652,6 +1652,7 @@ dependencies = [
  "nostr-gossip",
  "nostr-memory",
  "opaquerr",
+ "rand 0.10.1",
  "tokio",
  "tokio-stream",
  "tracing",
@@ -1679,6 +1680,7 @@ dependencies = [
  "nostr-sdk",
  "nwc",
  "paranoid-android",
+ "serde_json",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -1715,9 +1717,9 @@ dependencies = [
 
 [[package]]
 name = "nwc"
-version = "0.45.0-alpha.7"
+version = "0.45.0-alpha.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97f44dca5c8a3836dc343ecc6ba9dc0ab7cf54a2e626906dccce8bdc267e25c5"
+checksum = "e8b4bbd1a8fa0c643dce21e0ec26e9f96513a1af3c206d0069b7eeda0cb2e445"
 dependencies = [
  "futures-core",
  "nostr",
@@ -2153,12 +2155,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eded382c5f5f786b989652c49544c4877d9f015cc22e145a5ea8ea66c2921cd2"
 
 [[package]]
-name = "ryu"
-version = "1.0.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f"
-
-[[package]]
 name = "salsa20"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2267,14 +2263,15 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.140"
+version = "1.0.151"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "20068b6e96dc6c9bd23e01df8827e6c7e1f2fddd43c21810382803c136b99373"
+checksum = "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14"
 dependencies = [
  "itoa",
  "memchr",
- "ryu",
  "serde",
+ "serde_core",
+ "zmij",
 ]
 
 [[package]]
@@ -3523,6 +3520,12 @@ name = "zlib-rs"
 version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3be3d40e40a133f9c916ee3f9f4fa2d9d63435b5fbe1bfc6d9dae0aa0ada1513"
+
+[[package]]
+name = "zmij"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 
 [[package]]
 name = "zopfli"

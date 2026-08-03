@@ -7,7 +7,7 @@ use std::ops::Deref;
 use std::sync::Arc;
 use std::time::Duration;
 
-use nostr::SubscriptionId;
+use nostr::message::SubscriptionId;
 use nostr_sdk::relay;
 use uniffi::{Object, Record};
 

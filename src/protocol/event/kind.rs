@@ -5,13 +5,14 @@
 use std::fmt;
 use std::ops::Deref;
 
+use nostr::event;
 use uniffi::{Enum, Object};
 
 /// Event Kind
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Display, Eq, Hash)]
 pub struct Kind {
-    inner: nostr::Kind,
+    inner: event::Kind,
 }
 
 impl fmt::Display for Kind {
@@ -21,14 +22,14 @@ impl fmt::Display for Kind {
 }
 
 impl Deref for Kind {
-    type Target = nostr::Kind;
+    type Target = event::Kind;
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::Kind> for Kind {
-    fn from(inner: nostr::Kind) -> Self {
+impl From<event::Kind> for Kind {
+    fn from(inner: event::Kind) -> Self {
         Self { inner }
     }
 }
@@ -38,7 +39,7 @@ impl Kind {
     #[uniffi::constructor]
     pub fn new(kind: u16) -> Self {
         Self {
-            inner: nostr::Kind::from_u16(kind),
+            inner: event::Kind::from_u16(kind),
         }
     }
 
@@ -360,115 +361,115 @@ pub enum KindStandard {
     ChatMessage,
 }
 
-fn convert(k: nostr::Kind) -> Option<KindStandard> {
+fn convert(k: event::Kind) -> Option<KindStandard> {
     match k {
-        nostr::Kind::Metadata => Some(KindStandard::Metadata),
-        nostr::Kind::TextNote => Some(KindStandard::TextNote),
-        nostr::Kind::RecommendRelay | nostr::Kind::EncryptedDirectMessage => None,
-        nostr::Kind::ContactList => Some(KindStandard::ContactList),
-        nostr::Kind::OpenTimestamps => Some(KindStandard::OpenTimestamps),
-        nostr::Kind::EventDeletion => Some(KindStandard::EventDeletion),
-        nostr::Kind::Repost => Some(KindStandard::Repost),
-        nostr::Kind::GenericRepost => Some(KindStandard::GenericRepost),
-        nostr::Kind::Comment => Some(KindStandard::Comment),
-        nostr::Kind::Reaction => Some(KindStandard::Reaction),
-        nostr::Kind::BadgeAward => Some(KindStandard::BadgeAward),
-        nostr::Kind::ChannelCreation => Some(KindStandard::ChannelCreation),
-        nostr::Kind::ChannelMetadata => Some(KindStandard::ChannelMetadata),
-        nostr::Kind::ChannelMessage => Some(KindStandard::ChannelMessage),
-        nostr::Kind::ChannelHideMessage => Some(KindStandard::ChannelHideMessage),
-        nostr::Kind::ChannelMuteUser => Some(KindStandard::ChannelMuteUser),
-        nostr::Kind::PublicChatReserved45
-        | nostr::Kind::PublicChatReserved46
-        | nostr::Kind::PublicChatReserved47
-        | nostr::Kind::PublicChatReserved48
-        | nostr::Kind::PublicChatReserved49 => None,
-        nostr::Kind::GitPatch => Some(KindStandard::GitPatch),
-        nostr::Kind::GitIssue => Some(KindStandard::GitIssue),
-        nostr::Kind::GitReply => Some(KindStandard::GitReply),
-        nostr::Kind::GitStatusOpen => Some(KindStandard::GitStatusOpen),
-        nostr::Kind::GitStatusApplied => Some(KindStandard::GitStatusApplied),
-        nostr::Kind::GitStatusClosed => Some(KindStandard::GitStatusClosed),
-        nostr::Kind::GitStatusDraft => Some(KindStandard::GitStatusDraft),
-        nostr::Kind::Label => Some(KindStandard::Label),
-        nostr::Kind::WalletConnectInfo => Some(KindStandard::WalletConnectInfo),
-        nostr::Kind::WalletConnectNotification => Some(KindStandard::WalletConnectNotification),
-        nostr::Kind::WalletConnectNotificationNip44V2 => {
+        event::Kind::Metadata => Some(KindStandard::Metadata),
+        event::Kind::TextNote => Some(KindStandard::TextNote),
+        event::Kind::RecommendRelay | event::Kind::EncryptedDirectMessage => None,
+        event::Kind::ContactList => Some(KindStandard::ContactList),
+        event::Kind::OpenTimestamps => Some(KindStandard::OpenTimestamps),
+        event::Kind::EventDeletion => Some(KindStandard::EventDeletion),
+        event::Kind::Repost => Some(KindStandard::Repost),
+        event::Kind::GenericRepost => Some(KindStandard::GenericRepost),
+        event::Kind::Comment => Some(KindStandard::Comment),
+        event::Kind::Reaction => Some(KindStandard::Reaction),
+        event::Kind::BadgeAward => Some(KindStandard::BadgeAward),
+        event::Kind::ChannelCreation => Some(KindStandard::ChannelCreation),
+        event::Kind::ChannelMetadata => Some(KindStandard::ChannelMetadata),
+        event::Kind::ChannelMessage => Some(KindStandard::ChannelMessage),
+        event::Kind::ChannelHideMessage => Some(KindStandard::ChannelHideMessage),
+        event::Kind::ChannelMuteUser => Some(KindStandard::ChannelMuteUser),
+        event::Kind::PublicChatReserved45
+        | event::Kind::PublicChatReserved46
+        | event::Kind::PublicChatReserved47
+        | event::Kind::PublicChatReserved48
+        | event::Kind::PublicChatReserved49 => None,
+        event::Kind::GitPatch => Some(KindStandard::GitPatch),
+        event::Kind::GitIssue => Some(KindStandard::GitIssue),
+        event::Kind::GitReply => Some(KindStandard::GitReply),
+        event::Kind::GitStatusOpen => Some(KindStandard::GitStatusOpen),
+        event::Kind::GitStatusApplied => Some(KindStandard::GitStatusApplied),
+        event::Kind::GitStatusClosed => Some(KindStandard::GitStatusClosed),
+        event::Kind::GitStatusDraft => Some(KindStandard::GitStatusDraft),
+        event::Kind::Label => Some(KindStandard::Label),
+        event::Kind::WalletConnectInfo => Some(KindStandard::WalletConnectInfo),
+        event::Kind::WalletConnectNotification => Some(KindStandard::WalletConnectNotification),
+        event::Kind::WalletConnectNotificationNip44V2 => {
             Some(KindStandard::WalletConnectNotificationNip44V2)
         }
-        nostr::Kind::Reporting => Some(KindStandard::Reporting),
-        nostr::Kind::ZapPrivateMessage => Some(KindStandard::ZapPrivateMessage),
-        nostr::Kind::ZapRequest => Some(KindStandard::ZapRequest),
-        nostr::Kind::ZapReceipt => Some(KindStandard::ZapReceipt),
-        nostr::Kind::MuteList => Some(KindStandard::MuteList),
-        nostr::Kind::PinList => Some(KindStandard::PinList),
-        nostr::Kind::Bookmarks => Some(KindStandard::Bookmarks),
-        nostr::Kind::Communities => Some(KindStandard::Communities),
-        nostr::Kind::PublicChats => Some(KindStandard::PublicChats),
-        nostr::Kind::BlockedRelays => Some(KindStandard::BlockedRelays),
-        nostr::Kind::SearchRelays => Some(KindStandard::SearchRelays),
-        nostr::Kind::SimpleGroups => Some(KindStandard::SimpleGroups),
-        nostr::Kind::Interests => Some(KindStandard::Interests),
-        nostr::Kind::Emojis => Some(KindStandard::Emojis),
-        nostr::Kind::FollowSet => Some(KindStandard::FollowSet),
-        nostr::Kind::RelaySet => Some(KindStandard::RelaySet),
-        nostr::Kind::BookmarkSet => Some(KindStandard::BookmarkSet),
-        nostr::Kind::ArticlesCurationSet => Some(KindStandard::ArticlesCurationSet),
-        nostr::Kind::VideosCurationSet => Some(KindStandard::VideosCurationSet),
-        nostr::Kind::InterestSet => Some(KindStandard::InterestSet),
-        nostr::Kind::EmojiSet => Some(KindStandard::EmojiSet),
-        nostr::Kind::ReleaseArtifactSet => Some(KindStandard::ReleaseArtifactSet),
-        nostr::Kind::RelayList => Some(KindStandard::RelayList),
-        nostr::Kind::Authentication => Some(KindStandard::Authentication),
-        nostr::Kind::WalletConnectRequest => Some(KindStandard::WalletConnectRequest),
-        nostr::Kind::WalletConnectResponse => Some(KindStandard::WalletConnectResponse),
-        nostr::Kind::NostrConnect => Some(KindStandard::NostrConnect),
-        nostr::Kind::LiveEvent => Some(KindStandard::LiveEvent),
-        nostr::Kind::LiveEventMessage => Some(KindStandard::LiveEventMessage),
-        nostr::Kind::ProfileBadges => Some(KindStandard::ProfileBadges),
-        nostr::Kind::BadgeDefinition => Some(KindStandard::BadgeDefinition),
-        nostr::Kind::Seal => Some(KindStandard::Seal),
-        nostr::Kind::GiftWrap => Some(KindStandard::GiftWrap),
-        nostr::Kind::PrivateDirectMessage => Some(KindStandard::PrivateDirectMessage),
-        nostr::Kind::LongFormTextNote => Some(KindStandard::LongFormTextNote),
-        nostr::Kind::GitRepoAnnouncement => Some(KindStandard::GitRepoAnnouncement),
-        nostr::Kind::ApplicationSpecificData => Some(KindStandard::ApplicationSpecificData),
-        nostr::Kind::FileMetadata => Some(KindStandard::FileMetadata),
-        nostr::Kind::HttpAuth => Some(KindStandard::HttpAuth),
-        nostr::Kind::SetStall => Some(KindStandard::SetStall),
-        nostr::Kind::SetProduct => Some(KindStandard::SetProduct),
-        nostr::Kind::JobFeedback => Some(KindStandard::JobFeedback),
-        nostr::Kind::InboxRelays => Some(KindStandard::InboxRelays),
-        nostr::Kind::MlsKeyPackageRelays => Some(KindStandard::MlsKeyPackageRelays),
-        nostr::Kind::MlsKeyPackage => Some(KindStandard::MlsKeyPackage),
-        nostr::Kind::MlsWelcome => Some(KindStandard::MlsWelcome),
-        nostr::Kind::MlsGroupMessage => Some(KindStandard::MlsGroupMessage),
-        nostr::Kind::Torrent => Some(KindStandard::Torrent),
-        nostr::Kind::TorrentComment => Some(KindStandard::TorrentComment),
-        nostr::Kind::PeerToPeerOrder => Some(KindStandard::PeerToPeerOrder),
-        nostr::Kind::RequestToVanish => Some(KindStandard::RequestToVanish),
-        nostr::Kind::UserStatus => Some(KindStandard::UserStatus),
-        nostr::Kind::CashuWallet => Some(KindStandard::CashuWallet),
-        nostr::Kind::CashuWalletUnspentProof => Some(KindStandard::CashuWalletUnspentProof),
-        nostr::Kind::CashuWalletSpendingHistory => Some(KindStandard::CashuWalletSpendingHistory),
-        nostr::Kind::CashuWalletQuote => Some(KindStandard::CashuWalletQuote),
-        nostr::Kind::CashuNutZapInfo => Some(KindStandard::CashuNutZapInfo),
-        nostr::Kind::CashuNutZap => Some(KindStandard::CashuNutZap),
-        nostr::Kind::CodeSnippet => Some(KindStandard::CodeSnippet),
-        nostr::Kind::BlossomAuth => Some(KindStandard::BlossomAuth),
-        nostr::Kind::Poll => Some(KindStandard::Poll),
-        nostr::Kind::PollResponse => Some(KindStandard::PollResponse),
-        nostr::Kind::RepoState => Some(KindStandard::RepoState),
-        nostr::Kind::VoiceMessage => Some(KindStandard::VoiceMessage),
-        nostr::Kind::VoiceMessageReply => Some(KindStandard::VoiceMessageReply),
-        nostr::Kind::Thread => Some(KindStandard::Thread),
-        nostr::Kind::WebBookmark => Some(KindStandard::WebBookmark),
-        nostr::Kind::ChatMessage => Some(KindStandard::ChatMessage),
+        event::Kind::Reporting => Some(KindStandard::Reporting),
+        event::Kind::ZapPrivateMessage => Some(KindStandard::ZapPrivateMessage),
+        event::Kind::ZapRequest => Some(KindStandard::ZapRequest),
+        event::Kind::ZapReceipt => Some(KindStandard::ZapReceipt),
+        event::Kind::MuteList => Some(KindStandard::MuteList),
+        event::Kind::PinList => Some(KindStandard::PinList),
+        event::Kind::Bookmarks => Some(KindStandard::Bookmarks),
+        event::Kind::Communities => Some(KindStandard::Communities),
+        event::Kind::PublicChats => Some(KindStandard::PublicChats),
+        event::Kind::BlockedRelays => Some(KindStandard::BlockedRelays),
+        event::Kind::SearchRelays => Some(KindStandard::SearchRelays),
+        event::Kind::SimpleGroups => Some(KindStandard::SimpleGroups),
+        event::Kind::Interests => Some(KindStandard::Interests),
+        event::Kind::Emojis => Some(KindStandard::Emojis),
+        event::Kind::FollowSet => Some(KindStandard::FollowSet),
+        event::Kind::RelaySet => Some(KindStandard::RelaySet),
+        event::Kind::BookmarkSet => Some(KindStandard::BookmarkSet),
+        event::Kind::ArticlesCurationSet => Some(KindStandard::ArticlesCurationSet),
+        event::Kind::VideosCurationSet => Some(KindStandard::VideosCurationSet),
+        event::Kind::InterestSet => Some(KindStandard::InterestSet),
+        event::Kind::EmojiSet => Some(KindStandard::EmojiSet),
+        event::Kind::ReleaseArtifactSet => Some(KindStandard::ReleaseArtifactSet),
+        event::Kind::RelayList => Some(KindStandard::RelayList),
+        event::Kind::Authentication => Some(KindStandard::Authentication),
+        event::Kind::WalletConnectRequest => Some(KindStandard::WalletConnectRequest),
+        event::Kind::WalletConnectResponse => Some(KindStandard::WalletConnectResponse),
+        event::Kind::NostrConnect => Some(KindStandard::NostrConnect),
+        event::Kind::LiveEvent => Some(KindStandard::LiveEvent),
+        event::Kind::LiveEventMessage => Some(KindStandard::LiveEventMessage),
+        event::Kind::ProfileBadges => Some(KindStandard::ProfileBadges),
+        event::Kind::BadgeDefinition => Some(KindStandard::BadgeDefinition),
+        event::Kind::Seal => Some(KindStandard::Seal),
+        event::Kind::GiftWrap => Some(KindStandard::GiftWrap),
+        event::Kind::PrivateDirectMessage => Some(KindStandard::PrivateDirectMessage),
+        event::Kind::LongFormTextNote => Some(KindStandard::LongFormTextNote),
+        event::Kind::GitRepoAnnouncement => Some(KindStandard::GitRepoAnnouncement),
+        event::Kind::ApplicationSpecificData => Some(KindStandard::ApplicationSpecificData),
+        event::Kind::FileMetadata => Some(KindStandard::FileMetadata),
+        event::Kind::HttpAuth => Some(KindStandard::HttpAuth),
+        event::Kind::SetStall => Some(KindStandard::SetStall),
+        event::Kind::SetProduct => Some(KindStandard::SetProduct),
+        event::Kind::JobFeedback => Some(KindStandard::JobFeedback),
+        event::Kind::InboxRelays => Some(KindStandard::InboxRelays),
+        event::Kind::MlsKeyPackageRelays => Some(KindStandard::MlsKeyPackageRelays),
+        event::Kind::MlsKeyPackage => Some(KindStandard::MlsKeyPackage),
+        event::Kind::MlsWelcome => Some(KindStandard::MlsWelcome),
+        event::Kind::MlsGroupMessage => Some(KindStandard::MlsGroupMessage),
+        event::Kind::Torrent => Some(KindStandard::Torrent),
+        event::Kind::TorrentComment => Some(KindStandard::TorrentComment),
+        event::Kind::PeerToPeerOrder => Some(KindStandard::PeerToPeerOrder),
+        event::Kind::RequestToVanish => Some(KindStandard::RequestToVanish),
+        event::Kind::UserStatus => Some(KindStandard::UserStatus),
+        event::Kind::CashuWallet => Some(KindStandard::CashuWallet),
+        event::Kind::CashuWalletUnspentProof => Some(KindStandard::CashuWalletUnspentProof),
+        event::Kind::CashuWalletSpendingHistory => Some(KindStandard::CashuWalletSpendingHistory),
+        event::Kind::CashuWalletQuote => Some(KindStandard::CashuWalletQuote),
+        event::Kind::CashuNutZapInfo => Some(KindStandard::CashuNutZapInfo),
+        event::Kind::CashuNutZap => Some(KindStandard::CashuNutZap),
+        event::Kind::CodeSnippet => Some(KindStandard::CodeSnippet),
+        event::Kind::BlossomAuth => Some(KindStandard::BlossomAuth),
+        event::Kind::Poll => Some(KindStandard::Poll),
+        event::Kind::PollResponse => Some(KindStandard::PollResponse),
+        event::Kind::RepoState => Some(KindStandard::RepoState),
+        event::Kind::VoiceMessage => Some(KindStandard::VoiceMessage),
+        event::Kind::VoiceMessageReply => Some(KindStandard::VoiceMessageReply),
+        event::Kind::Thread => Some(KindStandard::Thread),
+        event::Kind::WebBookmark => Some(KindStandard::WebBookmark),
+        event::Kind::ChatMessage => Some(KindStandard::ChatMessage),
         _ => None,
     }
 }
 
-impl From<KindStandard> for nostr::Kind {
+impl From<KindStandard> for event::Kind {
     fn from(value: KindStandard) -> Self {
         match value {
             KindStandard::Metadata => Self::Metadata,

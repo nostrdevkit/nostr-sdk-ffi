@@ -5,22 +5,23 @@
 use std::ops::Deref;
 use std::time::Duration;
 
+use nostr::types;
 use uniffi::Object;
 
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct Timestamp {
-    inner: nostr::Timestamp,
+    inner: types::Timestamp,
 }
 
-impl From<nostr::Timestamp> for Timestamp {
-    fn from(inner: nostr::Timestamp) -> Self {
+impl From<types::Timestamp> for Timestamp {
+    fn from(inner: types::Timestamp) -> Self {
         Self { inner }
     }
 }
 
 impl Deref for Timestamp {
-    type Target = nostr::Timestamp;
+    type Target = types::Timestamp;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -33,14 +34,14 @@ impl Timestamp {
     #[uniffi::constructor]
     pub fn now() -> Self {
         Self {
-            inner: nostr::Timestamp::now(),
+            inner: types::Timestamp::now(),
         }
     }
 
     #[uniffi::constructor]
     pub fn from_secs(secs: u64) -> Self {
         Self {
-            inner: nostr::Timestamp::from_secs(secs),
+            inner: types::Timestamp::from_secs(secs),
         }
     }
 
@@ -48,7 +49,7 @@ impl Timestamp {
     #[uniffi::constructor]
     pub fn min() -> Self {
         Self {
-            inner: nostr::Timestamp::min(),
+            inner: types::Timestamp::min(),
         }
     }
 
@@ -56,7 +57,7 @@ impl Timestamp {
     #[uniffi::constructor]
     pub fn max() -> Self {
         Self {
-            inner: nostr::Timestamp::max(),
+            inner: types::Timestamp::max(),
         }
     }
 

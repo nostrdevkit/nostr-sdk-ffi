@@ -136,7 +136,7 @@ mod inner {
     use std::task::{Context, Poll};
 
     use futures_util::{Sink as SinkTrait, Stream as StreamTrait, StreamExt};
-    use nostr::Url;
+    use nostr::types::Url;
     use nostr_sdk::error::Error;
     use nostr_sdk::transport::websocket::WebSocketTransport;
 

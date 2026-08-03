@@ -6,7 +6,7 @@ use core::ops::Deref;
 use std::borrow::Cow;
 use std::sync::Arc;
 
-use nostr::SubscriptionId;
+use nostr::message::{self, SubscriptionId};
 use uniffi::{Enum, Object};
 
 use crate::error::Result;
@@ -50,30 +50,30 @@ pub enum RelayMessageEnum {
     },
 }
 
-impl<'a> From<nostr::RelayMessage<'a>> for RelayMessageEnum {
-    fn from(value: nostr::RelayMessage<'a>) -> Self {
+impl<'a> From<message::RelayMessage<'a>> for RelayMessageEnum {
+    fn from(value: message::RelayMessage<'a>) -> Self {
         match value {
-            nostr::RelayMessage::Event {
+            message::RelayMessage::Event {
                 subscription_id,
                 event,
             } => Self::EventMsg {
                 subscription_id: subscription_id.to_string(),
                 event: Arc::new(event.as_ref().clone().into()),
             },
-            nostr::RelayMessage::Closed {
+            message::RelayMessage::Closed {
                 subscription_id,
                 message,
             } => Self::Closed {
                 subscription_id: subscription_id.to_string(),
                 message: message.into_owned(),
             },
-            nostr::RelayMessage::Notice(message) => Self::Notice {
+            message::RelayMessage::Notice(message) => Self::Notice {
                 message: message.into_owned(),
             },
-            nostr::RelayMessage::EndOfStoredEvents(sub_id) => Self::EndOfStoredEvents {
+            message::RelayMessage::EndOfStoredEvents(sub_id) => Self::EndOfStoredEvents {
                 subscription_id: sub_id.to_string(),
             },
-            nostr::RelayMessage::Ok {
+            message::RelayMessage::Ok {
                 event_id,
                 status,
                 message,
@@ -82,24 +82,24 @@ impl<'a> From<nostr::RelayMessage<'a>> for RelayMessageEnum {
                 status,
                 message: message.into_owned(),
             },
-            nostr::RelayMessage::Auth { challenge } => Self::Auth {
+            message::RelayMessage::Auth { challenge } => Self::Auth {
                 challenge: challenge.into_owned(),
             },
-            nostr::RelayMessage::Count {
+            message::RelayMessage::Count {
                 subscription_id,
                 count,
             } => Self::Count {
                 subscription_id: subscription_id.to_string(),
                 count: count as u64,
             },
-            nostr::RelayMessage::NegMsg {
+            message::RelayMessage::NegMsg {
                 subscription_id,
                 message,
             } => Self::NegMsg {
                 subscription_id: subscription_id.to_string(),
                 message: message.into_owned(),
             },
-            nostr::RelayMessage::NegErr {
+            message::RelayMessage::NegErr {
                 subscription_id,
                 message,
             } => Self::NegErr {
@@ -110,7 +110,7 @@ impl<'a> From<nostr::RelayMessage<'a>> for RelayMessageEnum {
     }
 }
 
-impl From<RelayMessageEnum> for nostr::RelayMessage<'static> {
+impl From<RelayMessageEnum> for message::RelayMessage<'static> {
     fn from(value: RelayMessageEnum) -> Self {
         match value {
             RelayMessageEnum::EventMsg {
@@ -159,11 +159,11 @@ impl From<RelayMessageEnum> for nostr::RelayMessage<'static> {
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct RelayMessage {
-    inner: nostr::RelayMessage<'static>,
+    inner: message::RelayMessage<'static>,
 }
 
-impl From<nostr::RelayMessage<'static>> for RelayMessage {
-    fn from(inner: nostr::RelayMessage<'static>) -> Self {
+impl From<message::RelayMessage<'static>> for RelayMessage {
+    fn from(inner: message::RelayMessage<'static>) -> Self {
         Self { inner }
     }
 }
@@ -174,7 +174,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn event(subscription_id: &str, event: &Event) -> Self {
         Self {
-            inner: nostr::RelayMessage::event(
+            inner: message::RelayMessage::event(
                 SubscriptionId::new(subscription_id),
                 event.deref().clone(),
             ),
@@ -185,7 +185,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn notice(message: &str) -> Self {
         Self {
-            inner: nostr::RelayMessage::notice(message),
+            inner: message::RelayMessage::notice(message),
         }
     }
 
@@ -193,7 +193,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn closed(subscription_id: &str, message: &str) -> Self {
         Self {
-            inner: nostr::RelayMessage::closed(SubscriptionId::new(subscription_id), message),
+            inner: message::RelayMessage::closed(SubscriptionId::new(subscription_id), message),
         }
     }
 
@@ -201,7 +201,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn eose(subscription_id: &str) -> Self {
         Self {
-            inner: nostr::RelayMessage::eose(SubscriptionId::new(subscription_id)),
+            inner: message::RelayMessage::eose(SubscriptionId::new(subscription_id)),
         }
     }
 
@@ -209,7 +209,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn ok(event_id: &EventId, status: bool, message: &str) -> Self {
         Self {
-            inner: nostr::RelayMessage::ok(**event_id, status, message),
+            inner: message::RelayMessage::ok(**event_id, status, message),
         }
     }
 
@@ -217,7 +217,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn auth(challenge: &str) -> Self {
         Self {
-            inner: nostr::RelayMessage::auth(challenge),
+            inner: message::RelayMessage::auth(challenge),
         }
     }
 
@@ -225,7 +225,10 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn count(subscription_id: &str, count: f64) -> Self {
         Self {
-            inner: nostr::RelayMessage::count(SubscriptionId::new(subscription_id), count as usize),
+            inner: message::RelayMessage::count(
+                SubscriptionId::new(subscription_id),
+                count as usize,
+            ),
         }
     }
 
@@ -235,7 +238,7 @@ impl RelayMessage {
     #[uniffi::constructor]
     pub fn from_json(json: &str) -> Result<Self> {
         Ok(Self {
-            inner: nostr::RelayMessage::from_json(json)?,
+            inner: message::RelayMessage::from_json(json)?,
         })
     }
 

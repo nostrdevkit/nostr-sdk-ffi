@@ -5,8 +5,8 @@
 use std::ops::Deref;
 use std::sync::Arc;
 
-use nostr::event;
 use nostr::prelude::{Nip89Tag, TagCodec};
+use nostr::{event, types};
 use uniffi::Object;
 
 pub mod list;
@@ -116,7 +116,7 @@ impl Tag {
     /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
     #[uniffi::constructor(default(relay_url = None))]
     pub fn coordinate(coordinate: &Coordinate, relay_url: Option<Arc<RelayUrl>>) -> Self {
-        let relay_url: Option<nostr::RelayUrl> = relay_url.map(|u| u.as_ref().deref().clone());
+        let relay_url: Option<types::RelayUrl> = relay_url.map(|u| u.as_ref().deref().clone());
         Self {
             inner: event::Tag::coordinate(coordinate.deref().clone(), relay_url),
         }

@@ -81,7 +81,8 @@ mod inner {
     use std::pin::Pin;
     use std::sync::Arc;
 
-    use nostr::{Event, RelayUrl};
+    use nostr::event::Event;
+    use nostr::types::RelayUrl;
     use nostr_sdk::authenticator::Authenticator;
     use nostr_sdk::error::Error;
 

@@ -8,6 +8,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use nostr::message::MachineReadablePrefix;
+use nostr::{event, filter};
 use nostr_sdk::local_relay;
 use uniffi::{Enum, Object, Record};
 
@@ -79,7 +80,7 @@ impl fmt::Debug for WritePolicyAdapter {
 impl local_relay::WritePolicy for WritePolicyAdapter {
     fn admit_event<'a>(
         &'a self,
-        event: &'a nostr::Event,
+        event: &'a event::Event,
         addr: &'a SocketAddr,
     ) -> Pin<Box<dyn Future<Output = local_relay::WritePolicyResult> + Send + 'a>> {
         Box::pin(async move {
@@ -134,7 +135,7 @@ impl fmt::Debug for QueryPolicyAdapter {
 impl local_relay::QueryPolicy for QueryPolicyAdapter {
     fn admit_query<'a>(
         &'a self,
-        query: &'a mut nostr::Filter,
+        query: &'a mut filter::Filter,
         addr: &'a SocketAddr,
     ) -> Pin<Box<dyn Future<Output = local_relay::QueryPolicyResult> + Send + 'a>> {
         Box::pin(async move {

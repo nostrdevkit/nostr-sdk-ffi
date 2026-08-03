@@ -4,6 +4,7 @@
 
 use std::ops::Deref;
 
+use nostr::key;
 use nostr::nips::nip19::ToBech32;
 use uniffi::Object;
 
@@ -14,17 +15,17 @@ use crate::protocol::nips::nip49::EncryptedSecretKey;
 #[derive(Debug, PartialEq, Eq, Object)]
 #[uniffi::export(Debug, Eq)]
 pub struct SecretKey {
-    inner: nostr::SecretKey,
+    inner: key::SecretKey,
 }
 
-impl From<nostr::SecretKey> for SecretKey {
-    fn from(inner: nostr::SecretKey) -> Self {
+impl From<key::SecretKey> for SecretKey {
+    fn from(inner: key::SecretKey) -> Self {
         Self { inner }
     }
 }
 
 impl Deref for SecretKey {
-    type Target = nostr::SecretKey;
+    type Target = key::SecretKey;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -37,14 +38,14 @@ impl SecretKey {
     #[uniffi::constructor]
     pub fn parse(secret_key: &str) -> Result<Self> {
         Ok(Self {
-            inner: nostr::SecretKey::parse(secret_key)?,
+            inner: key::SecretKey::parse(secret_key)?,
         })
     }
 
     #[uniffi::constructor]
     pub fn from_bytes(bytes: &[u8]) -> Result<Self> {
         Ok(Self {
-            inner: nostr::SecretKey::from_slice(bytes)?,
+            inner: key::SecretKey::from_slice(bytes)?,
         })
     }
 
@@ -52,7 +53,7 @@ impl SecretKey {
     #[uniffi::constructor]
     pub fn generate() -> Self {
         Self {
-            inner: nostr::SecretKey::generate(),
+            inner: key::SecretKey::generate(),
         }
     }
 

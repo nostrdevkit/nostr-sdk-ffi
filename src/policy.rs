@@ -82,7 +82,9 @@ mod inner {
     use std::pin::Pin;
     use std::sync::Arc;
 
-    use nostr::{Event, RelayUrl, SubscriptionId};
+    use nostr::event::Event;
+    use nostr::message::SubscriptionId;
+    use nostr::types::RelayUrl;
     use nostr_sdk::error::Error;
     use nostr_sdk::policy::{AdmitPolicy, AdmitStatus};
 

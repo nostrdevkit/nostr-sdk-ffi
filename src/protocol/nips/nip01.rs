@@ -126,7 +126,7 @@ pub struct MetadataRecord {
     pub custom: Option<HashMap<String, JsonValue>>,
 }
 
-impl From<MetadataRecord> for nostr::Metadata {
+impl From<MetadataRecord> for nip01::Metadata {
     fn from(value: MetadataRecord) -> Self {
         Self {
             name: value.name,
@@ -143,8 +143,8 @@ impl From<MetadataRecord> for nostr::Metadata {
     }
 }
 
-impl From<nostr::Metadata> for MetadataRecord {
-    fn from(value: nostr::Metadata) -> Self {
+impl From<nip01::Metadata> for MetadataRecord {
+    fn from(value: nip01::Metadata) -> Self {
         Self {
             name: value.name,
             display_name: value.display_name,

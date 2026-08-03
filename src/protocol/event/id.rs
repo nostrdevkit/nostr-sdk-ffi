@@ -4,6 +4,7 @@
 
 use std::ops::Deref;
 
+use nostr::event;
 use nostr::nips::nip19::ToBech32;
 use nostr::nips::nip21::ToNostrUri;
 use uniffi::Object;
@@ -15,19 +16,19 @@ use crate::protocol::event::{PublicKey, Timestamp};
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct EventId {
-    inner: nostr::EventId,
+    inner: event::EventId,
 }
 
 impl Deref for EventId {
-    type Target = nostr::EventId;
+    type Target = event::EventId;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::EventId> for EventId {
-    fn from(inner: nostr::EventId) -> Self {
+impl From<event::EventId> for EventId {
+    fn from(inner: event::EventId) -> Self {
         Self { inner }
     }
 }
@@ -43,7 +44,7 @@ impl EventId {
         content: &str,
     ) -> Self {
         Self {
-            inner: nostr::EventId::new(
+            inner: event::EventId::new(
                 public_key.deref(),
                 created_at.deref(),
                 kind.deref(),
@@ -57,14 +58,14 @@ impl EventId {
     #[uniffi::constructor]
     pub fn parse(id: &str) -> Result<Self> {
         Ok(Self {
-            inner: nostr::EventId::parse(id)?,
+            inner: event::EventId::parse(id)?,
         })
     }
 
     #[uniffi::constructor]
     pub fn from_bytes(bytes: &[u8]) -> Result<Self> {
         Ok(Self {
-            inner: nostr::EventId::from_slice(bytes)?,
+            inner: event::EventId::from_slice(bytes)?,
         })
     }
 

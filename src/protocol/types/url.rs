@@ -5,6 +5,7 @@
 use std::fmt;
 use std::ops::Deref;
 
+use nostr::types;
 use uniffi::Object;
 
 use crate::error::Result;
@@ -12,7 +13,7 @@ use crate::error::Result;
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Display, Eq, Hash)]
 pub struct RelayUrl {
-    inner: nostr::RelayUrl,
+    inner: types::RelayUrl,
 }
 
 impl fmt::Display for RelayUrl {
@@ -22,15 +23,15 @@ impl fmt::Display for RelayUrl {
 }
 
 impl Deref for RelayUrl {
-    type Target = nostr::RelayUrl;
+    type Target = types::RelayUrl;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::RelayUrl> for RelayUrl {
-    fn from(inner: nostr::RelayUrl) -> Self {
+impl From<types::RelayUrl> for RelayUrl {
+    fn from(inner: types::RelayUrl) -> Self {
         Self { inner }
     }
 }
@@ -41,7 +42,7 @@ impl RelayUrl {
     #[uniffi::constructor]
     pub fn parse(url: &str) -> Result<RelayUrl> {
         Ok(Self {
-            inner: nostr::RelayUrl::parse(url)?,
+            inner: types::RelayUrl::parse(url)?,
         })
     }
 

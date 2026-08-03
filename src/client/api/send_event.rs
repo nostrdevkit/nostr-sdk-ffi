@@ -2,6 +2,7 @@ use std::ops::Deref;
 use std::sync::Arc;
 use std::time::Duration;
 
+use nostr::types;
 use nostr_sdk::client;
 use uniffi::Object;
 
@@ -15,7 +16,7 @@ enum InnerSendEventTarget {
     // All WRITE relays
     Broadcast,
     // To specific relays
-    To(Vec<nostr::RelayUrl>),
+    To(Vec<types::RelayUrl>),
     // To NIP-17 relays
     ToNip17,
     // To NIP-65 relays

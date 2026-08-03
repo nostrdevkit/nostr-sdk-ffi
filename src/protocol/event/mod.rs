@@ -4,6 +4,7 @@
 
 use std::ops::Deref;
 
+use nostr::event;
 use uniffi::Object;
 
 pub mod builder;
@@ -24,17 +25,17 @@ use crate::protocol::types::Timestamp;
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct Event {
-    inner: nostr::Event,
+    inner: event::Event,
 }
 
-impl From<nostr::Event> for Event {
-    fn from(inner: nostr::Event) -> Self {
+impl From<event::Event> for Event {
+    fn from(inner: event::Event) -> Self {
         Self { inner }
     }
 }
 
 impl Deref for Event {
-    type Target = nostr::Event;
+    type Target = event::Event;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
@@ -106,7 +107,7 @@ impl Event {
     #[uniffi::constructor]
     pub fn from_json(json: &str) -> Result<Self> {
         Ok(Self {
-            inner: nostr::Event::from_json(json)?,
+            inner: event::Event::from_json(json)?,
         })
     }
 

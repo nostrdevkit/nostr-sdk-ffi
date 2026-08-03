@@ -125,19 +125,19 @@ impl SingleLetterTag {
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct Filter {
-    inner: nostr::Filter,
+    inner: filter::Filter,
 }
 
 impl Deref for Filter {
-    type Target = nostr::Filter;
+    type Target = filter::Filter;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::Filter> for Filter {
-    fn from(f: nostr::Filter) -> Self {
+impl From<filter::Filter> for Filter {
+    fn from(f: filter::Filter) -> Self {
         Self { inner: f }
     }
 }
@@ -147,7 +147,7 @@ impl Filter {
     #[uniffi::constructor]
     pub fn new() -> Self {
         Self {
-            inner: nostr::Filter::new(),
+            inner: filter::Filter::new(),
         }
     }
 
@@ -427,7 +427,7 @@ impl Filter {
     #[uniffi::constructor]
     pub fn from_json(json: String) -> Result<Self> {
         Ok(Self {
-            inner: nostr::Filter::from_json(json)?,
+            inner: filter::Filter::from_json(json)?,
         })
     }
 
@@ -461,8 +461,8 @@ pub struct FilterRecord {
     pub generic_tags: Vec<GenericTag>,
 }
 
-impl From<nostr::Filter> for FilterRecord {
-    fn from(f: nostr::Filter) -> Self {
+impl From<filter::Filter> for FilterRecord {
+    fn from(f: filter::Filter) -> Self {
         Self {
             ids: f
                 .ids
@@ -489,7 +489,7 @@ impl From<nostr::Filter> for FilterRecord {
     }
 }
 
-impl From<FilterRecord> for nostr::Filter {
+impl From<FilterRecord> for filter::Filter {
     fn from(f: FilterRecord) -> Self {
         Self {
             ids: f.ids.map(|ids| ids.into_iter().map(|v| **v).collect()),

@@ -4,6 +4,7 @@
 
 use std::ops::Deref;
 
+use nostr::key;
 use nostr::nips::nip19::ToBech32;
 use nostr::nips::nip21::ToNostrUri;
 use uniffi::Object;
@@ -13,19 +14,19 @@ use crate::error::Result;
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct PublicKey {
-    inner: nostr::PublicKey,
+    inner: key::PublicKey,
 }
 
 impl Deref for PublicKey {
-    type Target = nostr::PublicKey;
+    type Target = key::PublicKey;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
 
-impl From<nostr::PublicKey> for PublicKey {
-    fn from(inner: nostr::PublicKey) -> Self {
+impl From<key::PublicKey> for PublicKey {
+    fn from(inner: key::PublicKey) -> Self {
         Self { inner }
     }
 }
@@ -36,14 +37,14 @@ impl PublicKey {
     #[uniffi::constructor]
     pub fn parse(public_key: &str) -> Result<Self> {
         Ok(Self {
-            inner: nostr::PublicKey::parse(public_key)?,
+            inner: key::PublicKey::parse(public_key)?,
         })
     }
 
     #[uniffi::constructor]
     pub fn from_bytes(bytes: &[u8]) -> Result<Self> {
         Ok(Self {
-            inner: nostr::PublicKey::from_slice(bytes)?,
+            inner: key::PublicKey::from_slice(bytes)?,
         })
     }
 
