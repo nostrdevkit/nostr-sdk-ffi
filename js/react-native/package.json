@@ -38,6 +38,7 @@
     "README.md"
   ],
   "scripts": {
+    "prebuild": "node ../scripts/patch-ubrn.mjs",
     "clean": "node scripts/clean.mjs",
     "generate": "node scripts/generate.mjs",
     "build:android": "ubrn build android --config ubrn.config.yaml --release --and-generate",
@@ -50,8 +51,8 @@
     "@nostrdevkit/nostr-sdk-react-native-android-armeabi-v7a": "0.45.0-alpha.7",
     "@nostrdevkit/nostr-sdk-react-native-android-x86": "0.45.0-alpha.7",
     "@nostrdevkit/nostr-sdk-react-native-android-x86_64": "0.45.0-alpha.7",
-    "@ubjs/core": "0.29.3-1",
-    "uniffi-bindgen-react-native": "0.29.3-1"
+    "@ubjs/core": "0.31.0-3",
+    "uniffi-bindgen-react-native": "0.31.0-3"
   },
   "peerDependencies": {
     "react": ">=18",

@@ -6,6 +6,7 @@
     <Company>Nostr Dev Kit</Company>
     <Description>Nostr protocol implementation, Relay, RelayPool, high-level client library, NWC client and more.</Description>
     <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

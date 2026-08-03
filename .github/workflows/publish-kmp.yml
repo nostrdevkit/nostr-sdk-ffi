@@ -40,7 +40,10 @@ jobs:
 
       - name: Install gobley-uniffi-bindgen
         run: |
-          cargo install gobley-uniffi-bindgen --git https://github.com/gobley/gobley --tag v0.3.4
+          git clone https://github.com/nostrdevkit/gobley "$RUNNER_TEMP/gobley"
+          git -C "$RUNNER_TEMP/gobley" checkout 1e95aa7a6cf6ef198e1e65a783579e36d0ad3fc0
+          git -C "$RUNNER_TEMP/gobley" apply "$GITHUB_WORKSPACE/patches/gobley-uniffi-0.31.2.patch"
+          cargo install --locked --path "$RUNNER_TEMP/gobley/crates/gobley-uniffi-bindgen"
 
       - name: Build debug target
         run: |
@@ -49,6 +52,10 @@ jobs:
       - name: Generate Kotlin Multiplatform
         run: |
           gobley-uniffi-bindgen --library target/debug/libnostr_sdk_ffi.so --config uniffi-kmp.toml -o target/uniffi/kotlin-multiplatform
+
+      - name: Validate Kotlin Multiplatform C header
+        run: |
+          cc -std=c11 -D_Nullable= -D_Nonnull= -fsyntax-only -x c target/uniffi/kotlin-multiplatform/nativeInterop/cinterop/headers/nostr_sdk/nostr_sdk.h
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
