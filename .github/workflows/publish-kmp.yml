@@ -55,7 +55,7 @@ jobs:
           cc -std=c11 -D_Nullable= -D_Nonnull= -fsyntax-only -x c target/uniffi/kotlin-multiplatform/nativeInterop/cinterop/headers/nostr_sdk/nostr_sdk.h
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-kotlin-multiplatform
           path: target/uniffi/kotlin-multiplatform
@@ -200,7 +200,7 @@ jobs:
         run: bash assemble.sh
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-kmp-aar
           path: kmp/nostr-sdk-kmp/build/outputs/aar/nostr-sdk-kmp-release.aar

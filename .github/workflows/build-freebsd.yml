@@ -53,7 +53,7 @@ jobs:
       run: cargo +nightly zigbuild -Z build-std=std,panic_abort --target ${{ matrix.target }} --release
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-${{ matrix.target }}
         path: target/${{ matrix.target }}/release/libnostr_sdk_ffi.so

@@ -54,7 +54,7 @@ jobs:
           uniffi-bindgen generate --library target/debug/libnostr_sdk_ffi.so --language swift --no-format -o target/uniffi/swift
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-swift
           path: target/uniffi/swift
@@ -113,7 +113,7 @@ jobs:
           echo "XCF_CHECKSUM=`swift package compute-checksum nostr_sdkFFI.xcframework.zip`" >> $GITHUB_ENV
 
       - name: Archive xcframework
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr_sdkFFI-${{ inputs.version || inputs.ref }}.xcframework
           path: nostr-sdk-ffi/swift/nostr_sdkFFI.xcframework
