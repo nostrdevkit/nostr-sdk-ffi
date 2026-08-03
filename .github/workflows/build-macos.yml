@@ -41,7 +41,7 @@ jobs:
         MACOSX_DEPLOYMENT_TARGET: 12.0
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-${{ matrix.target }}
         path: |
@@ -86,7 +86,7 @@ jobs:
           lipo -create -output catalyst-universal/libnostr_sdk_ffi.a x86_64-apple-ios-macabi/libnostr_sdk_ffi.a aarch64-apple-ios-macabi/libnostr_sdk_ffi.a
 
       - name: Archive Darwin universal release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-darwin-universal
           path: |
@@ -94,7 +94,7 @@ jobs:
             darwin-universal/libnostr_sdk_ffi.a
 
       - name: Archive Catalyst universal release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-catalyst-universal
           path: |

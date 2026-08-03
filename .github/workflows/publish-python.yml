@@ -42,7 +42,7 @@ jobs:
           uniffi-bindgen generate --library target/debug/libnostr_sdk_ffi.so --language python --no-format -o target/uniffi/python
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-python
           path: target/uniffi/python
@@ -152,7 +152,7 @@ jobs:
       run: bash assemble.sh
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-python-wheels
         path: python/dist/*
