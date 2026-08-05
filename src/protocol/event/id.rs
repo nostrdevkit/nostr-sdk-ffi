@@ -3,13 +3,15 @@
 // Distributed under the MIT software license
 
 use std::ops::Deref;
+use std::sync::Arc;
 
 use nostr::event;
+use nostr::event::Tags;
 use nostr::nips::nip19::ToBech32;
 use nostr::nips::nip21::ToNostrUri;
 use uniffi::Object;
 
-use super::{Kind, Tags};
+use super::{Kind, Tag};
 use crate::error::Result;
 use crate::protocol::event::{PublicKey, Timestamp};
 
@@ -40,15 +42,20 @@ impl EventId {
         public_key: &PublicKey,
         created_at: &Timestamp,
         kind: &Kind,
-        tags: &Tags,
+        tags: &[Arc<Tag>],
         content: &str,
     ) -> Self {
+        let tags: Tags = tags
+            .iter()
+            .map(|tag| tag.as_ref().deref().clone())
+            .collect();
+
         Self {
             inner: event::EventId::compute(
                 public_key.deref(),
                 created_at.deref(),
                 kind.deref(),
-                tags.deref(),
+                &tags,
                 content,
             ),
         }

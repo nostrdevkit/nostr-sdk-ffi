@@ -9,9 +9,6 @@ use nostr::prelude::Nip89Tag;
 use nostr::{event, types};
 use uniffi::Object;
 
-pub mod list;
-
-pub use self::list::Tags;
 use crate::error::Result;
 use crate::protocol::event::{EventId, PublicKey};
 use crate::protocol::filter::SingleLetterTag;
@@ -72,7 +69,7 @@ impl Tag {
     }
 
     /// Get array of strings
-    pub fn as_vec(&self) -> Vec<String> {
+    pub fn to_vec(&self) -> Vec<String> {
         self.inner.as_slice().to_vec()
     }
 

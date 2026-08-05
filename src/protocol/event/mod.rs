@@ -3,6 +3,7 @@
 // Distributed under the MIT software license
 
 use std::ops::Deref;
+use std::sync::Arc;
 
 use nostr::event;
 use uniffi::Object;
@@ -16,7 +17,7 @@ pub mod unsigned;
 pub use self::builder::EventBuilder;
 pub use self::id::EventId;
 pub use self::kind::Kind;
-pub use self::tag::{Tag, Tags};
+pub use self::tag::Tag;
 pub use self::unsigned::UnsignedEvent;
 use crate::error::Result;
 use crate::protocol::key::PublicKey;
@@ -61,8 +62,13 @@ impl Event {
         self.inner.kind.into()
     }
 
-    pub fn tags(&self) -> Tags {
-        self.inner.tags.clone().into()
+    pub fn tags(&self) -> Vec<Arc<Tag>> {
+        self.inner
+            .tags
+            .clone()
+            .into_iter()
+            .map(|tag| Arc::new(tag.into()))
+            .collect()
     }
 
     pub fn content(&self) -> String {

@@ -12,7 +12,7 @@ use uniffi::Object;
 
 use super::EventId;
 use crate::error::{NostrSdkError, Result};
-use crate::protocol::event::{Event, Kind, Tags, Timestamp};
+use crate::protocol::event::{Event, Kind, Tag, Timestamp};
 use crate::protocol::key::PublicKey;
 use crate::protocol::nips::nip13::{
     AsyncPowAdapter, IntermediateAsyncPowAdapter, IntermediatePowAdapter, PowAdapter,
@@ -67,8 +67,13 @@ impl UnsignedEvent {
         self.inner.kind.into()
     }
 
-    pub fn tags(&self) -> Tags {
-        self.inner.tags.clone().into()
+    pub fn tags(&self) -> Vec<Arc<Tag>> {
+        self.inner
+            .tags
+            .clone()
+            .into_iter()
+            .map(|tag| Arc::new(tag.into()))
+            .collect()
     }
 
     pub fn content(&self) -> String {
