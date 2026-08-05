@@ -52,13 +52,13 @@ native = []
 async-trait = "0.1.89"
 async-wsocket = { version = "0.17", default-features = false }
 futures-util = "0.3"
-nostr = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", features = ["std"] }
-nostr-connect = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", optional = true }
-nostr-database = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570" }
-nostr-gossip = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570" }
-nostr-gossip-memory = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570" }
-nostr-sdk = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", default-features = false }
-nwc = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", optional = true }
+nostr = { version = "0.45", features = ["std"] }
+nostr-connect = { version = "0.45", optional = true }
+nostr-database = { version = "0.45" }
+nostr-gossip = { version = "0.45" }
+nostr-gossip-memory = { version = "0.45" }
+nostr-sdk = { version = "0.45", default-features = false }
+nwc = { version = "0.45", optional = true }
 serde_json = "1.0.151"
 tokio = { version = "=1.49.0", default-features = false, features = ["sync"] }
 tracing = { version = "0.1.41", features = ["std"], optional = true }
@@ -66,10 +66,10 @@ tracing-subscriber = { version = "0.3.20", optional = true }
 uniffi = "=0.31.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-nostr-gossip-sqlite = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", optional = true }
-nostr-lmdb = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", optional = true }
-nostr-ndb = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", optional = true }
-nostr-sdk = { git = "https://github.com/nostrdevkit/nostr", rev = "331c6a87f30e1a607e72e904dc1f8a72bac12570", features = ["local-relay", "ring", "rustls-tls-webpki-roots"] }
+nostr-gossip-sqlite = { version = "0.45", optional = true }
+nostr-lmdb = { version = "0.45", optional = true }
+nostr-ndb = { version = "0.45", optional = true }
+nostr-sdk = { version = "0.45", features = ["local-relay", "ring", "rustls-tls-webpki-roots"] }
 uniffi = { version = "=0.31.2", features = ["tokio"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
