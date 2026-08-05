@@ -9,7 +9,7 @@ use uniffi::Enum;
 
 use crate::error::{NostrSdkError, Result};
 
-#[derive(Enum)]
+#[derive(Clone, Enum)]
 pub enum JsonValue {
     Bool { bool: bool },
     NumberPosInt { number: u64 },

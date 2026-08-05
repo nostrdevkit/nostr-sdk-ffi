@@ -92,8 +92,8 @@ impl Coordinate {
     }
 }
 
-#[derive(Record)]
-pub struct MetadataRecord {
+#[derive(Clone, Record)]
+pub struct Metadata {
     /// Name
     #[uniffi(default = None)]
     pub name: Option<String>,
@@ -126,8 +126,8 @@ pub struct MetadataRecord {
     pub custom: Option<HashMap<String, JsonValue>>,
 }
 
-impl From<MetadataRecord> for nip01::Metadata {
-    fn from(value: MetadataRecord) -> Self {
+impl From<Metadata> for nip01::Metadata {
+    fn from(value: Metadata) -> Self {
         Self {
             name: value.name,
             display_name: value.display_name,
@@ -143,7 +143,7 @@ impl From<MetadataRecord> for nip01::Metadata {
     }
 }
 
-impl From<nip01::Metadata> for MetadataRecord {
+impl From<nip01::Metadata> for Metadata {
     fn from(value: nip01::Metadata) -> Self {
         Self {
             name: value.name,
@@ -166,50 +166,22 @@ impl From<nip01::Metadata> for MetadataRecord {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Object)]
-#[uniffi::export(Debug, Eq, Hash)]
-pub struct Metadata {
-    inner: nip01::Metadata,
-}
-
-impl Deref for Metadata {
-    type Target = nip01::Metadata;
-
-    fn deref(&self) -> &Self::Target {
-        &self.inner
-    }
-}
-
-impl From<nip01::Metadata> for Metadata {
-    fn from(inner: nip01::Metadata) -> Self {
-        Self { inner }
-    }
-}
-
 #[uniffi::export]
 impl Metadata {
-    #[uniffi::constructor]
-    pub fn from_record(r: MetadataRecord) -> Self {
-        Self { inner: r.into() }
-    }
-
     /// Parse metadata from JSON
     #[uniffi::constructor]
     pub fn from_json(json: String) -> Result<Self> {
-        Ok(Self {
-            inner: nip01::Metadata::from_json(json)?,
-        })
-    }
-
-    pub fn as_record(&self) -> MetadataRecord {
-        self.inner.clone().into()
+        let metadata = nip01::Metadata::from_json(json)?;
+        Ok(metadata.into())
     }
 
     pub fn as_json(&self) -> Result<String> {
-        Ok(self.inner.try_as_json()?)
+        let metadata: nip01::Metadata = self.clone().into();
+        Ok(metadata.try_as_json()?)
     }
 
     pub fn as_pretty_json(&self) -> Result<String> {
-        Ok(self.inner.try_as_pretty_json()?)
+        let metadata: nip01::Metadata = self.clone().into();
+        Ok(metadata.try_as_pretty_json()?)
     }
 }
