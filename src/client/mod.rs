@@ -11,8 +11,6 @@ use nostr::message::SubscriptionId;
 use nostr_sdk::client;
 use uniffi::Object;
 
-use crate::database::{NostrDatabase, from_nostr_database};
-
 mod api;
 mod builder;
 mod notification;
@@ -23,6 +21,7 @@ mod stream;
 use self::output::{ClientSyncSummaryOutput, Output, SubscribeOutput};
 use self::req_target::ReqTarget;
 use self::stream::{ClientEventStream, ClientNotificationStream};
+use crate::database::{NostrDatabase, from_nostr_database};
 use crate::error::Result;
 use crate::monitor::Monitor;
 use crate::protocol::event::Event;
