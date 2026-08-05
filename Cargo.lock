@@ -1546,7 +1546,7 @@ dependencies = [
 [[package]]
 name = "nostr"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "aes",
  "base64",
@@ -1572,7 +1572,7 @@ dependencies = [
 [[package]]
 name = "nostr-connect"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "async-utility",
  "futures-core",
@@ -1586,7 +1586,7 @@ dependencies = [
 [[package]]
 name = "nostr-database"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "nostr",
  "opaquerr",
@@ -1595,7 +1595,7 @@ dependencies = [
 [[package]]
 name = "nostr-gossip"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "nostr",
  "opaquerr",
@@ -1604,7 +1604,7 @@ dependencies = [
 [[package]]
 name = "nostr-gossip-memory"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "indexmap",
  "lru",
@@ -1616,7 +1616,7 @@ dependencies = [
 [[package]]
 name = "nostr-gossip-sqlite"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "async-utility",
  "nostr",
@@ -1628,7 +1628,7 @@ dependencies = [
 [[package]]
 name = "nostr-lmdb"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "async-utility",
  "flatbuffers 25.12.19",
@@ -1643,7 +1643,7 @@ dependencies = [
 [[package]]
 name = "nostr-memory"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "btreecap",
  "nostr",
@@ -1654,7 +1654,7 @@ dependencies = [
 [[package]]
 name = "nostr-ndb"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "nostr",
  "nostr-database",
@@ -1664,7 +1664,7 @@ dependencies = [
 [[package]]
 name = "nostr-sdk"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "async-utility",
  "async-wsocket",
@@ -1743,7 +1743,7 @@ dependencies = [
 [[package]]
 name = "nwc"
 version = "0.45.0-alpha.8"
-source = "git+https://github.com/nostrdevkit/nostr?rev=25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f#25f7bb8842bf37c9fdb6d039c5e21c56d6b6363f"
+source = "git+https://github.com/nostrdevkit/nostr?rev=331c6a87f30e1a607e72e904dc1f8a72bac12570#331c6a87f30e1a607e72e904dc1f8a72bac12570"
 dependencies = [
  "futures-core",
  "nostr",

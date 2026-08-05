@@ -37,8 +37,6 @@ pub enum ClientMessageEnum {
     NegOpen {
         subscription_id: String,
         filter: Arc<Filter>,
-        /// ID size (deprecated)
-        id_size: Option<u8>,
         initial_message: String,
     },
     /// Negentropy Message
@@ -80,12 +78,10 @@ impl From<ClientMessageEnum> for message::ClientMessage<'static> {
             ClientMessageEnum::NegOpen {
                 subscription_id,
                 filter,
-                id_size,
                 initial_message,
             } => Self::NegOpen {
                 subscription_id: Cow::Owned(SubscriptionId::new(subscription_id)),
                 filter: Cow::Owned(filter.as_ref().deref().clone()),
-                id_size,
                 initial_message: Cow::Owned(initial_message),
             },
             ClientMessageEnum::NegMsg {
@@ -134,12 +130,10 @@ impl<'a> From<message::ClientMessage<'a>> for ClientMessageEnum {
             message::ClientMessage::NegOpen {
                 subscription_id,
                 filter,
-                id_size,
                 initial_message,
             } => Self::NegOpen {
                 subscription_id: subscription_id.to_string(),
                 filter: Arc::new(filter.as_ref().to_owned().into()),
-                id_size,
                 initial_message: initial_message.into_owned(),
             },
             message::ClientMessage::NegMsg {
