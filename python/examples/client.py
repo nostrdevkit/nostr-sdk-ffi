@@ -25,13 +25,13 @@ async def main():
     keys = Keys.generate()
 
     # Send an event using the Nostr Signer
-    event = EventBuilder.text_note("Test from rust-nostr Python bindings!").sign(keys)
+    event = EventBuilder(kind=Kind.from_std(KindStandard.TEXT_NOTE), content="Hello!").finalize(keys)
     await client.send_event(event)
 
     # Mine a POW event and sign it with custom keys
     print("Mining a POW text note...")
     adapter = SingleThreadPow()
-    unsigned_event = EventBuilder.text_note("Hello from rust-nostr Python bindings with POW!").build(keys.public_key())
+    unsigned_event = EventBuilder(kind=Kind.from_std(KindStandard.TEXT_NOTE), content="Hello with POW!").finalize_unsigned(keys.public_key())
     unsigned_event = await unsigned_event.mine_async(adapter, 20)
     event = unsigned_event.sign(keys)
     output = await client.send_event(event)
@@ -47,7 +47,7 @@ async def main():
     print("Getting events from relays...")
     f = Filter().authors([keys.public_key(), keys.public_key()])
     events = await client.fetch_events(ReqTarget.auto([f]), timedelta(seconds=10))
-    for event in events.to_vec():
+    for event in events:
         print(event.as_json())
 
 
