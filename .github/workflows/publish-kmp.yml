@@ -40,10 +40,7 @@ jobs:
 
       - name: Install gobley-uniffi-bindgen
         run: |
-          git clone https://github.com/nostrdevkit/gobley "$RUNNER_TEMP/gobley"
-          git -C "$RUNNER_TEMP/gobley" checkout 1e95aa7a6cf6ef198e1e65a783579e36d0ad3fc0
-          git -C "$RUNNER_TEMP/gobley" apply "$GITHUB_WORKSPACE/patches/gobley-uniffi-0.31.2.patch"
-          cargo install --locked --path "$RUNNER_TEMP/gobley/crates/gobley-uniffi-bindgen"
+          cargo install gobley-uniffi-bindgen --git https://github.com/nostrdevkit/gobley --rev f5069745b497e00f26f4e7d6752412cd007ad7f2
 
       - name: Build debug target
         run: |
