@@ -1,6 +1,6 @@
 {
   "name": "@nostrdevkit/nostr-sdk-react-native",
-  "version": "0.45.0-alpha.7",
+  "version": "0.45.0",
   "description": "React Native bindings for the Nostr SDK.",
   "keywords": [
     "nostr",
@@ -47,10 +47,10 @@
     "pack:local": "npm run build && npm pack --ignore-scripts"
   },
   "dependencies": {
-    "@nostrdevkit/nostr-sdk-react-native-android-arm64-v8a": "0.45.0-alpha.7",
-    "@nostrdevkit/nostr-sdk-react-native-android-armeabi-v7a": "0.45.0-alpha.7",
-    "@nostrdevkit/nostr-sdk-react-native-android-x86": "0.45.0-alpha.7",
-    "@nostrdevkit/nostr-sdk-react-native-android-x86_64": "0.45.0-alpha.7",
+    "@nostrdevkit/nostr-sdk-react-native-android-arm64-v8a": "0.45.0",
+    "@nostrdevkit/nostr-sdk-react-native-android-armeabi-v7a": "0.45.0",
+    "@nostrdevkit/nostr-sdk-react-native-android-x86": "0.45.0",
+    "@nostrdevkit/nostr-sdk-react-native-android-x86_64": "0.45.0",
     "@ubjs/core": "0.31.0-3",
     "uniffi-bindgen-react-native": "0.31.0-3"
   },
