@@ -12,7 +12,7 @@ use nostr::{event, filter};
 use nostr_sdk::local_relay;
 use uniffi::{Enum, Object, Record};
 
-use crate::database::NostrDatabase;
+use crate::database::{NostrDatabase, into_nostr_database};
 use crate::error::Result;
 use crate::protocol::event::Event;
 use crate::protocol::filter::Filter;
@@ -221,9 +221,9 @@ impl LocalRelayBuilder {
     }
 
     /// Set database
-    pub fn database(&self, database: &NostrDatabase) -> Self {
+    pub fn database(&self, database: Arc<dyn NostrDatabase>) -> Self {
         let mut builder = self.clone();
-        builder.inner = builder.inner.database(database.deref().clone());
+        builder.inner = builder.inner.database(into_nostr_database(database));
         builder
     }
 

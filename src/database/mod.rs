@@ -2,24 +2,35 @@
 // Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
-use std::ops::Deref;
 use std::sync::Arc;
 
 #[cfg(feature = "lmdb")]
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
-use nostr_lmdb::NostrLmdb;
+use nostr_lmdb::NostrLmdb as InnerNostrLmdb;
 #[cfg(feature = "ndb")]
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
-use nostr_ndb::NdbDatabase;
+use nostr_ndb::NdbDatabase as InnerNdbDatabase;
 use nostr_sdk::prelude::{self, IntoNostrDatabase};
 use uniffi::{Enum, Object, Record};
 
-pub mod custom;
+mod macros;
+mod traits;
 
-use self::custom::{CustomNostrDatabase, IntermediateCustomNostrDatabase};
+#[cfg(all(
+    feature = "native",
+    not(target_arch = "wasm32"),
+    any(feature = "lmdb", feature = "ndb")
+))]
+pub(crate) use self::macros::export_nostr_database;
+pub(crate) use self::macros::impl_nostr_database;
+use self::traits::IntermediateNostrDatabase;
+pub use self::traits::NostrDatabase;
+#[cfg(all(
+    feature = "native",
+    not(target_arch = "wasm32"),
+    any(feature = "lmdb", feature = "ndb")
+))]
 use crate::error::Result;
-use crate::protocol::event::{Event, EventId};
-use crate::protocol::filter::Filter;
 
 #[derive(Record)]
 pub struct NostrDatabaseFeatures {
@@ -157,107 +168,64 @@ impl SaveEventStatus {
     }
 }
 
-#[derive(Object)]
-pub struct NostrDatabase {
+pub(crate) fn into_nostr_database(
+    database: Arc<dyn NostrDatabase>,
+) -> Arc<dyn prelude::NostrDatabase> {
+    IntermediateNostrDatabase { inner: database }.into_nostr_database()
+}
+
+struct RustNostrDatabase {
     inner: Arc<dyn prelude::NostrDatabase>,
 }
 
-impl Deref for NostrDatabase {
-    type Target = Arc<dyn prelude::NostrDatabase>;
+impl_nostr_database!(RustNostrDatabase, |database| database.inner.as_ref());
 
-    fn deref(&self) -> &Self::Target {
-        &self.inner
-    }
+pub(crate) fn from_nostr_database(
+    database: Arc<dyn prelude::NostrDatabase>,
+) -> Arc<dyn NostrDatabase> {
+    Arc::new(RustNostrDatabase { inner: database })
 }
 
-impl From<Arc<dyn prelude::NostrDatabase>> for NostrDatabase {
-    fn from(inner: Arc<dyn prelude::NostrDatabase>) -> Self {
-        Self { inner }
-    }
+/// LMDB database backend.
+#[cfg(all(feature = "lmdb", feature = "native", not(target_arch = "wasm32")))]
+#[derive(Object)]
+pub struct NostrLmdb {
+    inner: InnerNostrLmdb,
 }
 
-#[cfg(feature = "lmdb")]
-#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
-#[uniffi::export]
-impl NostrDatabase {
-    /// LMDB backend
+#[cfg(all(feature = "lmdb", feature = "native", not(target_arch = "wasm32")))]
+#[uniffi::export(async_runtime = "tokio")]
+impl NostrLmdb {
+    /// Open an LMDB database.
     #[uniffi::constructor]
-    pub async fn lmdb(path: &str) -> Result<Self> {
-        let db = Arc::new(NostrLmdb::open(path).await?);
+    pub async fn open(path: &str) -> Result<Self> {
         Ok(Self {
-            inner: db.into_nostr_database(),
+            inner: InnerNostrLmdb::open(path).await?,
         })
     }
 }
 
-#[cfg(feature = "ndb")]
-#[cfg(all(feature = "native", not(target_arch = "wasm32")))]
+#[cfg(all(feature = "lmdb", feature = "native", not(target_arch = "wasm32")))]
+export_nostr_database!(NostrLmdb, |database| &database.inner);
+
+/// nostrdb database backend.
+#[cfg(all(feature = "ndb", feature = "native", not(target_arch = "wasm32")))]
+#[derive(Object)]
+pub struct NdbDatabase {
+    inner: InnerNdbDatabase,
+}
+
+#[cfg(all(feature = "ndb", feature = "native", not(target_arch = "wasm32")))]
 #[uniffi::export]
-impl NostrDatabase {
-    /// [`nostrdb`](https://github.com/damus-io/nostrdb) backend
+impl NdbDatabase {
+    /// Open a nostrdb database.
     #[uniffi::constructor]
-    pub fn ndb(path: &str) -> Result<Self> {
-        let db = Arc::new(NdbDatabase::open(path)?);
+    pub fn open(path: &str) -> Result<Self> {
         Ok(Self {
-            inner: db.into_nostr_database(),
+            inner: InnerNdbDatabase::open(path)?,
         })
     }
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), uniffi::export(async_runtime = "tokio"))]
-#[cfg_attr(target_arch = "wasm32", uniffi::export)]
-impl NostrDatabase {
-    /// Open a custom nostr database
-    #[uniffi::constructor]
-    pub fn custom(database: Arc<dyn CustomNostrDatabase>) -> Self {
-        let intermediate = IntermediateCustomNostrDatabase { inner: database };
-
-        Self {
-            inner: intermediate.into_nostr_database(),
-        }
-    }
-
-    /// Get features
-    #[inline]
-    pub fn features(&self) -> NostrDatabaseFeatures {
-        self.inner.features().into()
-    }
-
-    /// Save [`Event`] into store
-    pub async fn save_event(&self, event: &Event) -> Result<SaveEventStatus> {
-        Ok(self.inner.save_event(event.deref()).await?.into())
-    }
-
-    /// Get [`Event`] by [`EventId`]
-    pub async fn event_by_id(&self, event_id: &EventId) -> Result<Option<Arc<Event>>> {
-        Ok(self
-            .inner
-            .event_by_id(event_id.deref())
-            .await?
-            .map(|e| Arc::new(e.into())))
-    }
-
-    pub async fn count(&self, filter: &Filter) -> Result<u64> {
-        Ok(self.inner.count(filter.deref().clone()).await? as u64)
-    }
-
-    pub async fn query(&self, filter: &Filter) -> Result<Vec<Arc<Event>>> {
-        Ok(self
-            .inner
-            .query(filter.deref().clone())
-            .await?
-            .into_iter()
-            .map(|e| Arc::new(e.into()))
-            .collect())
-    }
-
-    /// Delete all events that match the `Filter`
-    pub async fn delete_events(&self, filter: &Filter) -> Result<()> {
-        Ok(self.inner.delete(filter.deref().clone()).await?)
-    }
-
-    /// Wipe all data
-    pub async fn wipe(&self) -> Result<()> {
-        Ok(self.inner.wipe().await?)
-    }
-}
+#[cfg(all(feature = "ndb", feature = "native", not(target_arch = "wasm32")))]
+export_nostr_database!(NdbDatabase, |database| &database.inner);

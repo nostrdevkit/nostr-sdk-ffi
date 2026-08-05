@@ -1,5 +1,5 @@
 // Copyright (c) 2022-2023 Yuki Kishimoto
-// Copyright (c) 2023-2024 Rust Nostr Developers
+// Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
 use std::fmt;
@@ -30,10 +30,20 @@ impl From<DatabaseEventStatus> for prelude::DatabaseEventStatus {
     }
 }
 
+impl From<prelude::DatabaseEventStatus> for DatabaseEventStatus {
+    fn from(value: prelude::DatabaseEventStatus) -> Self {
+        match value {
+            prelude::DatabaseEventStatus::Saved => Self::Saved,
+            prelude::DatabaseEventStatus::Deleted => Self::Deleted,
+            prelude::DatabaseEventStatus::NotExistent => Self::NotExistent,
+        }
+    }
+}
+
 #[uniffi::export(with_foreign)]
 #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
-pub trait CustomNostrDatabase: Send + Sync {
+pub trait NostrDatabase: Send + Sync {
     /// Name of backend
     fn backend(&self) -> String;
 
@@ -68,13 +78,13 @@ pub trait CustomNostrDatabase: Send + Sync {
     async fn wipe(&self) -> Result<()>;
 }
 
-pub(super) struct IntermediateCustomNostrDatabase {
-    pub(super) inner: Arc<dyn CustomNostrDatabase>,
+pub(crate) struct IntermediateNostrDatabase {
+    pub(crate) inner: Arc<dyn NostrDatabase>,
 }
 
-impl fmt::Debug for IntermediateCustomNostrDatabase {
+impl fmt::Debug for IntermediateNostrDatabase {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("IntermediateCustomNostrDatabase").finish()
+        f.debug_struct("IntermediateNostrDatabase").finish()
     }
 }
 
@@ -88,11 +98,11 @@ mod inner {
     use nostr_database::error::Error;
     use nostr_sdk::prelude::*;
 
-    use super::IntermediateCustomNostrDatabase;
+    use super::IntermediateNostrDatabase;
     use crate::error::MiddleError;
     use crate::future::assume_send;
 
-    impl NostrDatabase for IntermediateCustomNostrDatabase {
+    impl NostrDatabase for IntermediateNostrDatabase {
         fn backend(&self) -> &'static str {
             self.inner.backend().leak()
         }

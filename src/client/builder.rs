@@ -12,7 +12,7 @@ use uniffi::{Enum, Object, Record};
 
 use super::Client;
 use crate::authenticator::{Authenticator, FFI2RustAuthenticator};
-use crate::database::NostrDatabase;
+use crate::database::{NostrDatabase, into_nostr_database};
 use crate::error::{NostrSdkError, Result};
 use crate::gossip::NostrGossip;
 use crate::monitor::Monitor;
@@ -274,9 +274,9 @@ impl ClientBuilder {
         builder
     }
 
-    pub fn database(&self, database: &NostrDatabase) -> Self {
+    pub fn database(&self, database: Arc<dyn NostrDatabase>) -> Self {
         let mut builder = self.clone();
-        builder.inner = builder.inner.database(database.deref().clone());
+        builder.inner = builder.inner.database(into_nostr_database(database));
         builder
     }
 
