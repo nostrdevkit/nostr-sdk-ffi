@@ -11,19 +11,15 @@ use nostr_lmdb::NostrLmdb;
 #[cfg(feature = "ndb")]
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 use nostr_ndb::NdbDatabase;
-use nostr_sdk::prelude::{self, IntoNostrDatabase, NostrDatabaseExt};
+use nostr_sdk::prelude::{self, IntoNostrDatabase};
 use uniffi::{Enum, Object, Record};
 
 pub mod custom;
-pub mod events;
 
 use self::custom::{CustomNostrDatabase, IntermediateCustomNostrDatabase};
-use self::events::Events;
 use crate::error::Result;
 use crate::protocol::event::{Event, EventId};
 use crate::protocol::filter::Filter;
-use crate::protocol::key::PublicKey;
-use crate::protocol::nips::nip01::Metadata;
 
 #[derive(Record)]
 pub struct NostrDatabaseFeatures {
@@ -245,10 +241,14 @@ impl NostrDatabase {
         Ok(self.inner.count(filter.deref().clone()).await? as u64)
     }
 
-    pub async fn query(&self, filter: &Filter) -> Result<Arc<Events>> {
-        Ok(Arc::new(
-            self.inner.query(filter.deref().clone()).await?.into(),
-        ))
+    pub async fn query(&self, filter: &Filter) -> Result<Vec<Arc<Event>>> {
+        Ok(self
+            .inner
+            .query(filter.deref().clone())
+            .await?
+            .into_iter()
+            .map(|e| Arc::new(e.into()))
+            .collect())
     }
 
     /// Delete all events that match the `Filter`
@@ -259,13 +259,5 @@ impl NostrDatabase {
     /// Wipe all data
     pub async fn wipe(&self) -> Result<()> {
         Ok(self.inner.wipe().await?)
-    }
-
-    pub async fn metadata(&self, public_key: &PublicKey) -> Result<Option<Arc<Metadata>>> {
-        Ok(self
-            .inner
-            .metadata(**public_key)
-            .await?
-            .map(|m| Arc::new(m.into())))
     }
 }

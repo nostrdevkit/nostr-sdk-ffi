@@ -2,11 +2,12 @@
 // Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
+use std::fmt;
 use std::ops::Deref;
 use std::sync::Arc;
 
 use nostr::filter::{self, MatchEventOptions};
-use uniffi::{Enum, Object, Record};
+use uniffi::{Object, Record};
 
 use crate::error::Result;
 use crate::protocol::event::{Event, EventId, Kind};
@@ -14,73 +15,39 @@ use crate::protocol::key::PublicKey;
 use crate::protocol::nips::nip01::Coordinate;
 use crate::protocol::types::Timestamp;
 
-#[derive(Enum)]
-pub enum Alphabet {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
-}
-
-impl From<Alphabet> for filter::Alphabet {
-    fn from(value: Alphabet) -> Self {
-        match value {
-            Alphabet::A => Self::A,
-            Alphabet::B => Self::B,
-            Alphabet::C => Self::C,
-            Alphabet::D => Self::D,
-            Alphabet::E => Self::E,
-            Alphabet::F => Self::F,
-            Alphabet::G => Self::G,
-            Alphabet::H => Self::H,
-            Alphabet::I => Self::I,
-            Alphabet::J => Self::J,
-            Alphabet::K => Self::K,
-            Alphabet::L => Self::L,
-            Alphabet::M => Self::M,
-            Alphabet::N => Self::N,
-            Alphabet::O => Self::O,
-            Alphabet::P => Self::P,
-            Alphabet::Q => Self::Q,
-            Alphabet::R => Self::R,
-            Alphabet::S => Self::S,
-            Alphabet::T => Self::T,
-            Alphabet::U => Self::U,
-            Alphabet::V => Self::V,
-            Alphabet::W => Self::W,
-            Alphabet::X => Self::X,
-            Alphabet::Y => Self::Y,
-            Alphabet::Z => Self::Z,
-        }
-    }
-}
-
-#[derive(Debug, PartialEq, Eq, Hash, Object)]
-#[uniffi::export(Debug, Eq, Hash)]
+/// A validated single-letter ASCII tag.
+///
+/// A `SingleLetterTag` can contain exactly one of the following bytes:
+///
+/// - "a-z"
+/// - "A-Z"
+///
+/// The type stores the original character case.
+///
+/// # Invariants
+///
+/// The inner byte is always an ASCII alphabetic character. This invariant is
+/// maintained by keeping the field private and validating every public
+/// constructor.
+///
+/// # Ordering
+///
+/// ```text
+/// a < A < b < B < ... < z < Z
+/// ```
+///
+/// In other words, values are ordered alphabetically without regard to case,
+/// with the lowercase variant before the uppercase variant of the same letter.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Object)]
+#[uniffi::export(Debug, Display, Eq, Ord, Hash)]
 pub struct SingleLetterTag {
     inner: filter::SingleLetterTag,
+}
+
+impl fmt::Display for SingleLetterTag {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.inner)
+    }
 }
 
 impl Deref for SingleLetterTag {
@@ -99,18 +66,25 @@ impl From<filter::SingleLetterTag> for SingleLetterTag {
 
 #[uniffi::export]
 impl SingleLetterTag {
+    /// Creates a tag from an ASCII alphabetic byte.
+    ///
+    /// The original character case is preserved.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `character` is not in `a-zA-Z`.
+    #[inline]
     #[uniffi::constructor]
-    pub fn lowercase(character: Alphabet) -> Self {
-        Self {
-            inner: filter::SingleLetterTag::lowercase(character.into()),
-        }
+    pub fn from_byte(character: u8) -> Result<Self> {
+        Ok(Self {
+            inner: filter::SingleLetterTag::from_byte(character)?,
+        })
     }
 
-    #[uniffi::constructor]
-    pub fn uppercase(character: Alphabet) -> Self {
-        Self {
-            inner: filter::SingleLetterTag::uppercase(character.into()),
-        }
+    /// Returns the tag as a byte.
+    #[inline]
+    pub fn as_byte(&self) -> u8 {
+        self.inner.as_byte()
     }
 
     pub fn is_lowercase(&self) -> bool {

@@ -22,7 +22,6 @@ use self::options::SyncOptions;
 pub use self::options::{RelayOptions, ReqExitPolicy};
 pub use self::stats::RelayConnectionStats;
 pub use self::status::RelayStatus;
-use crate::database::events::Events;
 use crate::error::Result;
 use crate::negentropy::NegentropyItem;
 use crate::protocol::event::{Event, EventId};
@@ -235,7 +234,7 @@ impl Relay {
         filter: &Filter,
         timeout: Option<Duration>,
         policy: Option<ReqExitPolicy>,
-    ) -> Result<Events> {
+    ) -> Result<Vec<Arc<Event>>> {
         let mut builder = self.inner.fetch_events(filter.deref().clone());
 
         if let Some(timeout) = timeout {
@@ -246,7 +245,9 @@ impl Relay {
             builder = builder.policy(policy.into());
         }
 
-        Ok(builder.await?.into())
+        let events = builder.await?;
+
+        Ok(events.into_iter().map(|e| Arc::new(e.into())).collect())
     }
 
     /// Count events

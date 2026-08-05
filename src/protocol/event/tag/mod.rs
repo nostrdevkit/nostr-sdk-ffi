@@ -5,7 +5,7 @@
 use std::ops::Deref;
 use std::sync::Arc;
 
-use nostr::prelude::{Nip89Tag, TagCodec};
+use nostr::prelude::Nip89Tag;
 use nostr::{event, types};
 use uniffi::Object;
 
@@ -65,11 +65,6 @@ impl Tag {
     pub fn single_letter_tag(&self) -> Option<Arc<SingleLetterTag>> {
         self.inner.single_letter_tag().map(|s| Arc::new(s.into()))
     }
-
-    // /// Get standardized tag
-    // pub fn as_standardized(&self) -> Option<TagStandard> {
-    //     self.inner.as_standardized().cloned().map(|t| t.into())
-    // }
 
     /// Get tag len
     pub fn len(&self) -> u64 {
@@ -142,7 +137,7 @@ impl Tag {
                 name,
                 address: None,
             }
-            .to_tag(),
+            .into(),
         }
     }
 

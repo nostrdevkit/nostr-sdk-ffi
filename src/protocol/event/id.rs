@@ -36,7 +36,7 @@ impl From<event::EventId> for EventId {
 #[uniffi::export]
 impl EventId {
     #[uniffi::constructor]
-    pub fn new(
+    pub fn compute(
         public_key: &PublicKey,
         created_at: &Timestamp,
         kind: &Kind,
@@ -44,7 +44,7 @@ impl EventId {
         content: &str,
     ) -> Self {
         Self {
-            inner: event::EventId::new(
+            inner: event::EventId::compute(
                 public_key.deref(),
                 created_at.deref(),
                 kind.deref(),

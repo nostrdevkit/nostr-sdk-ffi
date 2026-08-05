@@ -79,6 +79,7 @@ impl fmt::Debug for IntermediateCustomNostrDatabase {
 }
 
 mod inner {
+    use std::collections::BTreeSet;
     use std::future::Future;
     use std::ops::Deref;
     use std::pin::Pin;
@@ -92,8 +93,8 @@ mod inner {
     use crate::future::assume_send;
 
     impl NostrDatabase for IntermediateCustomNostrDatabase {
-        fn backend(&self) -> Backend {
-            Backend::Custom(self.inner.backend())
+        fn backend(&self) -> &'static str {
+            self.inner.backend().leak()
         }
 
         fn features(&self) -> Features {
@@ -156,9 +157,9 @@ mod inner {
         fn query(
             &self,
             filter: Filter,
-        ) -> Pin<Box<dyn Future<Output = Result<Events, Error>> + Send + '_>> {
+        ) -> Pin<Box<dyn Future<Output = Result<BTreeSet<Event>, Error>> + Send + '_>> {
             Box::pin(async move {
-                let mut events = Events::new(&filter);
+                let mut events = BTreeSet::new();
 
                 let output = assume_send(self.inner.query(Arc::new(filter.into())))
                     .await

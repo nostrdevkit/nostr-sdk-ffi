@@ -22,9 +22,9 @@ use self::output::{ClientSyncSummaryOutput, Output, SubscribeOutput};
 use self::req_target::ReqTarget;
 use self::stream::{ClientEventStream, ClientNotificationStream};
 use crate::database::NostrDatabase;
-use crate::database::events::Events;
 use crate::error::Result;
 use crate::monitor::Monitor;
+use crate::protocol::event::Event;
 use crate::protocol::filter::Filter;
 use crate::protocol::types::RelayUrl;
 use crate::relay::capabilities::RelayCapabilities;
@@ -492,7 +492,7 @@ impl Client {
         target: &ReqTarget,
         timeout: Option<Duration>,
         policy: Option<ReqExitPolicy>,
-    ) -> Result<Events> {
+    ) -> Result<Vec<Arc<Event>>> {
         let mut builder = self.inner.fetch_events(target.deref().clone());
 
         if let Some(timeout) = timeout {
@@ -503,7 +503,9 @@ impl Client {
             builder = builder.policy(policy.into());
         }
 
-        Ok(builder.await?.into())
+        let events = builder.await?;
+
+        Ok(events.into_iter().map(|e| Arc::new(e.into())).collect())
     }
 
     /// Stream events from relays.

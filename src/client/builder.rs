@@ -7,7 +7,7 @@ use std::ops::Deref;
 use std::sync::Arc;
 use std::time::Duration;
 
-use nostr_sdk::{client, prelude};
+use nostr_sdk::{client, prelude, relay};
 use uniffi::{Enum, Object, Record};
 
 use super::Client;
@@ -225,7 +225,7 @@ pub enum SleepWhenIdle {
     },
 }
 
-impl From<SleepWhenIdle> for client::SleepWhenIdle {
+impl From<SleepWhenIdle> for relay::SleepWhenIdle {
     fn from(value: SleepWhenIdle) -> Self {
         match value {
             SleepWhenIdle::Disabled => Self::Disabled,
