@@ -166,8 +166,15 @@ impl Relay {
     /// By default, in case of disconnection (after a first successful connection),
     /// the connection task will automatically attempt to reconnect.
     /// This behavior can be disabled by changing [`RelayOptions::reconnect`] option.
-    pub async fn try_connect(&self, timeout: Duration) -> Result<()> {
-        Ok(self.inner.try_connect().timeout(timeout).await?)
+    #[uniffi::method(default(timeout = None))]
+    pub async fn try_connect(&self, timeout: Option<Duration>) -> Result<()> {
+        let mut builder = self.inner.try_connect();
+
+        if let Some(timeout) = timeout {
+            builder = builder.timeout(timeout);
+        }
+
+        Ok(builder.await?)
     }
 
     /// Disconnect from relay and set status to `Terminated`
@@ -188,9 +195,30 @@ impl Relay {
         Ok(self.inner.send_msg(msg.deref().clone()).await?)
     }
 
-    /// Send event and wait for `OK` relay msg
-    pub async fn send_event(&self, event: &Event) -> Result<Arc<EventId>> {
-        let output = self.inner.send_event(event.deref()).await?;
+    /// Send event to relay.
+    #[uniffi::method(default(wait_for_ok = None, ok_timeout = None, authentication_timeout = None))]
+    pub async fn send_event(
+        &self,
+        event: &Event,
+        wait_for_ok: Option<bool>,
+        ok_timeout: Option<Duration>,
+        authentication_timeout: Option<Duration>,
+    ) -> Result<Arc<EventId>> {
+        let mut builder = self.inner.send_event(event.deref());
+
+        if let Some(wait_for_ok) = wait_for_ok {
+            builder = builder.wait_for_ok(wait_for_ok);
+        }
+
+        if let Some(ok_timeout) = ok_timeout {
+            builder = builder.ok_timeout(ok_timeout);
+        }
+
+        if let Some(authentication_timeout) = authentication_timeout {
+            builder = builder.authentication_timeout(authentication_timeout);
+        }
+
+        let output = builder.await?;
         Ok(Arc::new((*output.id()).into()))
     }
 
@@ -228,12 +256,13 @@ impl Relay {
     }
 
     /// Fetch events
-    #[uniffi::method(default(timeout = None, policy = None))]
+    #[uniffi::method(default(timeout = None, policy = None, max_events = None))]
     pub async fn fetch_events(
         &self,
         filter: &Filter,
         timeout: Option<Duration>,
         policy: Option<ReqExitPolicy>,
+        max_events: Option<u32>,
     ) -> Result<Vec<Arc<Event>>> {
         let mut builder = self.inner.fetch_events(filter.deref().clone());
 
@@ -243,6 +272,10 @@ impl Relay {
 
         if let Some(policy) = policy {
             builder = builder.policy(policy.into());
+        }
+
+        if let Some(max_events) = max_events {
+            builder = builder.max_events(max_events as usize);
         }
 
         let events = builder.await?;

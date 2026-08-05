@@ -83,12 +83,20 @@ impl Client {
     /// By default, gets only relays with `READ` or `WRITE` flags.
     ///
     /// Set `all` to true to get every relay in the pool.
-    #[uniffi::method(default(all = false))]
-    pub async fn relays(&self, all: bool) -> HashMap<Arc<RelayUrl>, Arc<Relay>> {
+    #[uniffi::method(default(all = false, capabilities = None))]
+    pub async fn relays(
+        &self,
+        all: bool,
+        capabilities: Option<Arc<RelayCapabilities>>,
+    ) -> HashMap<Arc<RelayUrl>, Arc<Relay>> {
         let mut builder = self.inner.relays();
 
         if all {
             builder = builder.all();
+        }
+
+        if let Some(capabilities) = capabilities {
+            builder = builder.with_capabilities(**capabilities);
         }
 
         builder
@@ -244,6 +252,7 @@ impl Client {
     /// To customize this behavior, the arguments can be adjusted:
     ///
     /// - `timeout`: set a maximum timeout
+    #[uniffi::method(default(timeout = None))]
     pub async fn try_connect(&self, timeout: Option<Duration>) -> Output {
         let mut builder = self.inner.try_connect();
 
@@ -486,12 +495,13 @@ impl Client {
     /// - The resolved target contains no relays,
     /// - A specified relay does not exist in the pool,
     /// - Target resolution fails.
-    #[uniffi::method(default(timeout = None, policy = None))]
+    #[uniffi::method(default(timeout = None, policy = None, max_events = None))]
     pub async fn fetch_events(
         &self,
         target: &ReqTarget,
         timeout: Option<Duration>,
         policy: Option<ReqExitPolicy>,
+        max_events: Option<u32>,
     ) -> Result<Vec<Arc<Event>>> {
         let mut builder = self.inner.fetch_events(target.deref().clone());
 
@@ -501,6 +511,10 @@ impl Client {
 
         if let Some(policy) = policy {
             builder = builder.policy(policy.into());
+        }
+
+        if let Some(max_events) = max_events {
+            builder = builder.max_events(max_events as usize);
         }
 
         let events = builder.await?;
@@ -567,6 +581,7 @@ impl Client {
     ///
     /// Network or relay-specific errors are reported **inside the stream**
     /// as `Err(relay::Error)` items.
+    #[uniffi::method(default(id = None, timeout = None, policy = None))]
     pub async fn stream_events(
         &self,
         target: &ReqTarget,
