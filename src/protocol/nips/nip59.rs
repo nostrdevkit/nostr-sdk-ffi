@@ -20,7 +20,7 @@ use crate::protocol::signer::{
 /// Seal
 ///
 /// <https://github.com/nostr-protocol/nips/blob/master/59.md>
-#[uniffi::constructor]
+#[uniffi::export]
 pub fn nip59_make_seal(
     signer: Arc<dyn NostrSigner>,
     receiver_public_key: &PublicKey,
@@ -35,7 +35,7 @@ pub fn nip59_make_seal(
 /// Seal
 ///
 /// <https://github.com/nostr-protocol/nips/blob/master/59.md>
-#[uniffi::constructor]
+#[uniffi::export]
 pub async fn nip59_make_seal_async(
     signer: Arc<dyn AsyncNostrSigner>,
     receiver_public_key: &PublicKey,

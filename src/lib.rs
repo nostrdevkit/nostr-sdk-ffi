@@ -4,39 +4,40 @@
 
 #![allow(clippy::new_without_default)]
 #![allow(clippy::len_without_is_empty)]
+#![allow(clippy::wrong_self_convention)]
 
 mod authenticator;
-pub mod client;
+mod client;
 #[cfg(feature = "connect")]
-pub mod connect;
-pub mod database;
-pub mod error;
+mod connect;
+mod database;
+mod error;
 mod future;
-pub mod gossip;
+mod gossip;
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod local_relay;
 #[cfg(feature = "logger")]
-pub mod logger;
+mod logger;
 mod monitor;
-pub mod negentropy;
+mod negentropy;
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod net;
 #[cfg(feature = "nwc")]
-pub mod nwc;
-pub mod parser;
-pub mod policy;
-pub mod protocol;
+mod nwc;
+mod parser;
+mod policy;
+mod protocol;
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
 mod proxy;
-pub mod relay;
+mod relay;
 #[cfg(all(feature = "native", not(target_arch = "wasm32")))]
-pub mod transport;
+mod transport;
 #[cfg(target_arch = "wasm32")]
 mod wasm32_time;
 
 /// Get git hash version of library
 #[uniffi::export]
-pub fn git_hash_version() -> Option<String> {
+fn git_hash_version() -> Option<String> {
     option_env!("GIT_HASH").map(|v| v.to_string())
 }
 
@@ -46,7 +47,7 @@ pub fn git_hash_version() -> Option<String> {
 // Workaround comes from https://github.com/upx/upx/issues/740
 #[unsafe(no_mangle)]
 #[cfg(target_os = "android")]
-pub fn _init() {}
+fn _init() {}
 
 // Changes to this arg will break binding packages (in particular Swift).
 // If this is removed, make sure to update `uniffi.toml`
