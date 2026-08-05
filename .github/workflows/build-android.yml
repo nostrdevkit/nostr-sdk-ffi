@@ -51,7 +51,7 @@ jobs:
       run: cargo ndk -t ${{ matrix.target }} build --lib --release
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-${{ matrix.target }}
         path: |

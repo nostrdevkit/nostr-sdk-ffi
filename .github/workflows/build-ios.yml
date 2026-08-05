@@ -40,7 +40,7 @@ jobs:
       run: cargo build --lib --release --target ${{ matrix.target }}
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-${{ matrix.target }}
         path: target/${{ matrix.target }}/release/libnostr_sdk_ffi.a
@@ -74,7 +74,7 @@ jobs:
         lipo -create -output ios-universal-sim/libnostr_sdk_ffi.a aarch64-apple-ios-sim/libnostr_sdk_ffi.a x86_64-apple-ios/libnostr_sdk_ffi.a
 
     - name: Archive release
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-ios-universal-sim
         path: |

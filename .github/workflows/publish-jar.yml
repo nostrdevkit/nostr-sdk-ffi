@@ -51,7 +51,7 @@ jobs:
           uniffi-bindgen generate --library target/debug/libnostr_sdk_ffi.so --language kotlin --no-format -o target/uniffi/jvm-kotlin
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-jvm-kotlin
           path: target/uniffi/jvm-kotlin
@@ -161,7 +161,7 @@ jobs:
       run: bash assemble.sh
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-jar
         path: jvm/lib/build/libs/lib.jar

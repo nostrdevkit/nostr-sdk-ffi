@@ -42,7 +42,7 @@ jobs:
           uniffi-bindgen-cs --library target/debug/libnostr_sdk_ffi.so -o target/uniffi/csharp
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nostr-sdk-ffi-csharp
           path: target/uniffi/csharp
@@ -192,7 +192,7 @@ jobs:
       run: bash assemble.sh
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nostr-sdk-ffi-nupkg
         path: csharp/Nostr.Sdk/bin/Release/Nostr.Sdk.*.nupkg
