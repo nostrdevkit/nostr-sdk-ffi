@@ -2,10 +2,8 @@
 // Copyright (c) 2023-2025 Rust Nostr Developers
 // Distributed under the MIT software license
 
-pub mod contact;
 pub mod time;
 pub mod url;
 
-pub use self::contact::Contact;
 pub use self::time::Timestamp;
 pub use self::url::RelayUrl;
