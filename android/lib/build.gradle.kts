@@ -10,7 +10,7 @@ repositories {
 }
 
 android {
-    namespace = "rust.nostr.sdk"
+    namespace = "org.nostrdevkit.sdk"
 
     compileSdk = 35
 

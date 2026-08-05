@@ -74,7 +74,7 @@ kotlin {
 }
 
 android {
-    namespace = "rust.nostr.sdk"
+    namespace = "org.nostrdevkit.sdk"
 
     compileSdk = 34
 
@@ -83,7 +83,7 @@ android {
 
         consumerProguardFiles("consumer-rules.pro")
 
-        testApplicationId = "rust.nostr.test"
+        testApplicationId = "org.nostrdevkit.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -1,5 +1,5 @@
 # Kotlin Multi Platform https://gobley.dev/docs/bindgen#bindgen-configuration
-package_name = "rust.nostr.sdk"
+package_name = "org.nostrdevkit.sdk"
 kotlin_multiplatform = true
 kotlin_targets = ["android", "jvm", "native"]
 kotlin_target_version = "1.9.24"

@@ -64,7 +64,7 @@ pub fn init_logger(level: LogLevel) {
 
     #[cfg(target_os = "android")]
     let layer = fmt::layer().with_writer(paranoid_android::AndroidLogMakeWriter::new(
-        "rust.nostr.sdk".to_owned(),
+        "org.nostrdevkit.sdk".to_owned(),
     ));
 
     #[cfg(not(target_os = "android"))]

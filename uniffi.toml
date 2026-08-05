@@ -1,5 +1,5 @@
 [bindings.kotlin]
-package_name = "rust.nostr.sdk"
+package_name = "org.nostrdevkit.sdk"
 
 [bindings.csharp]
 namespace = "Nostr.Sdk"

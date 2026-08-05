@@ -1,7 +1,7 @@
-package rust.nostr
+package org.nostrdevkit
 
-import rust.nostr.sdk.Keys
-import rust.nostr.sdk.SecretKey
+import org.nostrdevkit.sdk.Keys
+import org.nostrdevkit.sdk.SecretKey
 import kotlin.test.Test
 
 class TestKeys {

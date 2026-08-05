@@ -24,5 +24,5 @@
 -dontwarn java.awt.*
 -keep class com.sun.jna.* { *; }
 -keepclassmembers class * extends com.sun.jna.* { public *; }
--keep class rust.nostr.* { *; }
--keepclassmembers class * extends rust.nostr.* { public *; }
+-keep class org.nostrdevkit.* { *; }
+-keepclassmembers class * extends org.nostrdevkit.* { public *; }
