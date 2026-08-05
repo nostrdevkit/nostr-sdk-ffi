@@ -12,6 +12,9 @@ use uniffi::{Object, Record};
 
 use crate::error::Result;
 use crate::protocol::event::Kind;
+use crate::protocol::event::builder::{
+    impl_finalize, impl_finalize_unsigned, impl_into_event_builder,
+};
 use crate::protocol::key::PublicKey;
 use crate::protocol::util::JsonValue;
 
@@ -186,6 +189,12 @@ impl From<nip01::Metadata> for Metadata {
     }
 }
 
+impl From<Metadata> for nip01::Metadata {
+    fn from(value: Metadata) -> Self {
+        value.inner
+    }
+}
+
 #[uniffi::export]
 impl Metadata {
     #[uniffi::constructor]
@@ -213,3 +222,7 @@ impl Metadata {
         Ok(self.inner.try_as_pretty_json()?)
     }
 }
+
+impl_into_event_builder!(Metadata, nip01::Metadata, clone);
+impl_finalize_unsigned!(Metadata, nip01::Metadata, clone);
+impl_finalize!(Metadata, nip01::Metadata, clone);

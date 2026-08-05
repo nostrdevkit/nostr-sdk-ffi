@@ -10,6 +10,10 @@ use nostr::types::Url;
 use uniffi::{Enum, Record};
 
 use crate::error::NostrSdkError;
+use crate::protocol::event::builder::{
+    impl_finalize, impl_finalize_unsigned, impl_into_event_builder, impl_try_finalize,
+    impl_try_finalize_unsigned, impl_try_into_event_builder,
+};
 use crate::protocol::key::PublicKey;
 use crate::protocol::nips::nip01::Coordinate;
 use crate::protocol::types::{RelayUrl, Timestamp};
@@ -70,6 +74,10 @@ impl From<GitRepositoryAnnouncement> for nip34::GitRepositoryAnnouncement {
     }
 }
 
+impl_into_event_builder!(GitRepositoryAnnouncement, nip34::GitRepositoryAnnouncement);
+impl_finalize_unsigned!(GitRepositoryAnnouncement, nip34::GitRepositoryAnnouncement);
+impl_finalize!(GitRepositoryAnnouncement, nip34::GitRepositoryAnnouncement);
+
 /// Git Issue
 #[derive(Record)]
 pub struct GitIssue {
@@ -93,6 +101,10 @@ impl From<GitIssue> for nip34::GitIssue {
         }
     }
 }
+
+impl_into_event_builder!(GitIssue, nip34::GitIssue);
+impl_finalize_unsigned!(GitIssue, nip34::GitIssue);
+impl_finalize!(GitIssue, nip34::GitIssue);
 
 /// Git Patch Committer
 #[derive(Record)]
@@ -205,3 +217,7 @@ impl TryFrom<GitPatch> for nip34::GitPatch {
         })
     }
 }
+
+impl_try_into_event_builder!(GitPatch, nip34::GitPatch);
+impl_try_finalize_unsigned!(GitPatch, nip34::GitPatch);
+impl_try_finalize!(GitPatch, nip34::GitPatch);

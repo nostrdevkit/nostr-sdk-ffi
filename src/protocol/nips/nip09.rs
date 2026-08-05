@@ -9,6 +9,9 @@ use uniffi::Record;
 
 use super::nip01::Coordinate;
 use crate::protocol::event::EventId;
+use crate::protocol::event::builder::{
+    impl_finalize, impl_finalize_unsigned, impl_into_event_builder,
+};
 
 /// Event deletion request
 #[derive(Record)]
@@ -35,3 +38,7 @@ impl From<EventDeletionRequest> for nip09::EventDeletionRequest {
         }
     }
 }
+
+impl_into_event_builder!(EventDeletionRequest, nip09::EventDeletionRequest);
+impl_finalize_unsigned!(EventDeletionRequest, nip09::EventDeletionRequest);
+impl_finalize!(EventDeletionRequest, nip09::EventDeletionRequest);

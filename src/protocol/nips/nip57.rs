@@ -9,6 +9,9 @@ use nostr::nips::nip57;
 use uniffi::Object;
 
 use crate::protocol::event::EventId;
+use crate::protocol::event::builder::{
+    impl_finalize, impl_finalize_unsigned, impl_into_event_builder,
+};
 use crate::protocol::key::PublicKey;
 use crate::protocol::types::RelayUrl;
 
@@ -31,6 +34,16 @@ impl From<nip57::ZapRequestData> for ZapRequestData {
         Self { inner }
     }
 }
+
+impl From<ZapRequestData> for nip57::ZapRequestData {
+    fn from(value: ZapRequestData) -> Self {
+        value.inner
+    }
+}
+
+impl_into_event_builder!(ZapRequestData, nip57::ZapRequestData, clone);
+impl_finalize_unsigned!(ZapRequestData, nip57::ZapRequestData, clone);
+impl_finalize!(ZapRequestData, nip57::ZapRequestData, clone);
 
 #[uniffi::export]
 impl ZapRequestData {
