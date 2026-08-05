@@ -14,7 +14,7 @@ use crate::protocol::event::builder::{
 };
 
 /// Event deletion request
-#[derive(Record)]
+#[derive(Clone, Record)]
 pub struct EventDeletionRequest {
     /// Event IDs
     pub ids: Vec<Arc<EventId>>,
@@ -39,6 +39,15 @@ impl From<EventDeletionRequest> for nip09::EventDeletionRequest {
     }
 }
 
-impl_into_event_builder!(EventDeletionRequest, nip09::EventDeletionRequest);
-impl_finalize_unsigned!(EventDeletionRequest, nip09::EventDeletionRequest);
-impl_finalize!(EventDeletionRequest, nip09::EventDeletionRequest);
+impl_into_event_builder!(EventDeletionRequest, |req| {
+    let upstream: nip09::EventDeletionRequest = req.clone().into();
+    upstream
+});
+impl_finalize_unsigned!(EventDeletionRequest, |req| {
+    let upstream: nip09::EventDeletionRequest = req.clone().into();
+    upstream
+});
+impl_finalize!(EventDeletionRequest, |req| {
+    let upstream: nip09::EventDeletionRequest = req.clone().into();
+    upstream
+});

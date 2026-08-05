@@ -189,12 +189,6 @@ impl From<nip01::Metadata> for Metadata {
     }
 }
 
-impl From<Metadata> for nip01::Metadata {
-    fn from(value: Metadata) -> Self {
-        value.inner
-    }
-}
-
 #[uniffi::export]
 impl Metadata {
     #[uniffi::constructor]
@@ -223,6 +217,6 @@ impl Metadata {
     }
 }
 
-impl_into_event_builder!(Metadata, nip01::Metadata, clone);
-impl_finalize_unsigned!(Metadata, nip01::Metadata, clone);
-impl_finalize!(Metadata, nip01::Metadata, clone);
+impl_into_event_builder!(Metadata, |m| m.inner.clone());
+impl_finalize_unsigned!(Metadata, |m| m.inner.clone());
+impl_finalize!(Metadata, |m| m.inner.clone());
