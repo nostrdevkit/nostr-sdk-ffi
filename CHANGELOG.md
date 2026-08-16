@@ -64,7 +64,7 @@
 
 ### Removed
 
-- Remove FFI implementations for NIP-15, NIP-39, NIP-48, NIP-51, NIP-53, NIP-88, NIP-94, NIP-96, and NIP-98.
+- Remove FFI implementations for NIP-15, NIP-39, NIP-48, NIP-51, NIP-53, NIP-57, NIP-88, NIP-94, NIP-96, and NIP-98.
 - Remove unused event-builder signing methods from the client bindings.
 - Remove superseded configuration and binding-generation workarounds.
 
