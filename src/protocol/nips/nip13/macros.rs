@@ -72,8 +72,25 @@ macro_rules! impl_async_pow_adapter {
                 let unsigned_event = unsigned_event.as_ref().deref().clone();
                 let difficulty = ::std::num::NonZeroU8::new(difficulty).ok_or($crate::error::NostrSdkError::NonZeroDifficulty)?;
 
+                #[cfg(target_arch = "wasm32")]
+                let output = <_ as ::nostr::nips::nip13::PowAdapter>::compute(
+                    adapter,
+                    unsigned_event,
+                    difficulty,
+                )?;
+
+                #[cfg(not(target_arch = "wasm32"))]
+                let output = $crate::future::assume_send(
+                    <_ as ::nostr::nips::nip13::AsyncPowAdapter>::compute_async(
+                        adapter,
+                        unsigned_event,
+                        difficulty,
+                    ),
+                )
+                .await?;
+
                 Ok(Some(::std::sync::Arc::new(
-                    $crate::future::assume_send(<_ as ::nostr::nips::nip13::AsyncPowAdapter>::compute_async(adapter, unsigned_event, difficulty)).await?.into(),
+                    output.into(),
                 )))
             }
         }

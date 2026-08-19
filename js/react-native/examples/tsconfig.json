@@ -8,5 +8,5 @@
     "strict": true,
     "target": "ES2022"
   },
-  "include": ["keys.ts"]
+  "include": ["*.ts"]
 }

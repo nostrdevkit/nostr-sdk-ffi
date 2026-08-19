@@ -46,7 +46,7 @@
     "build:native": "cargo build --release --lib --manifest-path ../../Cargo.toml",
     "compile": "tsc -p tsconfig.json --emitDeclarationOnly && esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/index.js",
     "build": "npm run clean && npm run generate && npm run build:native && npm run compile",
-    "test": "node --test tests/*.test.mjs && node examples/keys.mjs",
+    "test": "node --test tests/*.test.mjs && node scripts/run-examples.mjs",
     "pack:local": "npm run build && npm pack"
   },
   "dependencies": {

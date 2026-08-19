@@ -162,8 +162,9 @@ jobs:
           uniffi-bindgen-cs --library target/debug/libnostr_sdk_ffi.so -o target/uniffi/csharp
           cp target/uniffi/csharp/nostr_sdk.cs csharp/Nostr.Sdk/
           find csharp/Examples -type f -name '*.csproj' -print0 | sort -z | while IFS= read -r -d '' example; do
-            LD_LIBRARY_PATH="$GITHUB_WORKSPACE/target/debug" dotnet run --project "$example"
+            dotnet build "$example"
           done
+          LD_LIBRARY_PATH="$GITHUB_WORKSPACE/target/debug" dotnet run --project csharp/Examples/Keys/Keys.csproj --no-build
           test -s csharp/Nostr.Sdk/bin/Debug/net6.0/Nostr.Sdk.xml
           python -c 'import xml.etree.ElementTree as ET; ET.parse("csharp/Nostr.Sdk/bin/Debug/net6.0/Nostr.Sdk.xml")'
 

@@ -42,7 +42,7 @@ const server = createServer(async (request, response) => {
       settle.resolve();
     } else {
       const message = url.searchParams.get("message") ?? "No error details";
-      settle.reject(new Error(`Web test failed: ${message}`));
+      settle.reject(new Error(`Web test failed after ${lastStage}: ${message}`));
     }
     return;
   }

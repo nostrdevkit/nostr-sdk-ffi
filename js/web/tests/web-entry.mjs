@@ -1,26 +1,3 @@
-let customDatabaseCountCalls = 0;
-const customDatabase = {
-  backend: () => "web-test",
-  features: () => ({
-    persistent: false,
-    eventExpiration: false,
-    fullTextSearch: false,
-    requestToVanish: false,
-  }),
-  saveEvent: async () => undefined,
-  checkId: async () => {
-    throw new Error("Unexpected checkId call");
-  },
-  eventById: async () => undefined,
-  count: async () => {
-    customDatabaseCountCalls += 1;
-    return 7n;
-  },
-  query: async () => [],
-  deleteEvents: async () => {},
-  wipe: async () => {},
-};
-
 async function reportFailure(error) {
   const details =
     typeof error === "object" && error !== null
@@ -28,10 +5,9 @@ async function reportFailure(error) {
           name: error.name,
           message: error.message,
           stack: error.stack,
-          customDatabaseCountCalls,
           ...error,
         }
-      : { error, customDatabaseCountCalls };
+      : { error };
   const message = JSON.stringify(details);
   await fetch(`/result?status=error&message=${encodeURIComponent(message)}`);
 }
@@ -49,9 +25,9 @@ globalThis.addEventListener("unhandledrejection", (event) => {
 
 try {
   await reportProgress("entrypoint loaded");
-  const { ClientBuilder, Filter, Keys, uniffiInitAsync } = await import(
-    "../dist/index.js"
-  );
+  const { Keys, uniffiInitAsync } = await import("../dist/index.js");
+  const { customDatabaseExample } = await import("../examples/custom-database.mjs");
+  const { eventBuilderExample } = await import("../examples/event_builder.mjs");
   const { keysExample } = await import("../examples/keys.mjs");
   await reportProgress("bindings imported");
 
@@ -69,12 +45,18 @@ try {
     throw new Error("Invalid public key returned by the WASM binding");
   }
 
-  const client = new ClientBuilder().database(customDatabase).build();
-  const count = await client.database().count(new Filter());
-  await reportProgress("database callback completed");
+  const events = eventBuilderExample();
+  await reportProgress("event builder example completed");
 
-  if (count !== 7n) {
-    throw new Error(`Invalid custom database count: ${count}`);
+  if (events.length !== 4 || events.some((event) => !event.startsWith("{"))) {
+    throw new Error("Invalid event builder example result");
+  }
+
+  const databaseCount = await customDatabaseExample(false);
+  await reportProgress("custom database example completed");
+
+  if (databaseCount !== 0n) {
+    throw new Error(`Invalid custom database result: ${databaseCount}`);
   }
 
   await fetch("/result?status=ok");

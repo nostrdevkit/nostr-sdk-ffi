@@ -1,5 +1,27 @@
 import asyncio
-from nostr_sdk import Keys, ClientBuilder, EventBuilder, Kind, KindStandard, Proxy, RelayUrl, init_logger, LogLevel, SignerAuthenticator
+from typing import Optional
+
+from nostr_sdk import (
+    ClientBuilder,
+    CustomProxy,
+    EventBuilder,
+    Keys,
+    Kind,
+    KindStandard,
+    LogLevel,
+    Proxy,
+    RelayUrl,
+    SignerAuthenticator,
+    SocketAddr,
+    init_logger,
+)
+
+
+class TorProxy(CustomProxy):
+    def custom(self, relay_url: RelayUrl) -> Optional[SocketAddr]:
+        if relay_url.is_onion():
+            return SocketAddr.parse("127.0.0.1:9050")
+        return None
 
 
 async def main():
@@ -8,9 +30,9 @@ async def main():
     keys = Keys.generate()
     print(keys.public_key().to_bech32())
 
-    # Configure client to use a tor proxy for `.onion` relays
+    # Configure client to use a Tor proxy for `.onion` relays
     authenticator = SignerAuthenticator(keys)
-    proxy = Proxy.onion("127.0.0.1:9050")
+    proxy = Proxy.custom(TorProxy())
     client = ClientBuilder().authenticator(authenticator).proxy(proxy).build()
 
     await client.add_relay(RelayUrl.parse("wss://relay.damus.io"))

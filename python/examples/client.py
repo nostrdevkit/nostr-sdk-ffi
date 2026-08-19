@@ -44,7 +44,7 @@ async def main():
 
     # Get events from relays
     print("Getting events from relays...")
-    f = Filter().authors([keys.public_key(), keys.public_key()])
+    f = Filter().author(keys.public_key())
     events = await client.fetch_events(ReqTarget.auto([f]), timedelta(seconds=10))
     for event in events:
         print(event.as_json())
