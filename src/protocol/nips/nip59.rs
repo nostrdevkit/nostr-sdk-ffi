@@ -19,7 +19,7 @@ use crate::protocol::signer::{
 
 /// Seal
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
+/// https://github.com/nostr-protocol/nips/blob/master/59.md
 #[uniffi::export]
 pub fn nip59_make_seal(
     signer: Arc<dyn NostrSigner>,
@@ -34,7 +34,7 @@ pub fn nip59_make_seal(
 
 /// Seal
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
+/// https://github.com/nostr-protocol/nips/blob/master/59.md
 #[uniffi::export]
 pub async fn nip59_make_seal_async(
     signer: Arc<dyn AsyncNostrSigner>,
@@ -71,7 +71,7 @@ fn make_builder(
 /// `duration` should be greater than 2 days
 /// or it may created in an expired state.
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
+/// https://github.com/nostr-protocol/nips/blob/master/59.md
 #[uniffi::export(default(expiration = None, extra_tags = []))]
 pub fn nip59_make_gift_wrap(
     signer: Arc<dyn NostrSigner>,
@@ -93,7 +93,7 @@ pub fn nip59_make_gift_wrap(
 /// `duration` should be greater than 2 days
 /// or it may created in an expired state.
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
+/// https://github.com/nostr-protocol/nips/blob/master/59.md
 #[cfg_attr(
     not(target_arch = "wasm32"),
     uniffi::export(
@@ -120,7 +120,7 @@ pub async fn nip59_make_gift_wrap_async(
 
 /// Unwrapped Gift Wrap
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/59.md>
+/// https://github.com/nostr-protocol/nips/blob/master/59.md
 #[derive(Debug, PartialEq, Eq, Hash, Object)]
 #[uniffi::export(Debug, Eq, Hash)]
 pub struct UnwrappedGift {

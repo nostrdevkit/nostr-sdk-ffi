@@ -81,7 +81,7 @@ impl From<nip05::Nip05Profile> for Nip05Profile {
 impl Nip05Profile {
     /// Extract a NIP-05 profile from raw JSON
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/05.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/05.md
     #[uniffi::constructor]
     pub fn from_json(address: &Nip05Address, json: &str) -> Result<Self> {
         Ok(Self {

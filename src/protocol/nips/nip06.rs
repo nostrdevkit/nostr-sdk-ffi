@@ -12,7 +12,7 @@ use crate::protocol::key::Keys;
 impl Keys {
     /// Derive keys from BIP-39 mnemonics (ENGLISH wordlist).
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/06.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/06.md
     #[uniffi::constructor(default(passphrase = None, account = None, typ = None, index = None))]
     pub fn from_mnemonic(
         mnemonic: String,

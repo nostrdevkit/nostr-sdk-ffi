@@ -73,9 +73,9 @@ impl Tag {
         self.inner.as_slice().to_vec()
     }
 
-    /// Compose `["e", "<event-id">]`
+    /// Compose `["e", "event-id"]`
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     #[uniffi::constructor]
     pub fn event(event_id: &EventId) -> Self {
         Self {
@@ -83,9 +83,9 @@ impl Tag {
         }
     }
 
-    /// Compose `["p", "<public-key>"]` tag
+    /// Compose `["p", "public-key"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     #[uniffi::constructor]
     pub fn public_key(public_key: &PublicKey) -> Self {
         Self {
@@ -93,9 +93,9 @@ impl Tag {
         }
     }
 
-    /// Compose `["d", "<identifier>"]` tag
+    /// Compose `["d", "identifier"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     #[uniffi::constructor]
     pub fn identifier(identifier: &str) -> Self {
         Self {
@@ -103,9 +103,9 @@ impl Tag {
         }
     }
 
-    /// Compose `["a", "<coordinate>"]` tag
+    /// Compose `["a", "coordinate"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     #[uniffi::constructor(default(relay_url = None))]
     pub fn coordinate(coordinate: &Coordinate, relay_url: Option<Arc<RelayUrl>>) -> Self {
         let relay_url: Option<types::RelayUrl> = relay_url.map(|u| u.as_ref().deref().clone());
@@ -114,9 +114,9 @@ impl Tag {
         }
     }
 
-    /// Compose `["nonce", "<nonce>", "<difficulty>"]` tag
+    /// Compose `["nonce", "nonce", "difficulty"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/13.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/13.md
     #[uniffi::constructor]
     pub fn pow(nonce: u64, difficulty: u8) -> Self {
         Self {
@@ -124,9 +124,9 @@ impl Tag {
         }
     }
 
-    /// Construct `["client", "<name>"]` tag
+    /// Construct `["client", "name"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/89.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/89.md
     #[uniffi::constructor]
     pub fn client(name: String) -> Self {
         Self {
@@ -138,9 +138,9 @@ impl Tag {
         }
     }
 
-    /// Compose `["expiration", "<timestamp>"]` tag
+    /// Compose `["expiration", "timestamp"]` tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/40.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/40.md
     #[uniffi::constructor]
     pub fn expiration(timestamp: &Timestamp) -> Self {
         Self {
@@ -148,7 +148,7 @@ impl Tag {
         }
     }
 
-    /// Compose `["t", "<hashtag>"]` tag
+    /// Compose `["t", "hashtag"]` tag
     ///
     /// This will convert the hashtag to lowercase.
     #[uniffi::constructor]
@@ -162,7 +162,7 @@ impl Tag {
     ///
     /// JSON: `["-"]`
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/70.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/70.md
     #[uniffi::constructor]
     pub fn protected() -> Self {
         Self {
@@ -171,8 +171,6 @@ impl Tag {
     }
 
     /// Compose custom tag
-    ///
-    /// JSON: `["<kind>", "<value-1>", "<value-2>", ...]`
     #[uniffi::constructor]
     pub fn custom(kind: &str, values: &[String]) -> Self {
         Self {
@@ -182,7 +180,7 @@ impl Tag {
 
     /// Check if it's a protected event tag
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/70.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/70.md
     pub fn is_protected(&self) -> bool {
         self.inner.is_protected()
     }

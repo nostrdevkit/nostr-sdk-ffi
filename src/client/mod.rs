@@ -73,7 +73,8 @@ impl Client {
     ///
     /// The stream terminates when the client shutdowns.
     ///
-    /// <div class="warning">When you call this method, you subscribe to the notifications channel from that precise moment. Anything received by relay/s before that moment is not included in the channel!</div>
+    /// When you call this method, you subscribe to the notifications channel from that precise
+    /// moment. Anything received by relays before that moment is not included in the channel.
     #[inline]
     pub fn notifications(&self) -> ClientNotificationStream {
         self.inner.notifications().into()
@@ -424,7 +425,7 @@ impl Client {
     /// # Reconciliation Semantics
     ///
     /// - Reconciliation is performed using NIP-77 negentropy
-    ///   (<https://github.com/nostr-protocol/nips/blob/master/77.md>).
+    ///   (https://github.com/nostr-protocol/nips/blob/master/77.md).
     /// - Event transfer occurs **only** for events determined to be missing
     ///   on either side.
     ///

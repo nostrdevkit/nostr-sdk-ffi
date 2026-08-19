@@ -11,7 +11,7 @@ use crate::protocol::nips::nip21::Nip21Enum;
 pub enum NostrParserToken {
     /// Nostr URI
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/21.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/21.md
     Nostr { uri: Nip21Enum },
     /// Url
     Url { url: String },

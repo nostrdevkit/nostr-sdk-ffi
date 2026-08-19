@@ -98,14 +98,14 @@ impl Event {
     /// Returns `true` if the event has an expiration tag that is expired.
     /// If an event has no expiration tag, then it will return `false`.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/40.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/40.md
     pub fn is_expired(&self) -> bool {
         self.inner.is_expired()
     }
 
     /// Check if it's a protected event
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/70.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/70.md
     pub fn is_protected(&self) -> bool {
         self.inner.is_protected()
     }

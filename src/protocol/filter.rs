@@ -29,15 +29,6 @@ use crate::protocol::types::Timestamp;
 /// The inner byte is always an ASCII alphabetic character. This invariant is
 /// maintained by keeping the field private and validating every public
 /// constructor.
-///
-/// # Ordering
-///
-/// ```text
-/// a < A < b < B < ... < z < Z
-/// ```
-///
-/// In other words, values are ordered alphabetically without regard to case,
-/// with the lowercase variant before the uppercase variant of the same letter.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Object)]
 #[uniffi::export(Debug, Display, Eq, Ord, Hash)]
 pub struct SingleLetterTag {
@@ -278,7 +269,7 @@ impl Filter {
     ///
     /// Query for `a` tag.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn coordinate(&self, coordinate: &Coordinate) -> Self {
         let mut builder = self.clone();
         builder.inner = builder.inner.coordinate(coordinate.deref());
@@ -289,7 +280,7 @@ impl Filter {
     ///
     /// Query for `a` tags.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn coordinates(&self, coordinates: Vec<Arc<Coordinate>>) -> Self {
         let mut builder = self.clone();
         builder.inner = builder
@@ -302,7 +293,7 @@ impl Filter {
     ///
     /// Remove `a` tags.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn remove_coordinates(&self, coordinates: Vec<Arc<Coordinate>>) -> Self {
         let mut builder = self.clone();
         builder.inner = builder
@@ -423,7 +414,7 @@ pub struct FilterRecord {
     pub kinds: Option<Vec<Arc<Kind>>>,
     /// It's a string describing a query in a human-readable form, i.e. "best nostr apps"
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/50.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/50.md
     pub search: Option<String>,
     /// An integer unix timestamp, events must be newer than this to pass
     pub since: Option<Arc<Timestamp>>,

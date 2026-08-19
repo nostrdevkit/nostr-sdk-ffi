@@ -280,7 +280,7 @@ impl LocalRelayBuilder {
 
     /// Sets the minimum Proof of Work difficulty.
     ///
-    /// Only values `> 0` are accepted!
+    /// Only values greater than zero are accepted!
     pub fn min_pow(&self, difficulty: u8) -> Self {
         let mut builder = self.clone();
         builder.inner = builder.inner.min_pow(difficulty);

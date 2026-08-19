@@ -44,7 +44,7 @@ fn make_builder(
 /// Choose a `duration` greater than the 2 days
 /// or the event may be created in an expired state.
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/17.md>
+/// https://github.com/nostr-protocol/nips/blob/master/17.md
 #[uniffi::export(default(expiration = None, rumor_extra_tags = []))]
 pub fn nip17_make_private_msg(
     signer: Arc<dyn NostrSigner>,
@@ -66,7 +66,7 @@ pub fn nip17_make_private_msg(
 /// Choose a `duration` greater than the 2 days
 /// or the event may be created in an expired state.
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/17.md>
+/// https://github.com/nostr-protocol/nips/blob/master/17.md
 #[cfg_attr(
     not(target_arch = "wasm32"),
     uniffi::export(
@@ -94,7 +94,7 @@ pub async fn nip17_make_private_msg_async(
 
 /// Extracts the relay list
 ///
-/// <https://github.com/nostr-protocol/nips/blob/master/17.md>
+/// https://github.com/nostr-protocol/nips/blob/master/17.md
 #[uniffi::export]
 pub fn nip17_extract_relay_list(event: &Event) -> Vec<Arc<RelayUrl>> {
     nip17::extract_relay_list(event.deref())

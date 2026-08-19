@@ -61,7 +61,7 @@ impl Kind {
     ///
     /// Regular means that event is expected to be stored by relays.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn is_regular(&self) -> bool {
         self.inner.is_regular()
     }
@@ -71,7 +71,7 @@ impl Kind {
     /// Replaceable means that, for each combination of `pubkey` and `kind`,
     /// only the latest event MUST be stored by relays, older versions MAY be discarded.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn is_replaceable(&self) -> bool {
         self.inner.is_replaceable()
     }
@@ -80,7 +80,7 @@ impl Kind {
     ///
     /// Ephemeral means that event is not expected to be stored by relays.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn is_ephemeral(&self) -> bool {
         self.inner.is_ephemeral()
     }
@@ -90,7 +90,7 @@ impl Kind {
     /// Addressable means that, for each combination of `pubkey`, `kind` and the `d` tag's first value,
     /// only the latest event MUST be stored by relays, older versions MAY be discarded.
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/01.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/01.md
     pub fn is_addressable(&self) -> bool {
         self.inner.is_addressable()
     }
@@ -133,43 +133,43 @@ pub enum KindStandard {
     ChannelMuteUser,
     /// Git Patch
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitPatch,
     /// Git Issue
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitIssue,
     /// Git Reply
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitReply,
     /// Open Status of Git Patch or Issue
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitStatusOpen,
     /// Applied / Merged Status of Git Patch or Resolved Status of Git Issue
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitStatusApplied,
     /// Closed Status of Git Patch or Issue
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitStatusClosed,
     /// Draft Status of Git Patch or Issue
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitStatusDraft,
     /// Torrent
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/35.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/35.md
     Torrent,
     /// Torrent comment
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/35.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/35.md
     TorrentComment,
     /// Label
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/32.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/32.md
     Label,
     /// Wallet Service Info (NIP47)
     WalletConnectInfo,
@@ -187,85 +187,85 @@ pub enum KindStandard {
     ZapReceipt,
     /// Mute List
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     MuteList,
     /// Pin List
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     PinList,
     /// Bookmarks
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     Bookmarks,
     /// Communities
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     Communities,
     /// Public Chats
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     PublicChats,
     /// Blocked Relays
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     BlockedRelays,
     /// Search Relays
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     SearchRelays,
     /// Simple Groups
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     SimpleGroups,
     /// Interests
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     Interests,
     /// Emojis
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     Emojis,
     /// Follow Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     FollowSet,
     /// Relay Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     RelaySet,
     /// Bookmark Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     BookmarkSet,
     /// Articles Curation Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     ArticlesCurationSet,
     /// Videos Curation Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     VideosCurationSet,
     /// Interest Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     InterestSet,
     /// Emoji Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     EmojiSet,
     /// Release Artifact Set
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/51.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/51.md
     ReleaseArtifactSet,
     /// Relay List Metadata (NIP65)
     RelayList,
     /// Peer-to-peer Order events
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/69.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/69.md
     PeerToPeerOrder,
     /// Request to Vanish (NIP62)
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/62.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/62.md
     RequestToVanish,
     /// Client Authentication (NIP42)
     Authentication,
@@ -289,7 +289,7 @@ pub enum KindStandard {
     GiftWrap,
     /// Private Direct message
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/17.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/17.md
     PrivateDirectMessage,
     /// Inbox Relays (NIP17)
     InboxRelays,
@@ -305,7 +305,7 @@ pub enum KindStandard {
     LongFormTextNote,
     /// Git Repository Announcement
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/34.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/34.md
     GitRepoAnnouncement,
     /// Application-specific Data (NIP78)
     ApplicationSpecificData,
@@ -321,19 +321,19 @@ pub enum KindStandard {
     JobFeedback,
     /// User Status
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/38.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/38.md
     UserStatus,
     /// Cashu Wallet
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/60.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/60.md
     CashuWallet,
     /// Cashu Wallet Unspent Proof
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/60.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/60.md
     CashuWalletUnspentProof,
     /// Cashu Wallet Spending History
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/60.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/60.md
     CashuWalletSpendingHistory,
     /// Cashu Wallet Redeeming a quote
     CashuWalletQuote,
@@ -343,15 +343,15 @@ pub enum KindStandard {
     CashuNutZap,
     /// Code Snippet
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/C0.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/C0.md
     CodeSnippet,
     /// Poll
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/88.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/88.md
     Poll,
     /// Poll response
     ///
-    /// <https://github.com/nostr-protocol/nips/blob/master/88.md>
+    /// https://github.com/nostr-protocol/nips/blob/master/88.md
     PollResponse,
     RepoState,
     VoiceMessage,
