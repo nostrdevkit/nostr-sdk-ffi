@@ -60,7 +60,7 @@ tasks.withType<DokkaTask>().configureEach {
     }
 }
 
-val version: String = "0.45.0"
+val version: String = "0.45.1"
 val isSnapshot: Boolean = version.contains("SNAPSHOT")
 val dokkaHtml by tasks.existing(DokkaTask::class)
 val dokkaJavadocJar by tasks.registering(Jar::class) {

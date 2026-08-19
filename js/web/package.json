@@ -1,6 +1,6 @@
 {
   "name": "@nostrdevkit/nostr-sdk-web",
-  "version": "0.45.0",
+  "version": "0.45.1",
   "description": "Web bindings for the Nostr SDK.",
   "keywords": [
     "nostr",
