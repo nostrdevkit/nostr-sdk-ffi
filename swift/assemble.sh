@@ -49,13 +49,20 @@ mv "${FFI_SWIFT_DIR}/nostr_sdk.swift" "${FFI_SOURCES_DIR}/${PKG_NAME}/${PKG_NAME
 cp -r "${FFI_SOURCES_DIR}" "${SOURCES_DIR}"
 
 # Create new xcframework from static libs and headers
-xcodebuild -create-xcframework \
-    -library "${TARGET_DIR}/aarch64-apple-ios/release/${STATIC_LIB}" \
-    -headers "${FFI_HEADERS_DIR}" \
-    -library "${TARGET_DIR}/ios-universal-sim/release/${STATIC_LIB}" \
-    -headers "${FFI_HEADERS_DIR}" \
-    -library "${TARGET_DIR}/darwin-universal/release/${STATIC_LIB}" \
-    -headers "${FFI_HEADERS_DIR}" \
-    -library "${TARGET_DIR}/catalyst-universal/release/${STATIC_LIB}" \
-    -headers "${FFI_HEADERS_DIR}" \
-    -output "${XCFRAMEWORK_DIR}"
+if [[ "${HOST_ONLY:-0}" == "1" ]]; then
+    xcodebuild -create-xcframework \
+        -library "${TARGET_DIR}/debug/${STATIC_LIB}" \
+        -headers "${FFI_HEADERS_DIR}" \
+        -output "${XCFRAMEWORK_DIR}"
+else
+    xcodebuild -create-xcframework \
+        -library "${TARGET_DIR}/aarch64-apple-ios/release/${STATIC_LIB}" \
+        -headers "${FFI_HEADERS_DIR}" \
+        -library "${TARGET_DIR}/ios-universal-sim/release/${STATIC_LIB}" \
+        -headers "${FFI_HEADERS_DIR}" \
+        -library "${TARGET_DIR}/darwin-universal/release/${STATIC_LIB}" \
+        -headers "${FFI_HEADERS_DIR}" \
+        -library "${TARGET_DIR}/catalyst-universal/release/${STATIC_LIB}" \
+        -headers "${FFI_HEADERS_DIR}" \
+        -output "${XCFRAMEWORK_DIR}"
+fi

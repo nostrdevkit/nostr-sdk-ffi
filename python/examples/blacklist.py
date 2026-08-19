@@ -1,6 +1,6 @@
 import asyncio
 from nostr_sdk import PublicKey, ClientBuilder, Filter, Kind, init_logger, LogLevel, AdmitPolicy, AdmitStatus, Event, \
-    RelayUrl, uniffi_set_event_loop
+    RelayUrl, ReqTarget, uniffi_set_event_loop
 from datetime import timedelta
 
 class Filtering(AdmitPolicy):
@@ -20,7 +20,7 @@ class Filtering(AdmitPolicy):
             return AdmitStatus.success()
 
 async def main():
-    uniffi_set_event_loop(asyncio.get_running_loop())
+    uniffi_set_event_loop(asyncio.get_running_loop())  # type: ignore[arg-type]
 
     # Init logger
     init_logger(LogLevel.INFO)
@@ -41,8 +41,8 @@ async def main():
 
     # Get events
     f = Filter().authors([muted_public_key, other_public_key]).kind(Kind(0))
-    events = await client.fetch_events(f, timedelta(seconds=10))
-    print(f"Received {events.len()} events")
+    events = await client.fetch_events(ReqTarget.auto([f]), timedelta(seconds=10))
+    print(f"Received {len(events)} events")
 
 
 if __name__ == '__main__':

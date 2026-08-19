@@ -17,9 +17,8 @@ async def main():
 
     # Add some relays
     urls = ["wss://relay.damus.io", "wss://nostr.mom", "wss://nostr.oxtr.dev"]
-    for url in urls:
-        url = RelayUrl.parse(url)
-        await client.add_relay(url)
+    for value in urls:
+        await client.add_relay(RelayUrl.parse(value))
 
     # Connect
     await client.connect()

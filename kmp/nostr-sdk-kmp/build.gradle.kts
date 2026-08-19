@@ -1,6 +1,9 @@
+import com.vanniktech.maven.publish.JavadocJar
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
@@ -59,6 +62,13 @@ kotlin {
             }
         }
 
+        val commonTest by getting {
+            kotlin.srcDir("examples")
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+
         val jvmMain by getting {
             dependencies {
                 implementation(libs.jna)
@@ -98,7 +108,7 @@ val isSnapshot: Boolean = version.contains("SNAPSHOT")
 
 mavenPublishing {
     configure(com.vanniktech.maven.publish.KotlinMultiplatform(
-        javadocJar = com.vanniktech.maven.publish.JavadocJar.Empty(),
+        javadocJar = JavadocJar.Dokka("dokkaHtml"),
         sourcesJar = true,
         androidVariantsToPublish = listOf("release"),
     ))

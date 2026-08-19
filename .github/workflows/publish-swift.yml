@@ -106,6 +106,10 @@ jobs:
         working-directory: nostr-sdk-ffi/swift
         run: bash assemble.sh
 
+      - name: Test interface conformances
+        working-directory: nostr-sdk-ffi/swift
+        run: swift test
+
       - name: Compress xcframework
         working-directory: nostr-sdk-ffi/swift
         run: |
@@ -125,6 +129,8 @@ jobs:
           sed 's#.binaryTarget(name: "nostr_sdkFFI", path: "./nostr_sdkFFI.xcframework"),#.binaryTarget(name: "nostr_sdkFFI", url: "https://github.com/${{ github.repository_owner }}/nostr-sdk-swift/releases/download/${{ inputs.version }}/nostr_sdkFFI.xcframework.zip", checksum: "${{ env.XCF_CHECKSUM }}"),#;/.testTarget(name: "NostrSDKTests", dependencies: \["NostrSDK"\]),/d' Package.swift > ../../nostr-sdk-swift/Package.swift
           # Update language bindings
           cp -r Sources ../../nostr-sdk-swift
+          cp -r Examples ../../nostr-sdk-swift
+          cp .spi.yml ../../nostr-sdk-swift
 
       - name: Tag swift package
         working-directory: nostr-sdk-swift
@@ -132,6 +138,8 @@ jobs:
         run: |
           git add Package.swift
           git add Sources
+          git add Examples
+          git add .spi.yml
           git commit -m "Bump to ${{ inputs.version }}"
           git push
           git tag ${{ inputs.version }} -m "${{ inputs.version }}"

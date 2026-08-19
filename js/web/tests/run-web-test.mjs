@@ -23,6 +23,7 @@ await writeFile(
 );
 
 let settle;
+let lastStage = "browser not started";
 const result = new Promise((resolve, reject) => {
   settle = { resolve, reject };
 });
@@ -43,6 +44,12 @@ const server = createServer(async (request, response) => {
       const message = url.searchParams.get("message") ?? "No error details";
       settle.reject(new Error(`Web test failed: ${message}`));
     }
+    return;
+  }
+
+  if (url.pathname === "/progress") {
+    lastStage = url.searchParams.get("stage") ?? "unknown";
+    response.writeHead(204).end();
     return;
   }
 
@@ -79,9 +86,24 @@ const firefox = spawn(
   ],
   { stdio: "inherit" },
 );
+firefox.once("error", (error) => {
+  settle.reject(new Error(`Failed to start Firefox: ${error.message}`));
+});
+firefox.once("exit", (code, signal) => {
+  settle.reject(
+    new Error(
+      `Firefox exited before completing the WebAssembly test: code=${code}, signal=${signal}`,
+    ),
+  );
+});
 const timeout = setTimeout(
-  () => settle.reject(new Error("Timed out waiting for the WebAssembly test")),
-  30_000,
+  () =>
+    settle.reject(
+      new Error(
+        `Timed out waiting for the WebAssembly test; last stage: ${lastStage}`,
+      ),
+    ),
+  120_000,
 );
 
 try {

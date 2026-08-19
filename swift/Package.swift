@@ -16,6 +16,7 @@ let package = Package(
     targets: [
         .binaryTarget(name: "nostr_sdkFFI", path: "./nostr_sdkFFI.xcframework"),
         .target(name: "NostrSDK", dependencies: ["nostr_sdkFFI"]),
+        .executableTarget(name: "NostrSDKExample", dependencies: ["NostrSDK"], path: "Examples"),
         .testTarget(name: "NostrSDKTests", dependencies: ["NostrSDK"]),
     ]
 )

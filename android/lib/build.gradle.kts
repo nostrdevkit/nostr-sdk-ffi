@@ -1,6 +1,12 @@
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.jvm.tasks.Jar
+import org.jetbrains.dokka.Platform
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android") version "2.0.21"
+    id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
@@ -35,6 +41,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    sourceSets["test"].java.srcDir("../examples")
 }
 
 dependencies {
@@ -43,13 +51,28 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
 }
 
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets.register("androidMain") {
+        platform.set(Platform.jvm)
+        classpath.from(android.bootClasspath)
+        suppress.set(false)
+        sourceRoots.from(file("src/main/kotlin"))
+    }
+}
+
 val version: String = "0.45.0"
 val isSnapshot: Boolean = version.contains("SNAPSHOT")
+val dokkaHtml by tasks.existing(DokkaTask::class)
+val dokkaJavadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    dependsOn(dokkaHtml)
+    from(dokkaHtml.flatMap { it.outputDirectory })
+}
 
 mavenPublishing {
     configure(com.vanniktech.maven.publish.AndroidMultiVariantLibrary(
         sourcesJar = true,
-        publishJavadocJar = true,
+        publishJavadocJar = false,
     ))
 
     publishToMavenCentral(automaticRelease = !isSnapshot)
@@ -80,5 +103,11 @@ mavenPublishing {
           developerConnection.set("scm:git:ssh://github.com/nostrdevkit/nostr-sdk-ffi.git")
           url.set("https://github.com/nostrdevkit/nostr-sdk-ffi")
       }
+    }
+}
+
+publishing {
+    publications.withType<MavenPublication>().configureEach {
+        artifact(dokkaJavadocJar)
     }
 }

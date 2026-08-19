@@ -74,7 +74,11 @@ export_async_pow_adapter!(MultiThreadPow, |adapter| &adapter.inner);
 pub trait PowAdapter: Send + Sync {
     /// Computes Proof of Work for an unsigned event to meet the target
     /// difficulty.
-    fn compute(&self, unsigned: Arc<UnsignedEvent>, difficulty: u8) -> Result<Arc<UnsignedEvent>>;
+    fn compute(
+        &self,
+        unsigned_event: Arc<UnsignedEvent>,
+        difficulty: u8,
+    ) -> Result<Arc<UnsignedEvent>>;
 }
 
 /// A trait for custom Proof of Work computation.
@@ -86,7 +90,7 @@ pub trait AsyncPowAdapter: Send + Sync {
     /// difficulty.
     async fn compute_async(
         &self,
-        unsigned: Arc<UnsignedEvent>,
+        unsigned_event: Arc<UnsignedEvent>,
         difficulty: u8,
     ) -> Result<Option<Arc<UnsignedEvent>>>;
 }

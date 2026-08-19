@@ -23,16 +23,19 @@ async def main():
     k = Kind(0)
     f = Filter().kind(k).limit(5)
 
-    stream: EventStream = await client.stream_events(f, timedelta(seconds=10))
+    stream = await client.stream_events(ReqTarget.auto([f]), timeout=timedelta(seconds=10))
 
     while True:
-        event = await stream.next()
+        item = await stream.next()
 
         # Check if the stream is terminated
-        if event is None:
+        if item is None:
             break
 
-        print(event.as_json())
+        if item.event is not None:
+            print(item.event.as_json())
+        elif item.error is not None:
+            print(f"Relay error from {item.relay_url}: {item.error}")
 
 
     print("Stream terminated.")

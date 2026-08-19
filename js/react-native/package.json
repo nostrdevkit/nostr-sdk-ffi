@@ -31,6 +31,7 @@
     "cpp",
     "ios",
     "src",
+    "examples",
     "NostrSdkReactNative.xcframework",
     "react-native.config.js",
     "NostrSdkReactNative.podspec",
@@ -44,6 +45,7 @@
     "build:android": "ubrn build android --config ubrn.config.yaml --release --and-generate",
     "build:ios": "ubrn build ios --config ubrn.config.yaml --release --and-generate",
     "build": "npm run clean && npm run generate",
+    "check:examples": "../node_modules/.bin/tsc -p examples/tsconfig.json",
     "pack:local": "npm run build && npm pack --ignore-scripts"
   },
   "dependencies": {

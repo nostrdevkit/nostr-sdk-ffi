@@ -66,7 +66,7 @@ pub trait NostrDatabase: Send + Sync {
     /// Count the number of [`Event`] found by filter
     ///
     /// Use `Filter::new()` or `Filter::default()` to count all events.
-    async fn count(&self, filters: Arc<Filter>) -> Result<u64>;
+    async fn count(&self, filter: Arc<Filter>) -> Result<u64>;
 
     /// Query store with filter
     async fn query(&self, filter: Arc<Filter>) -> Result<Vec<Arc<Event>>>;

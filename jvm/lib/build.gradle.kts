@@ -14,7 +14,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
     withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -52,12 +51,20 @@ dependencies {
     testImplementation("ch.qos.logback:logback-core:1.2.3")
 }
 
+kotlin {
+    sourceSets {
+        test {
+            kotlin.srcDir("../examples")
+        }
+    }
+}
+
 val version: String = "0.45.0"
 val isSnapshot: Boolean = version.contains("SNAPSHOT")
 
 mavenPublishing {
     configure(KotlinJvm(
-        javadocJar = JavadocJar.None(),
+        javadocJar = JavadocJar.Dokka("dokkaHtml"),
         sourcesJar = true,
       ))
 

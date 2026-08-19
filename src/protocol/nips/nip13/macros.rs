@@ -14,18 +14,18 @@ macro_rules! impl_pow_adapter {
         impl $trait for $type {
             fn compute(
                 &self,
-                unsigned: ::std::sync::Arc<$crate::protocol::event::UnsignedEvent>,
+                unsigned_event: ::std::sync::Arc<$crate::protocol::event::UnsignedEvent>,
                 difficulty: u8,
             ) -> $crate::error::Result<::std::sync::Arc<$crate::protocol::event::UnsignedEvent>> {
                 use std::ops::Deref;
 
                 let $adapter = self;
                 let adapter = $inner;
-                let unsigned = unsigned.as_ref().deref().clone();
+                let unsigned_event = unsigned_event.as_ref().deref().clone();
                 let difficulty = ::std::num::NonZeroU8::new(difficulty).ok_or($crate::error::NostrSdkError::NonZeroDifficulty)?;
 
                 Ok(::std::sync::Arc::new(
-                    ::nostr::nips::nip13::PowAdapter::compute(adapter, unsigned, difficulty)?.into(),
+                    ::nostr::nips::nip13::PowAdapter::compute(adapter, unsigned_event, difficulty)?.into(),
                 ))
             }
         }
@@ -62,18 +62,18 @@ macro_rules! impl_async_pow_adapter {
         impl $trait for $type {
             async fn compute_async(
                 &self,
-                unsigned: ::std::sync::Arc<$crate::protocol::event::UnsignedEvent>,
+                unsigned_event: ::std::sync::Arc<$crate::protocol::event::UnsignedEvent>,
                 difficulty: u8,
             ) -> $crate::error::Result<Option<::std::sync::Arc<$crate::protocol::event::UnsignedEvent>>> {
                 use std::ops::Deref;
 
                 let $adapter = self;
                 let adapter = $inner;
-                let unsigned = unsigned.as_ref().deref().clone();
+                let unsigned_event = unsigned_event.as_ref().deref().clone();
                 let difficulty = ::std::num::NonZeroU8::new(difficulty).ok_or($crate::error::NostrSdkError::NonZeroDifficulty)?;
 
                 Ok(Some(::std::sync::Arc::new(
-                    $crate::future::assume_send(<_ as ::nostr::nips::nip13::AsyncPowAdapter>::compute_async(adapter, unsigned, difficulty)).await?.into(),
+                    $crate::future::assume_send(<_ as ::nostr::nips::nip13::AsyncPowAdapter>::compute_async(adapter, unsigned_event, difficulty)).await?.into(),
                 )))
             }
         }

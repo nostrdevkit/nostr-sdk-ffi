@@ -26,7 +26,7 @@ test("package exports the generated API", async () => {
     deleteEvents: async () => {},
     wipe: async () => {},
   };
-  const database = sdk.NostrDatabase.custom(customDatabase);
+  const client = new sdk.ClientBuilder().database(customDatabase).build();
 
-  assert.equal(await database.count(new sdk.Filter()), 7n);
+  assert.equal(await client.database().count(new sdk.Filter()), 7n);
 });

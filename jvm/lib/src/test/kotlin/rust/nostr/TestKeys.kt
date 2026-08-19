@@ -2,6 +2,7 @@ package org.nostrdevkit
 
 import org.nostrdevkit.sdk.Keys
 import org.nostrdevkit.sdk.SecretKey
+import org.nostrdevkit.examples.keysExample
 import kotlin.test.Test
 
 class TestKeys {
@@ -20,5 +21,10 @@ class TestKeys {
         assert(keys == parsedKeys) {
             "Keys doesn't match"
         }
+    }
+
+    @Test
+    fun testKeysExample() {
+        assert(keysExample().startsWith("npub1"))
     }
 }

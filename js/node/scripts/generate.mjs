@@ -32,9 +32,15 @@ function run(command, args, cwd) {
   });
 }
 
-await run("cargo", ["build", "--lib"], repositoryRoot);
+const configuredLibrary = process.env.NOSTR_SDK_FFI_LIBRARY;
 
-const library = fileURLToPath(new URL(`target/debug/${libraryName}`, repositoryRoot));
+if (configuredLibrary === undefined) {
+  await run("cargo", ["build", "--lib"], repositoryRoot);
+}
+
+const library =
+  configuredLibrary ??
+  fileURLToPath(new URL(`target/debug/${libraryName}`, repositoryRoot));
 const output = fileURLToPath(new URL("src/generated", packageRoot));
 const ubrn = fileURLToPath(
   new URL("../node_modules/.bin/ubrn", packageRoot),

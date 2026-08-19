@@ -15,9 +15,8 @@ async def main():
         "wss://nostr.wine",
     ]
 
-    for relay in relays:
-        relay = RelayUrl.parse(relay)
-        await client.add_relay(relay)
+    for value in relays:
+        await client.add_relay(RelayUrl.parse(value))
 
     await client.connect()
 

@@ -3,9 +3,7 @@ from nostr_sdk import *
 
 
 async def main():
-    builder = RelayBuilder().port(7676)
-
-    relay = LocalRelay(builder)
+    relay = LocalRelayBuilder().port(7676).build()
 
     await relay.run()
 

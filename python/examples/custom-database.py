@@ -1,25 +1,32 @@
 import asyncio
 from nostr_sdk import *
 from nostr_sdk import uniffi_set_event_loop
-from typing import List
+from typing import Dict, List, Optional
 
 
 async def main():
     init_logger(LogLevel.INFO)
 
-    uniffi_set_event_loop(asyncio.get_running_loop())
+    uniffi_set_event_loop(asyncio.get_running_loop())  # type: ignore[arg-type]
 
     # Example of custom in-memory database
-    class MyDatabase(CustomNostrDatabase):
+    class MyDatabase(NostrDatabase):
         def __init__(self):
-            self.seen_event_ids = {}
-            self.events = {}
+            self.events: Dict[EventId, Event] = {}
 
         def backend(self) -> str:
             return "my-in-memory-backend"
 
-        async def save_event(self, e: Event) -> SaveEventStatus:
-            self.events[e.id()] = e
+        def features(self) -> NostrDatabaseFeatures:
+            return NostrDatabaseFeatures(
+                persistent=False,
+                event_expiration=False,
+                full_text_search=False,
+                request_to_vanish=False,
+            )
+
+        async def save_event(self, event: Event) -> Optional[SaveEventStatus]:
+            self.events[event.id()] = event
             return SaveEventStatus.success()
 
         async def check_id(self, event_id: EventId) -> DatabaseEventStatus:
@@ -28,27 +35,26 @@ async def main():
             else:
                 return DatabaseEventStatus.NOT_EXISTENT
 
-        async def event_by_id(self, event_id) -> Event | None:
+        async def event_by_id(self, event_id: EventId) -> Optional[Event]:
             return self.events.get(event_id, None)
 
-        async def count(self, filter) -> int:
-            return 0
+        async def count(self, filters: Filter) -> int:
+            return len(self.events)
 
-        async def query(self, filter) -> Events:
+        async def query(self, filter: Filter) -> List[Event]:
             # Fake algorithm
             return list(self.events.values())[:10]
 
-        async def delete(self, filter):
-            return
+        async def delete_events(self, filter: Filter) -> None:
+            self.events.clear()
 
-        async def wipe(self):
-            return
+        async def wipe(self) -> None:
+            self.events.clear()
 
     my_db = MyDatabase()
-    database = NostrDatabase.custom(my_db)
-    client = ClientBuilder().database(database).build()
+    client = ClientBuilder().database(my_db).build()
 
-    await client.add_relay("wss://relay.damus.io")
+    await client.add_relay(RelayUrl.parse("wss://relay.damus.io"))
     await client.connect()
 
     keys = Keys.parse("nsec1ufnus6pju578ste3v90xd5m2decpuzpql2295m3sknqcjzyys9ls0qlc85")
@@ -62,10 +68,10 @@ async def main():
     # Query events from database
     f = Filter().author(keys.public_key()).limit(10)
     events = await client.database().query(f)
-    if events.len() == 0:
+    if len(events) == 0:
         print("Query not found any event")
     else:
-        for event in events.to_vec():
+        for event in events:
             print(event.as_json())
 
 
