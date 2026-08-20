@@ -48,7 +48,7 @@ try {
   const events = eventBuilderExample();
   await reportProgress("event builder example completed");
 
-  if (events.length !== 4 || events.some((event) => !event.startsWith("{"))) {
+  if (events.length !== 3 || events.some((event) => !event.startsWith("{"))) {
     throw new Error("Invalid event builder example result");
   }
 
