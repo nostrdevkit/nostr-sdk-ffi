@@ -16,7 +16,7 @@ func monitorExample() async throws {
         "wss://nostr.mom",
         "wss://nostr.oxtr.dev",
     ] {
-        try await client.addRelay(url: RelayUrl.parse(url: value))
+        _ = try await client.addRelay(url: RelayUrl.parse(url: value))
     }
     await client.connect()
     try await monitor.handleNotifications(handler: MonitorHandler())

@@ -35,7 +35,7 @@ func whitelistExample() async throws {
     webOfTrust.allow(allowed)
     let client = ClientBuilder().admitPolicy(policy: webOfTrust).build()
 
-    try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
+    _ = try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
     await client.connect()
     let filter = Filter().authors(authors: [allowed, other]).kind(kind: Kind(kind: 0))
     let events = try await client.fetchEvents(target: ReqTarget.auto(filters: [filter]))

@@ -1,9 +1,7 @@
 import {
   ClientBuilder,
-  LogLevel,
   Monitor,
   RelayUrl,
-  initLogger,
 } from "../dist/index.js";
 
 class MonitorHandler {
@@ -13,7 +11,6 @@ class MonitorHandler {
 }
 
 export async function monitorExample() {
-  initLogger(LogLevel.Debug);
   const monitor = new Monitor();
   const client = new ClientBuilder().monitor(monitor).build();
   for (const url of [

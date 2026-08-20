@@ -3,11 +3,9 @@ import {
   ClientBuilder,
   Filter,
   Kind,
-  LogLevel,
   PublicKey,
   RelayUrl,
   ReqTarget,
-  initLogger,
 } from "../dist/index.js";
 
 class WebOfTrust {
@@ -29,7 +27,6 @@ class WebOfTrust {
 }
 
 export async function whitelistExample() {
-  initLogger(LogLevel.Info);
   const allowed = PublicKey.parse(
     "npub1l2vyh47mk2p0qlsku7hg0vn29faehy9hy34ygaclpn66ukqp3afqutajft",
   );

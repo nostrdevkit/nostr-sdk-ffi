@@ -3,11 +3,9 @@ import {
   DatabaseEventStatus,
   Filter,
   Keys,
-  LogLevel,
   NostrDatabaseFeatures,
   RelayUrl,
   SaveEventStatus,
-  initLogger,
 } from "../dist/index.js";
 
 class InMemoryDatabase {
@@ -59,8 +57,6 @@ class InMemoryDatabase {
 }
 
 export async function customDatabaseExample(connectToRelay = true) {
-  initLogger(LogLevel.Info);
-
   const client = new ClientBuilder().database(new InMemoryDatabase()).build();
   if (!connectToRelay) {
     return client.database().count(new Filter());

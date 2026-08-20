@@ -21,7 +21,7 @@ func torExample() async throws {
         "ws://oxtrdevav64z64yb7x6rjg4ntzqjhedm5b5zjqulugknhzr46ny2qbad.onion",
         "ws://2jsnlhfnelig5acq6iacydmzdbdmg7xwunm4xl6qwbvzacw4lwrjmlyd.onion",
     ] {
-        try await client.addRelay(url: RelayUrl.parse(url: value))
+        _ = try await client.addRelay(url: RelayUrl.parse(url: value))
     }
     await client.connect()
 

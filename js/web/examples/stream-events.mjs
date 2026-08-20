@@ -2,15 +2,11 @@ import {
   Client,
   Filter,
   Kind,
-  LogLevel,
   RelayUrl,
   ReqTarget,
-  initLogger,
 } from "../dist/index.js";
 
 export async function streamEventsExample() {
-  initLogger(LogLevel.Info);
-
   const client = new Client();
   await client.addRelay(RelayUrl.parse("wss://relay.damus.io"));
   await client.addRelay(RelayUrl.parse("wss://nos.lol"));

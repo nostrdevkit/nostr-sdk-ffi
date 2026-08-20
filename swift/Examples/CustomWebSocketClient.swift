@@ -62,7 +62,7 @@ func customWebSocketClientExample(
         .authenticator(authenticator: SignerAuthenticator(signer: keys))
         .websocketTransport(transport: ExampleWebSocketTransport(connect: connect))
         .build()
-    try await client.addRelay(url: RelayUrl.parse(url: "ws://127.0.0.1:7777"))
+    _ = try await client.addRelay(url: RelayUrl.parse(url: "ws://127.0.0.1:7777"))
     await client.connect()
 
     let event = try EventBuilder(
@@ -77,6 +77,6 @@ func customWebSocketClientExample(
     for receivedEvent in try await client.fetchEvents(
         target: ReqTarget.auto(filters: [filter])
     ) {
-        print(receivedEvent.asPrettyJson())
+        print(try receivedEvent.asPrettyJson())
     }
 }

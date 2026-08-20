@@ -181,6 +181,7 @@ jobs:
           npm run compile
           node scripts/package-native.mjs linux-x64-gnu ../../target/debug/libnostr_sdk_ffi.so
           mkdir -p node_modules/@nostrdevkit
+          rm -rf node_modules/@nostrdevkit/nostr-sdk-node-linux-x64-gnu
           ln -s "$GITHUB_WORKSPACE/js/node/platforms/linux-x64-gnu" node_modules/@nostrdevkit/nostr-sdk-node-linux-x64-gnu
           npm test
 

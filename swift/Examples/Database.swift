@@ -10,12 +10,12 @@ func databaseExample(path: String) async throws {
     let client = ClientBuilder().database(database: database).build()
     print("Database backend: \(client.database().backend())")
 
-    try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
+    _ = try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
     await client.connect()
     _ = try await client.sync(filter: Filter().author(author: keys.publicKey()))
 
     let filter = Filter().author(author: keys.publicKey()).limit(limit: 10)
     for event in try await client.database().query(filter: filter) {
-        print(event.asJson())
+        print(try event.asJson())
     }
 }

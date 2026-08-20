@@ -50,7 +50,7 @@ func customDatabaseExample() async throws {
     initLogger(level: .info)
 
     let client = ClientBuilder().database(database: InMemoryDatabase()).build()
-    try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
+    _ = try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
     await client.connect()
 
     let keys = try Keys.parse(secretKey: "nsec1ufnus6pju578ste3v90xd5m2decpuzpql2295m3sknqcjzyys9ls0qlc85")
@@ -62,6 +62,8 @@ func customDatabaseExample() async throws {
     if events.isEmpty {
         print("Query did not find any event")
     } else {
-        events.forEach { print($0.asJson()) }
+        for event in events {
+            print(try event.asJson())
+        }
     }
 }

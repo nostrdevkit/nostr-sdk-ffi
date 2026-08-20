@@ -21,9 +21,9 @@ func eventBuilderExample() throws -> [String] {
     let unsignedEvent = customBuilder.finalizeUnsigned(publicKey: keys.publicKey())
 
     return [
-        textNote.asJson(),
-        customEvent.asJson(),
-        powEvent.asJson(),
-        unsignedEvent.asJson(),
+        try textNote.asJson(),
+        try customEvent.asJson(),
+        try powEvent.asJson(),
+        try unsignedEvent.asJson(),
     ]
 }

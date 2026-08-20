@@ -6,7 +6,7 @@ func clientExample() async throws {
 
     let client = Client()
     for value in ["wss://relay.damus.io", "wss://nostr.wine"] {
-        try await client.addRelay(url: RelayUrl.parse(url: value))
+        _ = try await client.addRelay(url: RelayUrl.parse(url: value))
     }
     await client.connect()
 
@@ -35,6 +35,6 @@ func clientExample() async throws {
     let filter = Filter().author(author: keys.publicKey())
     let events = try await client.fetchEvents(target: ReqTarget.auto(filters: [filter]))
     for receivedEvent in events {
-        print(receivedEvent.asJson())
+        print(try receivedEvent.asJson())
     }
 }

@@ -35,7 +35,7 @@ func blacklistExample() async throws {
     filtering.mute(muted)
     let client = ClientBuilder().admitPolicy(policy: filtering).build()
 
-    try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
+    _ = try await client.addRelay(url: RelayUrl.parse(url: "wss://relay.damus.io"))
     await client.connect()
     let filter = Filter().authors(authors: [muted, other]).kind(kind: Kind(kind: 0))
     let events = try await client.fetchEvents(target: ReqTarget.auto(filters: [filter]))
