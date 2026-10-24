@@ -25,6 +25,19 @@ impl From<Nip44Version> for Version {
     }
 }
 
+/// NIP-44 v2 conversation key (32 bytes) for a secret/public key pair.
+#[uniffi::export]
+pub fn nip44_v2_conversation_key(
+    secret_key: &SecretKey,
+    public_key: &PublicKey,
+) -> Result<Vec<u8>> {
+    Ok(
+        nip44::v2::ConversationKey::derive(secret_key.deref(), public_key.deref())?
+            .as_bytes()
+            .to_vec(),
+    )
+}
+
 #[uniffi::export]
 pub fn nip44_encrypt(
     secret_key: &SecretKey,

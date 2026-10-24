@@ -23,6 +23,12 @@
 
 -->
 
+## Unreleased
+
+### Added
+
+- Add `nip44_v2_conversation_key` function (https://github.com/nostrdevkit/nostr-sdk-ffi/pull/96)
+
 ## v0.45.0 - 2026/08/05
 
 ### Breaking changes
